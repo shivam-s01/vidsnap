@@ -3,14 +3,16 @@ Frontend + TikTok / Instagram / Facebook / TeraBox extractors ek hi Worker mein.
 YouTube, generic sites, audio-extract aur jab native extractor fail ho, woh purane Flask backend
 (`LEGACY_BACKEND` in wrangler.toml) pe forward hota hai. YouTube ko JS mein shift karne ke baad us var ko hata do.
 
-## Deploy (GitHub Actions)
-Repo Settings > Secrets mein daalo:
-- `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`
+## Deploy (Cloudflare Git connect)
+Worker Settings > Variables and Secrets mein daalo:
 - `PROXY_SECRET`: koi bhi 32+ random chars (required)
 - `TERABOX_COOKIE`: `ndus=...` (apna fresh cookie)
 - `RAPIDAPI_KEY`: optional fallback
 
-`main` pe push karte hi tests + deploy chalega.
+`main` pe push karte hi Cloudflare khud deploy karta hai.
+
+## Debug
+`/debug?url=<link>` har extractor layer ka status dikhata hai (kaun sa layer kyun fail hua).
 
 ## Layout
 - `src/index.js` router: /info, /download, /proxy-download (streaming), legacy forward

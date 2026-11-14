@@ -200,6 +200,22 @@ test("Terabox token + share/list flow, cookie goes into signed headers", async (
   assert.equal(v.headers.Referer, "https://www.terabox.com/");
 });
 
+// ── debug ───────────────────────────────────────────────────────────────────
+test("/debug reports per-layer results for instagram, rejects other platforms", async () => {
+  mock(/embed\/captioned/, () => new Response("<html>Log in to continue accounts/login</html>"));
+  mock(/graphql\/query/, () => Response.json({ status: "fail", message: "login_required" }));
+  mock(/\/$/, () => Response.json({ status: "error", error: { code: "error.api.auth" } }));
+  const r = await call(new Request(ORIGIN + "/debug?url=" + encodeURIComponent("https://www.instagram.com/reel/ABC123/")));
+  const d = await r.json();
+  assert.equal(d.platform, "instagram");
+  assert.equal(d.embed.loginWall, true);
+  assert.equal(d.embed.hasVideoUrl, false);
+  assert.equal(d.graphql.apiMessage, "login_required");
+  assert.ok(d.cobalt["api.cobalt.tools"]);
+  const bad = await call(new Request(ORIGIN + "/debug?url=" + encodeURIComponent("https://example.com/x")));
+  assert.equal(bad.status, 400);
+});
+
 // ── legacy forwarding / errors ──────────────────────────────────────────────
 test("non-native platforms forward to legacy with real client IP", async () => {
   mock(/legacy\.test\/info/, (u, init, h) => Response.json({ success: true, title: "legacy yt", seen_ip: h.get("x-forwarded-for") }));

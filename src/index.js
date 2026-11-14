@@ -6,6 +6,7 @@ import { extractTikTok } from "./extractors/tiktok.js";
 import { extractInstagram } from "./extractors/instagram.js";
 import { extractFacebook } from "./extractors/facebook.js";
 import { extractTerabox } from "./extractors/terabox.js";
+import { debugProbe } from "./debug.js";
 
 const EXTRACTORS = {
   tiktok: extractTikTok, instagram: extractInstagram, facebook: extractFacebook, terabox: extractTerabox,
@@ -166,6 +167,16 @@ async function handleProxy(request, env) {
   return new Response(request.method === "HEAD" ? null : r.body, { status: r.status, headers: out });
 }
 
+// ── /debug ───────────────────────────────────────────────────────────────────
+async function handleDebug(request, env) {
+  const url = (new URL(request.url).searchParams.get("url") || "").trim();
+  const err = validateUrl(url);
+  if (err) return json({ error: err }, 400);
+  if (!NATIVE_PLATFORMS.has(platformOf(url))) return json({ error: "Only TikTok / Instagram / Facebook / TeraBox links" }, 400);
+  if (!rateOk(getIp(request), "/debug")) return json({ error: "Too many requests" }, 429);
+  return json(await debugProbe(url, env));
+}
+
 // ── entry ────────────────────────────────────────────────────────────────────
 export default {
   async fetch(request, env, ctx) {
@@ -179,6 +190,7 @@ export default {
       else if (path === "/info" && request.method === "POST") resp = await handleInfo(request, env);
       else if (path === "/download" && request.method === "POST") resp = await handleDownload(request, env, ctx);
       else if (path === "/proxy-download" && ["GET", "HEAD"].includes(request.method)) resp = await handleProxy(request, env);
+      else if (path === "/debug" && request.method === "GET") resp = await handleDebug(request, env);
       else if (LEGACY_PATHS.has(path)) resp = await forward(request, env);
       else return env.ASSETS.fetch(request); // index.html, adult.html, static files
 
