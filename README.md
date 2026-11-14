@@ -1,5 +1,4 @@
 # VidSnap on Cloudflare Workers
-
 Frontend + TikTok / Instagram / Facebook / TeraBox extractors ek hi Worker mein.
 YouTube, generic sites, audio-extract aur jab native extractor fail ho, woh purane Flask backend
 (`LEGACY_BACKEND` in wrangler.toml) pe forward hota hai. YouTube ko JS mein shift karne ke baad us var ko hata do.
