@@ -15,8 +15,8 @@ LEGACY_BACKEND = "https://videodownloader-iicl.onrender.com"
 ALLOWED_ORIGINS = ""
 
 # RapidAPI "Download by Link" (Code snippet tab se host aur path lo, key nahi)
-RAPID_HOST = ""      # jaise "xxxx.p.rapidapi.com"
-RAPID_PATH = ""      # GET endpoint (Instagram/TikTok/Facebook/X/Pinterest), jaise "/download"
+RAPID_HOST = "instagram-downloader-download-instagram-videos-stories1.p.rapidapi.com"      # jaise "xxxx.p.rapidapi.com"
+RAPID_PATH = "/fetch"      # GET endpoint (Instagram/TikTok/Facebook/X/Pinterest), jaise "/download"
 RAPID_YT_PATH = ""   # POST endpoint (YouTube Download), jaise "/youtube/download"
 
 # Secrets (wrangler secret put <NAME> / GitHub Actions se):
