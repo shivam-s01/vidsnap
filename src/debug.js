@@ -1,6 +1,7 @@
 // /debug?url=... — har layer kya dekh raha hai, ye batata hai (koi secret/cookie output mein nahi aata).
 import { UA, fetchT, platformOf } from "./lib.js";
 import { _internals as ig } from "./extractors/instagram.js";
+import { rapidProbe } from "./extractors/fallbacks.js";
 
 const KEYS = ["video_url", "video_versions", "playable_url", "contextJSON", "__additionalDataLoaded", "gql_data", "shortcode_media", "xdt_", "is_video", "og:video", ".mp4", "dash_manifest"];
 const markers = (t) => Object.fromEntries(KEYS.map((k) => [k, t.split(k).length - 1]).filter(([, n]) => n > 0));
@@ -76,10 +77,8 @@ export async function debugProbe(url, env) {
     const w = await look(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}&hd=1`, { headers: { "User-Agent": UA.CHROME } });
     let wj = null; try { wj = JSON.parse(w.text); } catch { /* not json */ }
     rep.tikwm = strip(w, { code: wj && wj.code, msg: wj && wj.msg });
-  } else {
-    rep.note = "Debug sirf TikTok / Instagram / Facebook links ke liye hai.";
-    return rep;
   }
+  rep.rapid = await rapidProbe(env, plat, url);
   rep.cobalt = await cobalt(url);
   return rep;
 }

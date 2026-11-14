@@ -6,12 +6,18 @@ import { extractTikTok } from "./extractors/tiktok.js";
 import { extractInstagram } from "./extractors/instagram.js";
 import { extractFacebook } from "./extractors/facebook.js";
 import { extractTerabox } from "./extractors/terabox.js";
+import { extractYouTube } from "./extractors/youtube.js";
+import { makeGeneric } from "./extractors/generic.js";
 import { debugProbe } from "./debug.js";
 
 const EXTRACTORS = {
   tiktok: extractTikTok, instagram: extractInstagram, facebook: extractFacebook, terabox: extractTerabox,
+  youtube: extractYouTube, twitter: makeGeneric("twitter", "X Video"), pinterest: makeGeneric("pinterest", "Pinterest Video"),
 };
-const PLATFORM_TITLE = { tiktok: "TikTok Video", instagram: "Instagram Video", facebook: "Facebook Video", terabox: "TeraBox Video" };
+const PLATFORM_TITLE = {
+  tiktok: "TikTok Video", instagram: "Instagram Video", facebook: "Facebook Video", terabox: "TeraBox Video",
+  youtube: "YouTube Video", twitter: "X Video", pinterest: "Pinterest Video",
+};
 const LARGE_FILE_WARN_MB = 200;
 
 // Jo endpoints abhi purane Flask backend pe hain
@@ -149,7 +155,11 @@ async function handleProxy(request, env) {
   let r;
   try { r = await fetchT(v.url, { method: request.method === "HEAD" ? "HEAD" : "GET", headers: hdrs }, 30000); }
   catch { return json({ error: "Proxy error" }, 502); }
-  if ([401, 403, 404].includes(r.status)) return json({ error: `Source denied access (${r.status})` }, 502);
+  if ([401, 403, 404, 410].includes(r.status)) {
+    // Kuch CDN links client-IP se bandhe hote hain (worker ko deny, user ko allow): browser download ho to seedha bhej do
+    if (request.headers.get("Sec-Fetch-Mode") === "navigate") return Response.redirect(v.url, 302);
+    return json({ error: `Source denied access (${r.status})` }, 502);
+  }
 
   const name = v.filename.replace(/[^\w.\- ]/g, "_");
   let ct = r.headers.get("Content-Type") || "video/mp4";
@@ -172,7 +182,7 @@ async function handleDebug(request, env) {
   const url = (new URL(request.url).searchParams.get("url") || "").trim();
   const err = validateUrl(url);
   if (err) return json({ error: err }, 400);
-  if (!NATIVE_PLATFORMS.has(platformOf(url))) return json({ error: "Only TikTok / Instagram / Facebook / TeraBox links" }, 400);
+  if (!NATIVE_PLATFORMS.has(platformOf(url))) return json({ error: "Only TikTok / Instagram / Facebook / TeraBox / YouTube / X / Pinterest links" }, 400);
   if (!rateOk(getIp(request), "/debug")) return json({ error: "Too many requests" }, 429);
   return json(await debugProbe(url, env));
 }
@@ -186,7 +196,7 @@ export default {
       if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
 
       let resp;
-      if (path === "/ping") resp = json({ status: "ok", ts: Date.now(), configured: Boolean(env.PROXY_SECRET), terabox_cookie: Boolean(env.TERABOX_COOKIE), rapidapi: Boolean(env.RAPIDAPI_KEY) });
+      if (path === "/ping") resp = json({ status: "ok", ts: Date.now(), configured: Boolean(env.PROXY_SECRET), terabox_cookie: Boolean(env.TERABOX_COOKIE), rapidapi: Boolean(env.RAPIDAPI_KEY), rapid_host: Boolean(env.RAPID_HOST), rapid_path: Boolean(env.RAPID_PATH), rapid_yt_path: Boolean(env.RAPID_YT_PATH) });
       else if (path === "/info" && request.method === "POST") resp = await handleInfo(request, env);
       else if (path === "/download" && request.method === "POST") resp = await handleDownload(request, env, ctx);
       else if (path === "/proxy-download" && ["GET", "HEAD"].includes(request.method)) resp = await handleProxy(request, env);

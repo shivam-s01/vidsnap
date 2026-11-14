@@ -14,8 +14,13 @@ LEGACY_BACKEND = "https://videodownloader-iicl.onrender.com"
 # Extra origins jo is Worker ko call kar sakte hain (comma separated)
 ALLOWED_ORIGINS = ""
 
+# RapidAPI "Download by Link" (Code snippet tab se host aur path lo, key nahi)
+RAPID_HOST = ""      # jaise "xxxx.p.rapidapi.com"
+RAPID_PATH = ""      # GET endpoint (Instagram/TikTok/Facebook/X/Pinterest), jaise "/download"
+RAPID_YT_PATH = ""   # POST endpoint (YouTube Download), jaise "/youtube/download"
+
 # Secrets (wrangler secret put <NAME> / GitHub Actions se):
 #   PROXY_SECRET     (required) — download links sign karne ke liye, 32+ random chars
 #   TERABOX_COOKIE   (recommended) — "ndus=...."
-#   RAPIDAPI_KEY     (optional fallback)
+#   RAPIDAPI_KEY     (RapidAPI key — Instagram/YouTube/X/Pinterest ke liye zaroori)
 #   ONESIGNAL_APP_ID / ONESIGNAL_API_KEY (optional)

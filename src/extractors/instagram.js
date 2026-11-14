@@ -1,5 +1,5 @@
 import { UA, fetchT, unescapeUrl, labelFor, metaContent, decodeEntities } from "../lib.js";
-import { fallbackResult } from "./fallbacks.js";
+import { rapidResult, cobaltResult } from "./fallbacks.js";
 
 function shortcodeOf(url) {
   const m = new URL(url).pathname.match(/\/(?:p|reel|reels|tv)\/([A-Za-z0-9_-]+)/) ||
@@ -127,11 +127,16 @@ async function viaGraphql(code, env) {
 export async function extractInstagram(url, env, opts = {}) {
   const code = shortcodeOf(url);
   if (code) {
-    for (const layer of [() => viaEmbed(code), () => viaOg(code), () => viaSession(code, env), () => viaGraphql(code, env)]) {
+    // Cheap layers pehle, phir RapidAPI (sabse bharosemand), phir login-wali layers
+    for (const layer of [() => viaEmbed(code), () => viaOg(code), () => rapidResult(env, "instagram", url, { ...opts, defaultTitle: "Instagram Video" }),
+      () => viaSession(code, env), () => viaGraphql(code, env)]) {
       try { const r = await layer(); if (r) return r; } catch { /* next */ }
     }
+  } else {
+    const r = await rapidResult(env, "instagram", url, { ...opts, defaultTitle: "Instagram Video" });
+    if (r) return r;
   }
-  return fallbackResult(env, "instagram", url, { ...opts, defaultTitle: "Instagram Video" });
+  return cobaltResult(url, { ...opts, defaultTitle: "Instagram Video" });
 }
 
 export const _internals = { viaEmbed, viaOg, viaSession, viaGraphql, shortcodeOf, mediaIdOf };

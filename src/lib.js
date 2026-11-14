@@ -9,7 +9,7 @@ export const UA = {
 
 export const MAX_URL_LEN = 2048;
 export const PROXY_SIG_TTL = 3600; // seconds
-export const NATIVE_PLATFORMS = new Set(["tiktok", "instagram", "facebook", "terabox"]);
+export const NATIVE_PLATFORMS = new Set(["tiktok", "instagram", "facebook", "terabox", "youtube", "twitter", "pinterest"]);
 
 const TB_TOKENS = ["terabox.com", "terabox.app", "teraboxapp.com", "1024terabox", "4funbox", "nephobox",
   "freeterabox.com", "mirrorbox.com", "terafileshare.com"];
@@ -21,6 +21,9 @@ export function platformOf(url) {
   if (is("tiktok.com")) return "tiktok";
   if (is("instagram.com")) return "instagram";
   if (is("facebook.com") || is("fb.watch") || is("fb.com")) return "facebook";
+  if (is("youtube.com") || is("youtu.be")) return "youtube";
+  if (is("x.com") || is("twitter.com")) return "twitter";
+  if (is("pinterest.com") || is("pin.it") || /^([a-z]{2}\.)?pinterest\.[a-z.]+$/.test(host)) return "pinterest";
   if (TB_TOKENS.some((t) => host.includes(t))) return "terabox";
   return "other";
 }

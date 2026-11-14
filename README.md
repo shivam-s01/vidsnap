@@ -12,6 +12,13 @@ Worker Settings > Variables and Secrets mein daalo:
 
 `main` pe push karte hi Cloudflare khud deploy karta hai.
 
+## RapidAPI (Download by Link)
+Instagram, YouTube, X, Pinterest ke liye aur TikTok/Facebook ke fallback ke liye.
+- Secret: `RAPIDAPI_KEY`
+- `wrangler.toml` vars: `RAPID_HOST`, `RAPID_PATH` (GET ?url=), `RAPID_YT_PATH` (POST {url, format})
+- Free plan 1000 requests/month. `/info` + `/download` ek hi credit lagate hain (2 min cache). YouTube `/info` mein credit nahi lagta.
+- Check: `/debug?url=<link>` mein `rapid` section, aur `/ping` mein `rapid_host` / `rapid_path` true hone chahiye.
+
 ## Debug
 `/debug?url=<link>` har extractor layer ka status dikhata hai (kaun sa layer kyun fail hua).
 

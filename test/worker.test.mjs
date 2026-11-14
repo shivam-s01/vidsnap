@@ -61,7 +61,10 @@ test("platformOf by hostname, not substring", () => {
   assert.equal(platformOf("https://fb.watch/x"), "facebook");
   assert.equal(platformOf("https://www.1024terabox.com/s/1abc"), "terabox");
   assert.equal(platformOf("https://evil.com/?u=tiktok.com"), "other");
-  assert.equal(platformOf("https://youtube.com/watch?v=1"), "other");
+  assert.equal(platformOf("https://youtube.com/watch?v=1"), "youtube");
+  assert.equal(platformOf("https://x.com/a/status/1"), "twitter");
+  assert.equal(platformOf("https://pin.it/abc"), "pinterest");
+  assert.equal(platformOf("https://vimeo.com/1"), "other");
 });
 
 test("unescapeUrl handles single + double escaping", () => {
@@ -295,6 +298,102 @@ test("validation, rate limit, CORS, static fallthrough, ping", async () => {
   let last;
   for (let i = 0; i < 30; i++) last = await call(post("/info", { url: "https://www.tiktok.com/@u/video/7" }, { "CF-Connecting-IP": "9.9.9.9" }));
   assert.equal(last.status, 429);
+});
+
+// ── RapidAPI (Download by Link) ─────────────────────────────────────────────
+const RAPID_ENV = { ...ENV, RAPIDAPI_KEY: "k", RAPID_HOST: "dl.p.rapidapi.com", RAPID_PATH: "/get", RAPID_YT_PATH: "/yt" };
+const IG_API = { ok: true, id: "ABC", source: "instagram.com", type: "video", download_url: "https://instagram.fbcdn.test/v/a.mp4?x=1&y=2",
+  width: 720, height: 1280, thumbnail_url: "https://instagram.fbcdn.test/t.jpg", duration: null, caption: "Instagram" };
+
+test("Instagram: RapidAPI layer when embed/og fail (vertical 720x1280 => 720p)", async () => {
+  mock(/instagram\.com\/p\/RAP1/, () => new Response("<html>login</html>"));
+  mock(/dl\.p\.rapidapi\.com\/get/, (u, init) => {
+    assert.equal(init.headers["x-rapidapi-key"], "k");
+    assert.equal(init.headers["x-rapidapi-host"], "dl.p.rapidapi.com");
+    assert.match(u, /url=https%3A%2F%2Fwww\.instagram\.com%2Freel%2FRAP1/);
+    return Response.json(IG_API);
+  });
+  const d = await (await call(post("/info", { url: "https://www.instagram.com/reel/RAP1/" }), RAPID_ENV)).json();
+  assert.equal(d.success, true);
+  assert.deepEqual(d.video_formats.map((f) => f.id), [720]);
+  assert.equal(d.title, "Instagram Video - VidSnap"); // caption "Instagram" generic hai
+  const dl = await (await call(post("/download", { url: "https://www.instagram.com/reel/RAP1/" }), RAPID_ENV)).json();
+  assert.equal(new URL(ORIGIN + dl.url).searchParams.get("url"), IG_API.download_url);
+  assert.equal(calls.filter((c) => /rapidapi/.test(c.url)).length, 1); // /info + /download = 1 credit
+});
+
+test("Instagram: no RapidAPI config -> old behaviour (legacy), no API call", async () => {
+  mock(/instagram\.com\/p\/RAP2/, () => new Response("<html></html>"));
+  mock(/legacy\.test\/info/, () => Response.json({ success: true, title: "legacy ig" }));
+  const d = await (await call(post("/info", { url: "https://www.instagram.com/reel/RAP2/" }))).json();
+  assert.equal(d.title, "legacy ig");
+  assert.equal(calls.filter((c) => /rapidapi/.test(c.url)).length, 0);
+});
+
+test("YouTube /info: oEmbed title + quality ladder, zero API credits", async () => {
+  mock(/youtube\.com\/oembed/, () => Response.json({ title: "Cool Song", thumbnail_url: "https://i.ytimg.com/vi/dQw4w9WgXcQ/hq.jpg" }));
+  const d = await (await call(post("/info", { url: "https://youtu.be/dQw4w9WgXcQ?si=x" }), RAPID_ENV)).json();
+  assert.equal(d.success, true);
+  assert.deepEqual(d.video_formats.map((f) => f.id), [1080, 720, 480, 360]);
+  assert.equal(d.title, "Cool Song - VidSnap");
+  assert.equal(calls.filter((c) => /rapidapi/.test(c.url)).length, 0);
+});
+
+test("YouTube /download: POST {url, format}, falls to 720p if 1080p fails, audio = mp3", async () => {
+  const seen = [];
+  mock(/dl\.p\.rapidapi\.com\/yt/, (u, init) => {
+    const b = JSON.parse(init.body); seen.push(b.format);
+    assert.equal(init.method, "POST");
+    assert.equal(b.url, "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+    if (b.format === "1080p") return Response.json({ ok: false, error: "format unavailable" });
+    return Response.json({ ok: true, video_id: "dQw4w9WgXcQ", title: "Cool Song", download_url: `https://gv.test/${b.format}.bin` });
+  });
+  let dl = await (await call(post("/download", { url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", quality: "1080" }), RAPID_ENV)).json();
+  assert.deepEqual(seen, ["1080p", "720p"]);
+  assert.equal(new URL(ORIGIN + dl.url).searchParams.get("url"), "https://gv.test/720p.bin");
+  assert.match(new URL(ORIGIN + dl.url).searchParams.get("filename"), /Cool_Song\.mp4$/);
+
+  seen.length = 0;
+  dl = await (await call(post("/download", { url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", format: "audio" }), RAPID_ENV)).json();
+  assert.deepEqual(seen, ["mp3"]);
+  assert.match(new URL(ORIGIN + dl.url).searchParams.get("filename"), /\.mp3$/);
+});
+
+test("YouTube without RapidAPI config forwards to legacy; X/Pinterest use RapidAPI GET", async () => {
+  mock(/legacy\.test\/info/, () => Response.json({ success: true, title: "legacy yt" }));
+  assert.equal((await (await call(post("/info", { url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" }))).json()).title, "legacy yt");
+
+  mock(/dl\.p\.rapidapi\.com\/get/, () => Response.json({ ok: true, medias: [
+    { url: "https://video.twimg.test/480.mp4", quality: "480p", type: "video" },
+    { url: "https://video.twimg.test/1080.mp4", quality: "1080p", type: "video" },
+    { url: "https://video.twimg.test/a.m4a", type: "audio" },
+    { url: "https://img.test/p.jpg", type: "image" },
+  ], title: "A tweet" }));
+  const d = await (await call(post("/info", { url: "https://x.com/u/status/123" }), RAPID_ENV)).json();
+  assert.deepEqual(d.video_formats.map((f) => f.id), [1080, 480]);
+  const dl = await (await call(post("/download", { url: "https://x.com/u/status/123", quality: "480" }), RAPID_ENV)).json();
+  assert.equal(new URL(ORIGIN + dl.url).searchParams.get("url"), "https://video.twimg.test/480.mp4");
+});
+
+test("/debug shows rapid probe without leaking key", async () => {
+  mock(/instagram\.com\//, () => new Response("<html></html>"));
+  mock(/dl\.p\.rapidapi\.com\/get/, () => Response.json(IG_API));
+  mock(/\/$/, () => Response.json({ status: "error" }));
+  const raw = await (await call(new Request(ORIGIN + "/debug?url=" + encodeURIComponent("https://www.instagram.com/reel/ABC123/")), RAPID_ENV)).text();
+  const d = JSON.parse(raw);
+  assert.deepEqual(d.rapid.parsed.formats, [720]);
+  assert.equal(d.rapid.status, 200);
+  assert.ok(!raw.includes('"k"') && !raw.includes("x-rapidapi-key"));
+});
+
+test("proxy: source 403 -> browser navigation gets direct redirect, fetch gets JSON error", async () => {
+  mock(/cdn\.test\/v\.mp4/, () => new Response("no", { status: 403 }));
+  const path = await signProxy(ENV, { url: "https://cdn.test/v.mp4", filename: "a.mp4", headers: {} });
+  let r = await call(new Request(ORIGIN + path, { headers: { "Sec-Fetch-Mode": "navigate", "CF-Connecting-IP": "3.3.3.3" } }));
+  assert.equal(r.status, 302);
+  assert.equal(r.headers.get("location"), "https://cdn.test/v.mp4");
+  r = await call(new Request(ORIGIN + path, { headers: { "CF-Connecting-IP": "3.3.3.4" } }));
+  assert.equal(r.status, 502);
 });
 
 globalThis.fetch = realFetch;

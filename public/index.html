@@ -3512,7 +3512,7 @@ function onUrlInput(val) {
   ue.style.display = 'none'; pd.textContent = '';
 
   var platforms = [
-    { r: /youtube\.com|youtu\.be/, n: '⚠️ YouTube — currently unavailable' },
+    { r: /youtube\.com|youtu\.be/, n: '▶️ YouTube detected' },
     { r: /instagram\.com/, n: '📸 Instagram detected' },
     { r: /tiktok\.com/, n: '🎵 TikTok detected' },
     { r: /spotify\.com/, n: '🎧 Spotify detected' },
@@ -3968,11 +3968,6 @@ function handleDownload() {
   if (!url.startsWith('http')) {
     showInlineValidation('⚠ URL must start with https://');
     showToast('URL must start with https://', 'error'); return;
-  }
-  if (/youtube\.com|youtu\.be/i.test(url)) {
-    showInlineValidation('⚠ YouTube downloads are currently unavailable on this server.');
-    showToast('⚠ YouTube not supported — try Instagram, TikTok, TeraBox', 'error', 4000);
-    return;
   }
   if (isAdultUrl(url)) {
     _adultPendingUrl = url;
@@ -5049,10 +5044,10 @@ setTimeout(sbSyncControls, 200);
 var _platData = {
   youtube: {
     icon:'⚠️', name:'YouTube (Unavailable)', color:'#888888', bg:'rgba(136,136,136,0.08)',
-    desc:'YouTube downloads are currently unavailable due to server-side restrictions. Use Instagram, TikTok, or TeraBox instead.',
-    features:['Currently not supported','Server IP blocked by YouTube','Try other platforms'],
-    formats:[],
-    tip:'YouTube downloads do not work on shared hosting (Railway/Render). Use a different platform.'
+    desc:'YouTube videos aur Shorts MP4 (1080p tak) ya MP3 mein download karo.',
+    features:['Videos & Shorts','1080p / 720p / 480p / 360p','MP3 Audio'],
+    formats:['MP4','MP3'],
+    tip:'YouTube video open karo → Share → Copy Link → yahan paste karo.'
   },
   instagram: {
     icon:'📸', name:'Instagram', color:'#e1306c', bg:'rgba(225,48,108,0.08)',
