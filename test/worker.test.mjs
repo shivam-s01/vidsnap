@@ -167,6 +167,37 @@ test("Instagram graphql layer when embed fails", async () => {
   assert.match(d.title, /^Hello caption - VidSnap/);
 });
 
+test("Instagram og:video layer (no login) works when embed has no video", async () => {
+  mock(/embed\/captioned/, () => new Response("<html>no video here</html>"));
+  mock(/instagram\.com\/p\/OG1\/$/, (u, init) => new Response(
+    init.headers["User-Agent"].includes("facebookexternalhit")
+      ? `<meta property="og:video" content="https://cdn.ig/og.mp4?a=1&amp;b=2"><meta property="og:image" content="https://cdn.ig/og.jpg"><meta property="og:title" content="Cool reel">`
+      : "<html></html>"));
+  const dl = await (await call(post("/download", { url: "https://www.instagram.com/reel/OG1/" }))).json();
+  assert.equal(new URL(ORIGIN + dl.url).searchParams.get("url"), "https://cdn.ig/og.mp4?a=1&b=2");
+});
+
+test("Instagram session layer uses IG_COOKIE and picks highest quality", async () => {
+  mock(/embed\/captioned/, () => new Response("<html></html>"));
+  mock(/instagram\.com\/p\/SES1/, () => new Response("<html></html>"));
+  mock(/i\.instagram\.com\/api\/v1\/media\/\d+\/info/, (u, init) => {
+    assert.equal(init.headers.Cookie, "sessionid=abc");
+    return Response.json({ items: [{ caption: { text: "Cap line\nmore" }, video_duration: 12.4,
+      video_versions: [{ url: "https://cdn.ig/s720.mp4", height: 720 }, { url: "https://cdn.ig/s1080.mp4", height: 1080 }],
+      image_versions2: { candidates: [{ url: "https://cdn.ig/th.jpg" }] } }] });
+  });
+  const env = { ...ENV, IG_COOKIE: "sessionid=abc" };
+  const d = await (await call(post("/info", { url: "https://www.instagram.com/reel/SES1/" }), env)).json();
+  assert.deepEqual(d.video_formats.map((f) => f.id), [1080, 720]);
+  assert.equal(d.duration, 12);
+});
+
+test("mediaIdOf converts shortcode like Instagram", async () => {
+  const { mediaIdOf } = await import("../src/extractors/instagram.js");
+  assert.equal(mediaIdOf("B"), "1"); // A=0, B=1
+  assert.equal(mediaIdOf("BA"), "64");
+});
+
 // ── Facebook ────────────────────────────────────────────────────────────────
 test("Facebook page parse HD+SD, decodes escapes", async () => {
   mock(/facebook\.com\/reel\/1/, () => new Response(FB_HTML));

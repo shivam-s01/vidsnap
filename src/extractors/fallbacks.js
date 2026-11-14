@@ -45,7 +45,7 @@ export async function cobaltGet(url, quality = 720, isAudio = false) {
     const r = await fetchT(`${inst}/`, {
       method: "POST", body: JSON.stringify(payload),
       headers: { Accept: "application/json", "Content-Type": "application/json" },
-    }, 10000);
+    }, 5000);
     if (!r.ok) throw new Error("cobalt " + r.status);
     const d = await r.json();
     if (["redirect", "stream", "tunnel", "picker"].includes(d.status)) {

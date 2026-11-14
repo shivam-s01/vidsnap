@@ -2,6 +2,9 @@
 import { UA, fetchT, platformOf } from "./lib.js";
 import { _internals as ig } from "./extractors/instagram.js";
 
+const KEYS = ["video_url", "video_versions", "playable_url", "contextJSON", "__additionalDataLoaded", "gql_data", "shortcode_media", "xdt_", "is_video", "og:video", ".mp4", "dash_manifest"];
+const markers = (t) => Object.fromEntries(KEYS.map((k) => [k, t.split(k).length - 1]).filter(([, n]) => n > 0));
+
 const head = (t) => t.replace(/\s+/g, " ").slice(0, 160);
 
 async function look(url, opts = {}) {
@@ -37,7 +40,17 @@ export async function debugProbe(url, env) {
     rep.shortcode = code;
     if (code) {
       const e = await look(`https://www.instagram.com/p/${code}/embed/captioned/`, { headers: hdr });
-      rep.embed = strip(e, { hasVideoUrl: /video_url/.test(e.text), hasVideoTag: /<video/.test(e.text), loginWall: /accounts\/login|loginForm/i.test(e.text) });
+      const mp4 = e.text.indexOf(".mp4");
+      rep.embed = strip(e, { hasVideoUrl: /video_url/.test(e.text), hasVideoTag: /<video/.test(e.text), loginWall: /accounts\/login|loginForm/i.test(e.text), markers: markers(e.text), mp4Snippet: mp4 > 0 ? e.text.slice(Math.max(0, mp4 - 140), mp4 + 20) : null });
+      for (const [name, ua] of [["og_fb", UA.FB], ["og_twitter", "Twitterbot/1.0"]]) {
+        const o = await look(`https://www.instagram.com/p/${code}/`, { headers: { "User-Agent": ua, "Accept-Language": "en-US,en;q=0.9" } });
+        rep[name] = strip(o, { hasOgVideo: /og:video/.test(o.text), markers: markers(o.text) });
+      }
+      if (env.IG_COOKIE) {
+        const m = await look(`https://i.instagram.com/api/v1/media/${ig.mediaIdOf(code)}/info/`, { headers: { "User-Agent": "Instagram 275.0.0.27.98 Android (33/13; 420dpi; 1080x2400; Google; Pixel 7; panther; panther; en_US; 458229237)", "X-IG-App-ID": "567067343352427", Cookie: env.IG_COOKIE } });
+        let mj = null; try { mj = JSON.parse(m.text); } catch { /* html */ }
+        rep.session = strip(m, { json: Boolean(mj), hasItems: Boolean(mj && mj.items && mj.items.length), apiMessage: mj && mj.message, apiStatus: mj && mj.status });
+      } else rep.session = "IG_COOKIE not set";
       const body = new URLSearchParams({ doc_id: env.IG_DOC_ID || "8845758582119845", variables: JSON.stringify({ shortcode: code }) });
       const g = await look("https://www.instagram.com/graphql/query", {
         method: "POST", body,

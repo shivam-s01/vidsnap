@@ -1,4 +1,4 @@
-import { UA, fetchT, unescapeUrl, labelFor } from "../lib.js";
+import { UA, fetchT, unescapeUrl, labelFor, metaContent, decodeEntities } from "../lib.js";
 import { fallbackResult } from "./fallbacks.js";
 
 function shortcodeOf(url) {
@@ -40,7 +40,60 @@ async function viaEmbed(code) {
   });
 }
 
-// Layer 2: graphql doc_id (rotate hota rehta hai — IG_DOC_ID env se badal sakte ho)
+// Layer 2: crawler UA ko Instagram og:video tags deta hai (login nahi chahiye)
+async function viaOg(code) {
+  for (const ua of [UA.FB, "Twitterbot/1.0"]) {
+    const r = await fetchT(`https://www.instagram.com/p/${code}/`, {
+      headers: { "User-Agent": ua, "Accept-Language": "en-US,en;q=0.9" },
+    }, 12000);
+    if (!r.ok) continue;
+    const html = await r.text();
+    const v = metaContent(html, "og:video:secure_url") || metaContent(html, "og:video:url") || metaContent(html, "og:video");
+    if (!/^https?:/.test(v)) continue;
+    return result({
+      videoUrl: v, thumb: metaContent(html, "og:image") || null,
+      title: decodeEntities(metaContent(html, "og:title")).replace(/\s+/g, " ").slice(0, 80),
+    });
+  }
+  return null;
+}
+
+// Layer 3 (optional): IG_COOKIE secret (burner account ka sessionid) ke saath mobile API
+const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+export function mediaIdOf(code) {
+  let id = 0n;
+  for (const c of code.slice(0, 11)) id = id * 64n + BigInt(ALPHA.indexOf(c));
+  return id.toString();
+}
+
+async function viaSession(code, env) {
+  if (!env.IG_COOKIE) return null;
+  const r = await fetchT(`https://i.instagram.com/api/v1/media/${mediaIdOf(code)}/info/`, {
+    headers: {
+      "User-Agent": "Instagram 275.0.0.27.98 Android (33/13; 420dpi; 1080x2400; Google; Pixel 7; panther; panther; en_US; 458229237)",
+      "X-IG-App-ID": "567067343352427", Cookie: env.IG_COOKIE, "Accept-Language": "en-US",
+    },
+  }, 15000);
+  if (!r.ok) return null;
+  const d = await r.json();
+  const item = d && d.items && d.items[0];
+  const node = item && (item.video_versions ? item : (item.carousel_media || []).find((m) => m.video_versions));
+  if (!node) return null;
+  const byH = new Map();
+  for (const v of node.video_versions) if (v.url && !byH.has(v.height)) byH.set(v.height, v);
+  const formats = [...byH.values()].sort((a, b) => b.height - a.height)
+    .map((v) => ({ id: v.height, label: labelFor(v.height), url: v.url }));
+  if (!formats.length) return null;
+  const cand = node.image_versions2 && node.image_versions2.candidates && node.image_versions2.candidates[0];
+  const cap = (item.caption && item.caption.text) || "";
+  return {
+    title: cap.split("\n")[0].slice(0, 80) || (item.user ? `Instagram - ${item.user.username}` : "Instagram Video"),
+    thumbnail: cand ? cand.url : null, duration: Math.round(node.video_duration || 0),
+    formats, audio: null, headers: { "User-Agent": UA.MOBILE },
+  };
+}
+
+// Layer 4: graphql doc_id (rotate hota rehta hai — IG_DOC_ID env se badal sakte ho)
 async function viaGraphql(code, env) {
   const docId = env.IG_DOC_ID || "8845758582119845";
   const body = new URLSearchParams({
@@ -74,11 +127,11 @@ async function viaGraphql(code, env) {
 export async function extractInstagram(url, env, opts = {}) {
   const code = shortcodeOf(url);
   if (code) {
-    for (const layer of [() => viaEmbed(code), () => viaGraphql(code, env)]) {
+    for (const layer of [() => viaEmbed(code), () => viaOg(code), () => viaSession(code, env), () => viaGraphql(code, env)]) {
       try { const r = await layer(); if (r) return r; } catch { /* next */ }
     }
   }
   return fallbackResult(env, "instagram", url, { ...opts, defaultTitle: "Instagram Video" });
 }
 
-export const _internals = { viaEmbed, viaGraphql, shortcodeOf };
+export const _internals = { viaEmbed, viaOg, viaSession, viaGraphql, shortcodeOf, mediaIdOf };
