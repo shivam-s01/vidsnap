@@ -1,0 +1,21 @@
+name = "vidsnap"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+
+# Frontend (index.html, adult.html) Worker ke saath hi serve hota hai
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+[vars]
+# Purana Flask backend (Render/Railway) — YouTube, generic sites, audio-extract
+# aur jab native extractor fail ho tab fallback. Jab sab migrate ho jaye to hata do.
+LEGACY_BACKEND = "https://videodownloader-iicl.onrender.com"
+# Extra origins jo is Worker ko call kar sakte hain (comma separated)
+ALLOWED_ORIGINS = ""
+
+# Secrets (wrangler secret put <NAME> / GitHub Actions se):
+#   PROXY_SECRET     (required) — download links sign karne ke liye, 32+ random chars
+#   TERABOX_COOKIE   (recommended) — "ndus=...."
+#   RAPIDAPI_KEY     (optional fallback)
+#   ONESIGNAL_APP_ID / ONESIGNAL_API_KEY (optional)
