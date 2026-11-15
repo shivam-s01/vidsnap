@@ -9,7 +9,7 @@
 (function(){try{
   var s=localStorage.getItem('vs-skin');
   if(!s){s=localStorage.getItem('vs-theme')==='light'?'porcelain':'obsidian';}
-  var d=document.documentElement,eff=s;
+  s=(s==='porcelain'||s==='silver'||s==='light')?'porcelain':'obsidian';var d=document.documentElement,eff=s;
   if(s==='auto'){eff=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'porcelain':'obsidian';}
   var light=(eff==='porcelain'||eff==='silver');
   d.setAttribute('data-skin',eff);d.setAttribute('data-theme',light?'light':'dark');
@@ -2462,6 +2462,60 @@ html[data-skin] .about-card:nth-child(4n+4) .about-card-icon{color:#f59e0b;backg
 html[data-skin] .sb-srv-btn.active{background:linear-gradient(135deg,#10b981,#059669);color:#fff;border-color:transparent}
 html[data-skin] .theme-opt.on{border-color:var(--ok)}
 
+/* ═══════════════ THEME SWITCH: Dark / Light only ═══════════════ */
+.theme-grid{grid-template-columns:repeat(2,1fr)!important;gap:8px!important}
+.theme-opt{flex-direction:row!important;justify-content:center;gap:9px!important;padding:10px 8px!important;font-size:.8rem!important;font-weight:650!important;border-radius:12px!important}
+.theme-opt .theme-sw{width:20px;height:20px}
+.theme-opt.on{background:rgba(var(--ok-rgb),.1)!important;border-color:var(--ok)!important;color:var(--text)!important}
+.theme-opt.on .theme-sw::after{display:none}
+.sw-obsidian{background:linear-gradient(135deg,#2a2a2a,#000)}
+.sw-porcelain{background:linear-gradient(135deg,#fff,#dcdcdc)}
+
+/* ═══════════════ FOOTER (rebuilt: one consistent system) ═══════════════ */
+html[data-skin] #footer{background:linear-gradient(180deg,var(--bg1),var(--bg0))}
+html[data-skin] .footer-top{display:grid;grid-template-columns:1.5fr 1.15fr .9fr .9fr;gap:2.6rem}
+.footer-brand-logo{display:inline-flex;align-items:center;gap:.6rem}
+.footer-badges{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.25rem}
+html[data-skin] .footer-badge-item{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .7rem .35rem .4rem;border:1px solid var(--border);background:var(--card);border-radius:999px;font-size:.72rem;font-weight:550;color:var(--text2)}
+html[data-skin] .footer-badge-item > span{width:20px;height:20px;border-radius:50%;background:rgba(var(--ok-rgb),.14);color:var(--ok);align-items:center;justify-content:center;font-size:.72rem}
+html[data-skin] .footer-col-title{display:flex;align-items:center;gap:.55rem;margin-bottom:1rem}
+html[data-skin] .footer-col-title::before{content:'';width:14px;height:3px;border-radius:3px;background:linear-gradient(90deg,#6366f1,#10b981)}
+html[data-skin] .footer-col-links{display:flex;flex-direction:column;gap:.15rem}
+html[data-skin] .footer-col-links a{display:flex;align-items:center;gap:.7rem;padding:.38rem 0;color:var(--muted);font-size:.86rem;font-weight:500;transition:color .15s,transform .15s}
+html[data-skin] .footer-col-links a:hover{color:var(--text);transform:translateX(3px)}
+.fdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--b);box-shadow:0 0 0 3px color-mix(in srgb,var(--b) 20%,transparent)}
+.ficon{width:26px;height:26px;border-radius:8px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:.82rem;
+  background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--c);border:1px solid color-mix(in srgb,var(--c) 28%,transparent)}
+html[data-skin] .footer-col-links a:hover .ficon{background:color-mix(in srgb,var(--c) 24%,transparent)}
+html[data-skin] .footer-col-links a.more{margin-top:.3rem;color:var(--text);font-weight:650}
+html[data-skin] .footer-col-links a.more::after{content:'→';opacity:.6;transition:transform .15s}
+html[data-skin] .footer-col-links a.more:hover::after{transform:translateX(3px)}
+html[data-skin] .footer-bottom{border-top:none}
+html[data-skin] .secure-badge{color:var(--ok);border-color:rgba(var(--ok-rgb),.35);background:rgba(var(--ok-rgb),.08)}
+html[data-skin] .dmca-badge{color:var(--text2)}
+@media(max-width:900px){html[data-skin] .footer-top{grid-template-columns:1fr 1fr;gap:2rem 1.5rem}
+  html[data-skin] .footer-top > div:nth-child(1),html[data-skin] .footer-top > div:nth-child(2){grid-column:1/-1}
+  html[data-skin] .footer-top > div:nth-child(2) .footer-col-links{display:grid;grid-template-columns:1fr 1fr;column-gap:1rem}
+  html[data-skin] .footer-top > div:nth-child(2) .footer-col-links a.more{grid-column:1/-1}}
+@media(max-width:520px){html[data-skin] .footer-top{grid-template-columns:1fr 1fr}}
+
+/* sidebar: tinted icon chips */
+html[data-skin] .sb-item:not(.sb-adult) .sb-icon{width:30px;height:30px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--c,#818cf8) 14%,transparent);border:1px solid color-mix(in srgb,var(--c,#818cf8) 28%,transparent)}
+html[data-skin] .sb-item:not(.sb-adult) .sb-icon svg{stroke:var(--c,#818cf8)!important;width:16px;height:16px}
+html[data-skin] .sb-item.active:not(.sb-adult) .sb-icon svg{stroke:var(--c,#818cf8)!important}
+html[data-skin] .sb-item:hover .sb-icon{background:color-mix(in srgb,var(--c,#818cf8) 24%,transparent)}
+html[data-skin] .sb-item[data-sb-idx="0"]{--c:#818cf8}
+html[data-skin] .sb-item[data-sb-idx="1"]{--c:#1877f2}
+html[data-skin] .sb-item[data-sb-idx="2"]{--c:#1877f2}
+html[data-skin] .sb-item[data-sb-idx="3"]{--c:#e1306c}
+html[data-skin] .sb-item[data-sb-idx="4"]{--c:#0077ff}
+html[data-skin] .sb-item[data-sb-idx="5"]{--c:#e60023}
+html[data-skin] .sb-item[data-sb-idx="6"]{--c:#8b98a5}
+html[data-skin] .sb-item[data-sb-idx="7"]{--c:#fe2c55}
+html[data-skin] .sb-item[data-sb-idx="12"]{--c:#10b981}
+html[data-skin] .sb-item[data-sb-idx="13"]{--c:#818cf8}
+html[data-skin] .sb-item[data-sb-idx="14"]{--c:#f59e0b}
+
 </style>
 </head>
 <body>
@@ -2600,11 +2654,8 @@ html[data-skin] .theme-opt.on{border-color:var(--ok)}
     <div class="sb-ctrl-row theme-block" id="sbThemeRow">
       <div class="tb-head"><div class="sb-ctrl-label">Appearance</div><span class="tb-cur" id="sbThemeSub">Obsidian</span></div>
       <div class="theme-grid" id="themeGrid" role="radiogroup" aria-label="Theme">
-        <button class="theme-opt" data-skin="obsidian" role="radio" onclick="setSkin('obsidian')"><span class="theme-sw sw-obsidian"></span>Obsidian</button>
-        <button class="theme-opt" data-skin="graphite" role="radio" onclick="setSkin('graphite')"><span class="theme-sw sw-graphite"></span>Graphite</button>
-        <button class="theme-opt" data-skin="porcelain" role="radio" onclick="setSkin('porcelain')"><span class="theme-sw sw-porcelain"></span>Porcelain</button>
-        <button class="theme-opt" data-skin="silver" role="radio" onclick="setSkin('silver')"><span class="theme-sw sw-silver"></span>Silver</button>
-        <button class="theme-opt" data-skin="auto" role="radio" onclick="setSkin('auto')"><span class="theme-sw sw-auto"></span>Auto</button>
+        <button class="theme-opt" data-skin="obsidian" role="radio" onclick="setSkin('obsidian')"><span class="theme-sw sw-obsidian"></span>Dark</button>
+        <button class="theme-opt" data-skin="porcelain" role="radio" onclick="setSkin('porcelain')"><span class="theme-sw sw-porcelain"></span>Light</button>
       </div>
     </div>
 
@@ -3118,50 +3169,42 @@ onclick="window.open('https://www.instagram.com/shivam_shrma.01','_blank')">
 <footer id="footer">
   <div class="footer-top">
     <div>
-      <div class="footer-brand-logo">Vid<span style="opacity:0.5">Snap</span></div>
+      <div class="footer-brand-logo"><span class="logo-mark"><svg viewBox="0 0 24 24"><path d="M12 4v11"/><path d="M7 11l5 5 5-5"/><path d="M5 20h14"/></svg></span><span>Vid<span style="opacity:0.5">Snap</span></span></div>
       <div class="footer-brand-desc">Free, fast video downloader for 1000+ platforms. No login, no account, no data stored. Personal use only.</div>
       <div class="footer-badges">
-        <div class="footer-badge-item"><span><svg class="ic"><use href="#i-lock"/></svg></span> HTTPS Encrypted</div>
-        <div class="footer-badge-item"><span><svg class="ic"><use href="#i-shield"/></svg></span> Zero Data Logged</div>
-        <div class="footer-badge-item"><span><svg class="ic"><use href="#i-check"/></svg></span> No Account Needed</div>
-        <div class="footer-badge-item"><span><svg class="ic"><use href="#i-check"/></svg></span> 100% Free Forever</div>
-        <div class="footer-badge-item"><span><svg class="ic"><use href="#i-bolt"/></svg></span> 1000+ Platforms</div>
+        <div class="footer-badge-item"><span><svg class="ic"><use href="#i-lock"/></svg></span>HTTPS Encrypted</div>
+        <div class="footer-badge-item"><span><svg class="ic"><use href="#i-shield"/></svg></span>Zero Data Logged</div>
+        <div class="footer-badge-item"><span><svg class="ic"><use href="#i-check"/></svg></span>No Account Needed</div>
+        <div class="footer-badge-item"><span><svg class="ic"><use href="#i-check"/></svg></span>100% Free Forever</div>
+        <div class="footer-badge-item"><span><svg class="ic"><use href="#i-bolt"/></svg></span>1000+ Platforms</div>
       </div>
     </div>
     <div>
       <div class="footer-col-title">Platforms</div>
       <div class="footer-col-links">
-        <a href="#" onclick="showView('about');return false">YouTube</a>
-        <a href="#" onclick="showView('about');return false">Instagram</a>
-        <a href="#" onclick="showView('about');return false"><svg class="ic"><use href="#i-music"/></svg> TikTok</a>
-        <a href="#" onclick="showView('about');return false">TeraBox</a>
-        <a href="#" onclick="showView('about');return false">𝕏 Twitter/X</a>
-        <a href="#" onclick="showView('about');return false">Facebook</a>
-        <a href="#" onclick="showView('about');return false"><svg class="ic"><use href="#i-film"/></svg> Vimeo</a>
-        <a href="#" onclick="showView('about');return false">Reddit</a>
-        <a href="#" onclick="showView('about');return false"><svg class="ic"><use href="#i-music"/></svg> SoundCloud</a>
-        <a href="#" onclick="showView('about');return false">+ 1000 more →</a>
+        <a href="#" onclick="showView('about');return false"><i class="fdot" style="--b:#ff0033"></i>YouTube</a><a href="#" onclick="showView('about');return false"><i class="fdot" style="--b:#e1306c"></i>Instagram</a><a href="#" onclick="showView('about');return false"><i class="fdot" style="--b:#fe2c55"></i>TikTok</a><a href="#" onclick="showView('about');return false"><i class="fdot" style="--b:#1677ff"></i>TeraBox</a><a href="#" onclick="showView('about');return false"><i class="fdot" style="--b:#8b98a5"></i>Twitter / X</a><a href="#" onclick="showView('about');return false"><i class="fdot" style="--b:#1877f2"></i>Facebook</a><a href="#" onclick="showView('about');return false"><i class="fdot" style="--b:#1ab7ea"></i>Vimeo</a><a href="#" onclick="showView('about');return false"><i class="fdot" style="--b:#ff4500"></i>Reddit</a><a href="#" onclick="showView('about');return false"><i class="fdot" style="--b:#ff5500"></i>SoundCloud</a>
+        <a href="#" class="more" onclick="showView('about');return false">+ 1000 more</a>
       </div>
     </div>
     <div>
       <div class="footer-col-title">Product</div>
       <div class="footer-col-links">
-        <a href="#" onclick="showView('home');return false"><svg class="ic"><use href="#i-download"/></svg> Downloader</a>
-        <a href="#" onclick="showView('install');return false"><svg class="ic"><use href="#i-phone"/></svg> Install App</a>
-        <a href="#" onclick="showView('about');return false"><svg class="ic"><use href="#i-globe"/></svg> All Platforms</a>
-        <a href="#" onclick="showView('history');return false"><svg class="ic"><use href="#i-clipboard"/></svg> History</a>
-        <a href="#" onclick="goToAdultView();return false">18+ Zone</a>
+        <a href="#" onclick="showView('home');return false"><span class="ficon" style="--c:#818cf8"><svg class="ic"><use href="#i-download"/></svg></span>Downloader</a>
+        <a href="#" onclick="showView('install');return false"><span class="ficon" style="--c:#818cf8"><svg class="ic"><use href="#i-phone"/></svg></span>Install App</a>
+        <a href="#" onclick="showView('about');return false"><span class="ficon" style="--c:#818cf8"><svg class="ic"><use href="#i-globe"/></svg></span>All Platforms</a>
+        <a href="#" onclick="showView('history');return false"><span class="ficon" style="--c:#818cf8"><svg class="ic"><use href="#i-clock"/></svg></span>History</a>
+        <a href="#" onclick="goToAdultView();return false"><span class="ficon" style="--c:#818cf8"><span class="age-chip" style="font-size:.5rem;border-width:1.2px">18+</span></span>18+ Zone</a>
       </div>
     </div>
     <div>
-      <div class="footer-col-title">Legal & Support</div>
+      <div class="footer-col-title">Legal &amp; Support</div>
       <div class="footer-col-links">
-        <a href="#" onclick="openLegal('privacy');return false"><svg class="ic"><use href="#i-lock"/></svg> Privacy Policy</a>
-        <a href="#" onclick="openLegal('terms');return false"><svg class="ic"><use href="#i-file"/></svg> Terms of Use</a>
-        <a href="#" onclick="openLegal('dmca');return false"><svg class="ic"><use href="#i-alert"/></svg> DMCA Notice</a>
-        <a href="#" onclick="openLegal('disclaimer');return false">ℹ Disclaimer</a>
-        <a href="#" onclick="openLegal('contact');return false"><svg class="ic"><use href="#i-mail"/></svg> Contact Us</a>
-        <a href="#" onclick="openLegal('refund');return false"><svg class="ic"><use href="#i-card"/></svg> Refund Policy</a>
+        <a href="#" onclick="openLegal('privacy');return false"><span class="ficon" style="--c:#f59e0b"><svg class="ic"><use href="#i-lock"/></svg></span>Privacy Policy</a>
+        <a href="#" onclick="openLegal('terms');return false"><span class="ficon" style="--c:#f59e0b"><svg class="ic"><use href="#i-file"/></svg></span>Terms of Use</a>
+        <a href="#" onclick="openLegal('dmca');return false"><span class="ficon" style="--c:#f59e0b"><svg class="ic"><use href="#i-alert"/></svg></span>DMCA Notice</a>
+        <a href="#" onclick="openLegal('disclaimer');return false"><span class="ficon" style="--c:#f59e0b"><svg class="ic"><use href="#i-bulb"/></svg></span>Disclaimer</a>
+        <a href="#" onclick="openLegal('contact');return false"><span class="ficon" style="--c:#f59e0b"><svg class="ic"><use href="#i-mail"/></svg></span>Contact Us</a>
+        <a href="#" onclick="openLegal('refund');return false"><span class="ficon" style="--c:#f59e0b"><svg class="ic"><use href="#i-card"/></svg></span>Refund Policy</a>
       </div>
     </div>
   </div>
@@ -3829,7 +3872,7 @@ document.addEventListener('click', function(e) {
 //  THEME
 // ══════════════════════════════════════════════════
 var VS_SKINS = { obsidian:'dark', graphite:'dark', porcelain:'light', silver:'light' };
-var VS_SKIN_NAMES = { obsidian:'Obsidian', graphite:'Graphite', porcelain:'Porcelain', silver:'Silver', auto:'Auto (system)' };
+var VS_SKIN_NAMES = { obsidian:'Dark', porcelain:'Light' };
 var VS_META = { obsidian:'#000000', graphite:'#111112', porcelain:'#fafafa', silver:'#e3e3e5' };
 function vsResolveSkin(pref) {
   if (pref === 'auto') {
@@ -3848,6 +3891,7 @@ function vsApplySkin(pref) {
 function vsGetPref() {
   var s = ''; try { s = localStorage.getItem('vs-skin') || ''; } catch(e) {}
   if (!s) { var old = ''; try { old = localStorage.getItem('vs-theme') || ''; } catch(e) {} s = old === 'light' ? 'porcelain' : 'obsidian'; }
+  s = (s === 'porcelain' || s === 'silver' || s === 'light') ? 'porcelain' : 'obsidian';
   return s;
 }
 function setSkin(pref) {
