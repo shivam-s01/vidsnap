@@ -5,7 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>VidSnap 18+ — Adult Content Downloader</title>
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="var(--text2)">
+<script id="vs-adult-theme">
+(function(){try{var s=localStorage.getItem('vs-skin');if(!s){s=localStorage.getItem('vs-theme')==='light'?'porcelain':'obsidian';}
+var light=(s==='porcelain'||s==='silver'||s==='light');var d=document.documentElement;
+d.setAttribute('data-theme',light?'light':'dark');d.style.colorScheme=light?'light':'dark';
+window.__vsLight=light;}catch(e){}})();
+</script>
+<meta name="theme-color" content="#000000" id="vsThemeMeta">
+<script>try{if(window.__vsLight)document.getElementById('vsThemeMeta').setAttribute('content','#fafafa')}catch(e){}</script>
+
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,6 +33,17 @@
   --font:'Inter',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
   --ease:0.25s cubic-bezier(0.4,0,0.2,1);
 }
+[data-theme="light"]{
+  --bg0:#fafafa;--bg1:#f4f4f5;--bg2:#fff;--bg3:#f2f2f3;--bg4:#e8e8ea;
+  --card:rgba(0,0,0,0.03);--border:rgba(0,0,0,0.09);--border2:rgba(0,0,0,0.18);
+  --text:#0a0a0a;--text2:#2b2b2e;--muted:#5c5c63;--dim:#8a8a92;
+  --accent:#0a0a0a;--accent2:#262626;--accent3:#3d3d3d;--on-accent:#fff;--ac-rgb:10,10,10;
+  --red:#1a1a1a;--red2:rgba(0,0,0,0.05);--red3:rgba(0,0,0,0.1);--yellow:#3d3d3d;--blue:#5c5c63;
+  --nav:rgba(250,250,250,0.8);--input:#fff;
+  --shadow:0 24px 60px rgba(0,0,0,0.14);--shadow-sm:0 4px 16px rgba(0,0,0,0.08);
+}
+[data-theme="light"] #header{background:var(--bg0)}
+[data-theme="light"] ::-webkit-scrollbar-thumb{background:var(--border2)}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;overflow-x:hidden}
 body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.6}
@@ -33,7 +52,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 /* ── HEADER ── */
 #header{
   position:sticky;top:0;z-index:200;height:60px;
-  background:#000;
+  background:var(--bg0);
   border-bottom:1px solid rgba(var(--ac-rgb),0.15);
   display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;gap:1rem;
 }

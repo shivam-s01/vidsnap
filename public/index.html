@@ -2592,6 +2592,22 @@ html[data-skin] #hamburgerBtn:active{transform:scale(.94)}
 html[data-skin] #hamburgerBtn:focus-visible,html[data-skin] .sb-item:focus-visible{outline:2px solid var(--text);outline-offset:2px}
 html[data-skin] #hamburgerBtn.open .hb-line{background:var(--text)}
 
+/* ═══════════════ THEME SWITCH + RESULT CROSSFADE ═══════════════ */
+html.vs-switching *,html.vs-switching *::before,html.vs-switching *::after{transition:none!important;animation-play-state:paused!important}
+@keyframes vsIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#contentState.vs-in{animation:vsIn .32s cubic-bezier(.22,1,.36,1) both}
+html[data-perf="low"] #contentState.vs-in{animation:none}
+body,html{background-color:var(--bg0,#000)}
+html[data-theme="light"]{color-scheme:light}html[data-theme="dark"]{color-scheme:dark}
+
+/* ═══════════════ ONE SCROLLER — the window, not a nested <body> ═══════════════
+   original had html,body{height:100%;overflow-x:hidden}: body became a second scroll container
+   (address bar never collapsed, window scroll events/scroll-to-top never fired, extra compositing layer) */
+html{height:auto!important;min-height:100%;overflow-x:hidden;overflow-y:auto}
+body{height:auto!important;min-height:100vh;min-height:100dvh;overflow-x:clip;overflow-y:visible}
+/* any code that locks scrolling via body.style.overflow='hidden' must lock the window instead */
+html:has(body[style*="overflow: hidden"]),html.sb-lock{overflow:hidden}
+
 </style>
 </head>
 <body>
@@ -3963,8 +3979,12 @@ function vsResolveSkin(pref) {
 }
 function vsApplySkin(pref) {
   var eff = vsResolveSkin(pref), html = document.documentElement;
+  // freeze transitions for one frame: every element flips colour at once (no staggered flicker, far cheaper on weak phones)
+  html.classList.add('vs-switching');
   html.setAttribute('data-skin', eff);
   html.setAttribute('data-theme', VS_SKINS[eff]);
+  html.style.colorScheme = VS_SKINS[eff];
+  requestAnimationFrame(function() { requestAnimationFrame(function() { html.classList.remove('vs-switching'); }); });
   var m = document.querySelector('meta[name="theme-color"]');
   if (m) m.setAttribute('content', VS_META[eff]);
 }
@@ -3975,6 +3995,8 @@ function vsGetPref() {
   return s;
 }
 function setSkin(pref) {
+  pref = (pref === 'porcelain' || pref === 'light') ? 'porcelain' : 'obsidian';
+  if (document.documentElement.getAttribute('data-skin') === pref && vsGetPref() === pref) { if (typeof sbSyncControls === 'function') sbSyncControls(); return; }
   try { localStorage.setItem('vs-skin', pref); localStorage.setItem('vs-theme', VS_SKINS[vsResolveSkin(pref)]); } catch(e) {}
   vsApplySkin(pref);
   if (typeof sbSyncControls === 'function') sbSyncControls();
@@ -3984,6 +4006,8 @@ function toggleTheme() {
   setSkin(dark ? 'porcelain' : 'obsidian');
 }
 vsApplySkin(vsGetPref());
+// keep other open tabs in sync
+window.addEventListener('storage', function(e) { if (e.key === 'vs-skin') { vsApplySkin(vsGetPref()); if (typeof sbSyncControls === 'function') sbSyncControls(); } });
 if (window.matchMedia) {
   var _mq = matchMedia('(prefers-color-scheme: light)');
   var _onMq = function() { if (vsGetPref() === 'auto') vsApplySkin('auto'); };
@@ -4616,6 +4640,7 @@ function openModal() {
   document.body.classList.add('modal-open');
 }
 function closeModal() {
+  _dlToken++;
   document.getElementById('overlay').classList.remove('open');
   document.body.style.overflow = '';
   document.body.classList.remove('modal-open');
@@ -4661,7 +4686,7 @@ function showLoad(msg) {
   var steps = document.querySelectorAll('.stage-step');
   steps.forEach(function(s) { s.className = 'stage-step'; });
   if (steps[0]) steps[0].classList.add('active');
-  // Advance stages: 0→1 after 800ms, 1→2 after 2000ms
+  // Advance stages quickly so the whole sequence is visible
   clearTimeout(window._stageT1); clearTimeout(window._stageT2);
   window._stageT1 = setTimeout(function() {
     if (document.getElementById('loadState').style.display !== 'none') {
@@ -4669,14 +4694,14 @@ function showLoad(msg) {
       steps[1] && steps[1].classList.add('active');
       document.getElementById('loadText').textContent = 'Fetching formats…';
     }
-  }, 900);
+  }, 300);
   window._stageT2 = setTimeout(function() {
     if (document.getElementById('loadState').style.display !== 'none') {
       steps[1] && steps[1].classList.replace('active','done');
       steps[2] && steps[2].classList.add('active');
       document.getElementById('loadText').textContent = 'Almost ready…';
     }
-  }, 2400);
+  }, 700);
 }
 function _finishStageLoader() {
   clearTimeout(window._stageT1); clearTimeout(window._stageT2);
@@ -4695,7 +4720,8 @@ function showContent() {
   _finishStageLoader();
   document.getElementById('loadState').style.display = 'none';
   document.getElementById('errState').style.display = 'none';
-  document.getElementById('contentState').style.display = 'block';
+  var _cs = document.getElementById('contentState'); _cs.style.display = 'block';
+  _cs.classList.remove('vs-in'); void _cs.offsetWidth; _cs.classList.add('vs-in');
   endProgress(true);
   resetCaptchaForModal();
   if (currentUrlIsAdult && hasValidAdultToken()) {
@@ -4741,12 +4767,27 @@ function retryDownload() {
   }
 }
 
+var _dlToken = 0;
 function proceedDownload(url) {
   curUrl = url; openModal();
   showLoad('Analyzing…'); startProgress();
+  var _t0 = Date.now(), _tok = ++_dlToken;
 
   var infoOpts = { method: 'POST', headers: apiHeaders(), body: JSON.stringify({ url: url }) };
   smartFetch(url, '/info', infoOpts).then(function(result) {
+    // preview already cached the info -> answer is instant; keep the loader on screen long enough to be seen
+    var wait = Math.max(0, 800 - (Date.now() - _t0));
+    return new Promise(function(done) {
+      setTimeout(function() {
+        if (_tok === _dlToken && result && result.data && result.data.success) {
+          _finishStageLoader();
+          var lt = document.getElementById('loadText'); if (lt) lt.textContent = 'Ready';
+          setTimeout(function() { done(result); }, 220);
+        } else { done(result); }
+      }, wait);
+    });
+  }).then(function(result) {
+    if (_tok !== _dlToken) return;
     clearStepLoader();
     var data = result.data;
     if (!data.success) {
@@ -5755,6 +5796,7 @@ function sbSyncControls() {
   var sub = document.getElementById('sbThemeSub');
   if (sub) sub.textContent = VS_SKIN_NAMES[pref] || 'Obsidian';
 }
+sbSyncControls();
 function sbSetServer(n) {
   // Call existing setServer function
   if(typeof setServer === 'function') setServer(n);
@@ -6049,6 +6091,7 @@ function _resetHomeCaptcha() {}
     overlay.classList.add('open');
     hamburger.classList.add('open');
     hamburger.setAttribute('aria-expanded', 'true');
+    if (typeof sbSyncControls === 'function') sbSyncControls();
     var menu = document.getElementById('sbMenu');
     if (menu) menu.scrollTop = 0;
     try { history.pushState({ sidebar: true }, ''); } catch (e) {}
