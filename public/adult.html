@@ -5,24 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>VidSnap 18+ — Adult Content Downloader</title>
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#f87171">
+<meta name="theme-color" content="var(--text2)">
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ── TOKENS ── */
 :root{
-  --bg0:#060609;--bg1:#0c0c12;--bg2:#111118;--bg3:#18181f;--bg4:#1e1e27;
-  --card:rgba(24,24,33,0.85);--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
-  --text:#f0f0f8;--text2:#c0c0d8;--muted:#7070a0;--dim:#404060;
-  --accent:#22c55e;--accent2:#4ade80;
-  --red:#f87171;--red2:rgba(248,113,113,0.13);--red3:rgba(248,113,113,0.22);
-  --yellow:#fbbf24;--blue:#60a5fa;
-  --nav:rgba(6,6,9,0.93);--input:rgba(18,18,26,0.8);
-  --shadow:0 24px 60px rgba(0,0,0,0.65);--shadow-sm:0 4px 16px rgba(0,0,0,0.4);
-  --radius:16px;--radius-sm:10px;--radius-lg:24px;
-  --font:'Space Mono',monospace;--body:'DM Sans',sans-serif;
+  --bg0:#000;--bg1:#060606;--bg2:#0b0b0b;--bg3:#131313;--bg4:#1c1c1c;
+  --card:rgba(255,255,255,0.035);--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.16);
+  --text:#fafafa;--text2:#d2d2d2;--muted:#979797;--dim:#636363;
+  --accent:#fff;--accent2:#e6e6e6;--accent3:#cfcfcf;--on-accent:#000;--ac-rgb:255,255,255;
+  --red:#e5e5e5;--red2:rgba(255,255,255,0.06);--red3:rgba(255,255,255,0.12);
+  --yellow:#d2d2d2;--blue:#979797;
+  --nav:rgba(0,0,0,0.78);--input:#0b0b0b;
+  --shadow:0 24px 60px rgba(0,0,0,0.7);--shadow-sm:0 4px 16px rgba(0,0,0,0.45);
+  --radius:14px;--radius-sm:10px;--radius-lg:20px;
+  --font:'Inter',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
   --ease:0.25s cubic-bezier(0.4,0,0.2,1);
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -33,14 +33,14 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 /* ── HEADER ── */
 #header{
   position:sticky;top:0;z-index:200;height:60px;
-  background:#060609;
-  border-bottom:1px solid rgba(248,113,113,0.15);
+  background:#000;
+  border-bottom:1px solid rgba(var(--ac-rgb),0.15);
   display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;gap:1rem;
 }
 .logo{font-family:var(--font);font-size:1.1rem;font-weight:700;color:var(--red);text-decoration:none;letter-spacing:-0.5px}
 .logo span{color:var(--text);opacity:0.45}
-.badge-18{display:inline-flex;align-items:center;gap:5px;background:var(--red2);border:1px solid rgba(248,113,113,0.35);color:var(--red);padding:4px 12px;border-radius:20px;font-size:0.72rem;font-weight:800;animation:pulse18 1.8s ease-in-out infinite}
-@keyframes pulse18{0%,100%{box-shadow:0 0 8px rgba(248,113,113,0.3)}50%{box-shadow:0 0 18px rgba(248,113,113,0.65)}}
+.badge-18{display:inline-flex;align-items:center;gap:5px;background:var(--red2);border:1px solid rgba(var(--ac-rgb),0.35);color:var(--red);padding:4px 12px;border-radius:20px;font-size:0.72rem;font-weight:800;animation:pulse18 1.8s ease-in-out infinite}
+@keyframes pulse18{0%,100%{box-shadow:0 0 8px rgba(var(--ac-rgb),0.3)}50%{box-shadow:0 0 18px rgba(var(--ac-rgb),0.65)}}
 .back-link{display:flex;align-items:center;gap:5px;color:var(--muted);text-decoration:none;font-size:0.8rem;font-weight:600;padding:5px 12px;border:1px solid var(--border2);border-radius:8px;transition:all var(--ease)}
 .back-link:hover{color:var(--text);border-color:var(--border)}
 
@@ -52,16 +52,16 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
   overflow-y:auto;
 }
 .age-card{
-  background:var(--bg2);border:1.5px solid rgba(248,113,113,0.28);
+  background:var(--bg2);border:1.5px solid rgba(var(--ac-rgb),0.28);
   border-radius:var(--radius-lg);max-width:420px;width:100%;
-  box-shadow:0 40px 80px rgba(0,0,0,0.8),0 0 40px rgba(248,113,113,0.08);
+  box-shadow:0 40px 80px rgba(0,0,0,0.8),0 0 40px rgba(var(--ac-rgb),0.08);
   animation:slideUp 0.4s cubic-bezier(0.34,1.2,0.64,1) both;
   overflow:hidden;
 }
 @keyframes slideUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
 .age-card-head{
-  background:linear-gradient(135deg,rgba(248,113,113,0.12),rgba(168,85,247,0.06));
-  border-bottom:1px solid rgba(248,113,113,0.18);
+  background:linear-gradient(135deg,rgba(var(--ac-rgb),0.12),rgba(168,85,247,0.06));
+  border-bottom:1px solid rgba(var(--ac-rgb),0.18);
   padding:2rem 1.8rem 1.6rem;text-align:center;
 }
 .age-icon{font-size:3.2rem;display:block;margin-bottom:0.7rem}
@@ -136,10 +136,10 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
   width:100%;padding:0.95rem;border-radius:var(--radius-sm);border:none;
   background:var(--red);color:#fff;font-weight:800;font-size:0.92rem;
   font-family:var(--body);cursor:pointer;transition:all var(--ease);
-  box-shadow:0 6px 20px rgba(248,113,113,0.35);
+  box-shadow:0 6px 20px rgba(var(--ac-rgb),0.35);
   display:flex;align-items:center;justify-content:center;gap:0.5rem;
 }
-.btn-enter:hover:not(:disabled){background:#ef4444;transform:translateY(-1px)}
+.btn-enter:hover:not(:disabled){background:var(--text2);transform:translateY(-1px)}
 .btn-enter:disabled{opacity:0.38;cursor:not-allowed;transform:none !important}
 .btn-gate-exit{
   width:100%;padding:0.7rem;border-radius:var(--radius-sm);
@@ -151,7 +151,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 
 /* Warning box in gate */
 .gate-warn{
-  background:var(--red2);border:1px solid rgba(248,113,113,0.2);
+  background:var(--red2);border:1px solid rgba(var(--ac-rgb),0.2);
   border-radius:var(--radius-sm);padding:0.75rem 1rem;
   font-size:0.76rem;color:var(--muted);line-height:1.6;
   margin-bottom:1.2rem;
@@ -163,39 +163,39 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 
 /* Hero */
 .hero{min-height:calc(100vh - 60px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 1.5rem 8rem;position:relative;overflow:hidden}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% -10%,rgba(248,113,113,0.07) 0%,transparent 70%),radial-gradient(ellipse 40% 30% at 80% 80%,rgba(168,85,247,0.05) 0%,transparent 60%);pointer-events:none}
-.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(248,113,113,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(248,113,113,0.015) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 70% 50% at 50% 50%,black 0%,transparent 100%);pointer-events:none}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% -10%,rgba(var(--ac-rgb),0.07) 0%,transparent 70%),radial-gradient(ellipse 40% 30% at 80% 80%,rgba(168,85,247,0.05) 0%,transparent 60%);pointer-events:none}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(var(--ac-rgb),0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(var(--ac-rgb),0.015) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 70% 50% at 50% 50%,black 0%,transparent 100%);pointer-events:none}
 
-.hero-badge-r{display:inline-flex;align-items:center;gap:6px;background:var(--red2);border:1px solid rgba(248,113,113,0.28);color:var(--red);padding:4px 14px;border-radius:100px;font-size:0.74rem;font-weight:700;font-family:var(--font);margin-bottom:1.2rem;position:relative;z-index:1;animation:float 3s ease-in-out infinite}
+.hero-badge-r{display:inline-flex;align-items:center;gap:6px;background:var(--red2);border:1px solid rgba(var(--ac-rgb),0.28);color:var(--red);padding:4px 14px;border-radius:100px;font-size:0.74rem;font-weight:700;font-family:var(--font);margin-bottom:1.2rem;position:relative;z-index:1;animation:float 3s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .hero-title{font-family:var(--font);font-size:clamp(1.8rem,4.5vw,3.2rem);font-weight:700;line-height:1.1;letter-spacing:-2px;text-align:center;margin-bottom:0.9rem;position:relative;z-index:1}
-.hero-title em{font-style:normal;color:var(--red);text-shadow:0 0 40px rgba(248,113,113,0.3)}
+.hero-title em{font-style:normal;color:var(--red);text-shadow:0 0 40px rgba(var(--ac-rgb),0.3)}
 .hero-sub{color:var(--muted);font-size:0.95rem;text-align:center;max-width:460px;margin-bottom:2rem;line-height:1.7;position:relative;z-index:1}
 
 /* Search box */
 .search-wrap{width:100%;max-width:620px;position:relative;z-index:2}
 .s-box{display:flex;align-items:center;background:var(--bg2);border:1.5px solid var(--border2);border-radius:var(--radius-lg);padding:6px 6px 6px 18px;gap:0.5rem;transition:all var(--ease);box-shadow:var(--shadow-sm)}
-.s-box:focus-within{border-color:var(--red);box-shadow:0 0 0 4px rgba(248,113,113,0.12)}
+.s-box:focus-within{border-color:var(--red);box-shadow:0 0 0 4px rgba(var(--ac-rgb),0.12)}
 .s-box input{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:0.95rem;font-family:var(--body);padding:0.65rem 0;min-width:0}
 .s-box input::placeholder{color:var(--dim)}
-.s-btn{background:var(--red);color:#fff;border:none;cursor:pointer;padding:0.72rem 1.3rem;border-radius:var(--radius);font-weight:700;font-size:0.88rem;font-family:var(--body);white-space:nowrap;flex-shrink:0;box-shadow:0 4px 16px rgba(248,113,113,0.35);transition:all var(--ease);display:flex;align-items:center;gap:0.4rem}
-.s-btn:hover{background:#ef4444;transform:translateY(-1px)}
+.s-btn{background:var(--red);color:#fff;border:none;cursor:pointer;padding:0.72rem 1.3rem;border-radius:var(--radius);font-weight:700;font-size:0.88rem;font-family:var(--body);white-space:nowrap;flex-shrink:0;box-shadow:0 4px 16px rgba(var(--ac-rgb),0.35);transition:all var(--ease);display:flex;align-items:center;gap:0.4rem}
+.s-btn:hover{background:var(--text2);transform:translateY(-1px)}
 .btn-ic{background:none;border:none;color:var(--muted);padding:5px 8px;border-radius:6px;font-size:0.72rem;cursor:pointer;transition:all var(--ease);white-space:nowrap}
 .btn-ic:hover{background:var(--bg4);color:var(--text)}
 .s-meta{margin-top:0.5rem;min-height:1.2rem;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap}
 #platDetect{font-size:0.78rem;color:var(--red);font-weight:700}
 #urlErr{font-size:0.78rem;color:var(--red);display:none}
 #progressWrap{margin-top:0.6rem;height:3px;background:var(--bg3);border-radius:2px;display:none;overflow:hidden}
-#progressBar{height:100%;background:linear-gradient(90deg,var(--red),#fb9090);width:0%;transition:width 0.4s ease}
+#progressBar{height:100%;background:linear-gradient(90deg,var(--red),var(--text));width:0%;transition:width 0.4s ease}
 
 /* Per-video reCAPTCHA wrapper */
 #vidCapWrap{display:none;margin-top:0.8rem;animation:fadeUp 0.3s ease both}
 #vidCapWrap.show{display:block}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-#dlBtn{width:100%;margin-top:0.7rem;padding:0.95rem;border-radius:var(--radius-sm);border:none;background:var(--red);color:#fff;font-weight:800;font-size:0.95rem;font-family:var(--body);cursor:pointer;transition:all var(--ease);box-shadow:0 6px 20px rgba(248,113,113,0.35);display:none}
+#dlBtn{width:100%;margin-top:0.7rem;padding:0.95rem;border-radius:var(--radius-sm);border:none;background:var(--red);color:#fff;font-weight:800;font-size:0.95rem;font-family:var(--body);cursor:pointer;transition:all var(--ease);box-shadow:0 6px 20px rgba(var(--ac-rgb),0.35);display:none}
 #dlBtn.show{display:block}
 #dlBtn:disabled{opacity:0.45;cursor:not-allowed;box-shadow:none}
-#dlBtn:hover:not(:disabled){background:#ef4444;transform:translateY(-1px)}
+#dlBtn:hover:not(:disabled){background:var(--text2);transform:translateY(-1px)}
 
 /* ── rc-main (per-video + modal captcha widget) ── */
 .rc-main{
@@ -237,7 +237,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .rc-brand-sub{font-size:7px;color:#aaa;text-align:center;line-height:1.2;font-family:Roboto,Arial,sans-serif}
 
 .trust-strip{display:flex;gap:0.6rem;margin-top:1.2rem;flex-wrap:wrap;justify-content:center;position:relative;z-index:1}
-.t-item{display:flex;align-items:center;gap:4px;background:var(--red2);border:1px solid rgba(248,113,113,0.18);color:var(--red);padding:4px 12px;border-radius:100px;font-size:0.7rem;font-weight:700}
+.t-item{display:flex;align-items:center;gap:4px;background:var(--red2);border:1px solid rgba(var(--ac-rgb),0.18);color:var(--red);padding:4px 12px;border-radius:100px;font-size:0.7rem;font-weight:700}
 
 /* Download modal */
 .overlay{position:fixed;inset:0;z-index:500;background:rgba(4,4,8,0.82);display:none;align-items:flex-end;justify-content:center;will-change:opacity}
@@ -253,7 +253,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .m-title{font-weight:700;font-size:0.86rem;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:0.25rem}
 .m-dur{font-size:0.7rem;color:var(--muted)}
 .m-close{background:var(--bg3);border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.82rem;transition:all var(--ease);flex-shrink:0}
-.m-close:hover{color:var(--red);border-color:rgba(248,113,113,0.4)}
+.m-close:hover{color:var(--red);border-color:rgba(var(--ac-rgb),0.4)}
 .m-body{padding:1.1rem 1.4rem 1.4rem}
 
 /* Formats */
@@ -264,7 +264,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .fmt-item{display:flex;align-items:center;justify-content:space-between;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:0.7rem 0.9rem;cursor:pointer;transition:all 0.2s;gap:0.6rem;position:relative;overflow:hidden}
 .fmt-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;transition:background 0.2s;border-radius:10px 0 0 10px}
 .fmt-item:hover{border-color:var(--border2);transform:translateX(2px)}
-.fmt-item.sel{border-color:var(--red);background:rgba(248,113,113,0.07)}
+.fmt-item.sel{border-color:var(--red);background:rgba(var(--ac-rgb),0.07)}
 .fmt-item.sel::before{background:var(--red)}
 .fmt-radio{width:16px;height:16px;border-radius:50%;border:2px solid var(--dim);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
 .fmt-item.sel .fmt-radio{border-color:var(--red);background:var(--red)}
@@ -273,19 +273,19 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .fmt-right{display:flex;align-items:center;gap:0.45rem;flex-shrink:0}
 .fmt-name{font-size:0.86rem;font-weight:600;color:var(--text)}
 .fmt-size{font-size:0.72rem;color:var(--muted);background:var(--bg2);padding:2px 7px;border-radius:5px;border:1px solid var(--border)}
-.fmt-best{font-size:0.6rem;padding:2px 7px;background:rgba(248,113,113,0.12);color:var(--red);border-radius:5px;font-weight:800;text-transform:uppercase;border:1px solid rgba(248,113,113,0.3)}
+.fmt-best{font-size:0.6rem;padding:2px 7px;background:rgba(var(--ac-rgb),0.12);color:var(--red);border-radius:5px;font-weight:800;text-transform:uppercase;border:1px solid rgba(var(--ac-rgb),0.3)}
 .no-fmt{color:var(--muted);font-size:0.85rem;padding:0.8rem;text-align:center}
 .spinner{width:32px;height:32px;border:3px solid rgba(255,255,255,0.07);border-top-color:var(--red);border-radius:50%;animation:spin 0.7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .load-wrap{padding:2.2rem;text-align:center;display:flex;flex-direction:column;align-items:center;gap:0.8rem}
 .load-text{color:var(--muted);font-size:0.86rem}
-.err-wrap{padding:1rem;background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.2);border-radius:var(--radius-sm);display:flex;gap:0.7rem;align-items:flex-start;margin-bottom:0.8rem}
+.err-wrap{padding:1rem;background:rgba(var(--ac-rgb),0.07);border:1px solid rgba(var(--ac-rgb),0.2);border-radius:var(--radius-sm);display:flex;gap:0.7rem;align-items:flex-start;margin-bottom:0.8rem}
 .err-msg{font-size:0.84rem;color:var(--red);line-height:1.5}
-.btn-retry{width:100%;background:var(--red);color:#fff;border:none;cursor:pointer;padding:0.72rem;border-radius:var(--radius-sm);font-weight:700;font-size:0.88rem;font-family:var(--body);transition:all var(--ease);box-shadow:0 4px 14px rgba(248,113,113,0.3)}
-.btn-retry:hover{background:#ef4444}
+.btn-retry{width:100%;background:var(--red);color:#fff;border:none;cursor:pointer;padding:0.72rem;border-radius:var(--radius-sm);font-weight:700;font-size:0.88rem;font-family:var(--body);transition:all var(--ease);box-shadow:0 4px 14px rgba(var(--ac-rgb),0.3)}
+.btn-retry:hover{background:var(--text2)}
 .btn-close2{width:100%;background:var(--bg3);color:var(--muted);border:1px solid var(--border);cursor:pointer;padding:0.7rem;border-radius:var(--radius-sm);font-size:0.84rem;font-family:var(--body);transition:all var(--ease);margin-top:0.5rem}
-.dl-btn{width:100%;padding:0.92rem;border-radius:var(--radius-sm);border:none;background:var(--red);color:#fff;font-weight:800;font-size:0.9rem;font-family:var(--body);cursor:pointer;transition:all var(--ease);box-shadow:0 6px 18px rgba(248,113,113,0.35)}
-.dl-btn:hover:not(:disabled){background:#ef4444;transform:translateY(-1px)}
+.dl-btn{width:100%;padding:0.92rem;border-radius:var(--radius-sm);border:none;background:var(--red);color:#fff;font-weight:800;font-size:0.9rem;font-family:var(--body);cursor:pointer;transition:all var(--ease);box-shadow:0 6px 18px rgba(var(--ac-rgb),0.35)}
+.dl-btn:hover:not(:disabled){background:var(--text2);transform:translateY(-1px)}
 .dl-btn:disabled{opacity:0.45;cursor:not-allowed;transform:none}
 
 /* Progress */
@@ -295,7 +295,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .dp-label{font-size:0.76rem;font-weight:600;color:var(--text2)}
 .dp-pct{font-size:0.8rem;font-weight:700;color:var(--red);font-family:var(--font)}
 .dp-bar-bg{height:5px;background:var(--bg3);border-radius:4px;overflow:hidden}
-.dp-bar{height:100%;background:linear-gradient(90deg,var(--red),#fb9090);width:0%;border-radius:4px;transition:width 0.25s ease}
+.dp-bar{height:100%;background:linear-gradient(90deg,var(--red),var(--text));width:0%;border-radius:4px;transition:width 0.25s ease}
 .dp-meta{display:flex;gap:0.8rem;margin-top:0.35rem;flex-wrap:wrap}
 .dp-meta span{font-size:0.68rem;color:var(--muted)}
 .dp-meta strong{color:var(--text2);font-weight:600}
@@ -316,7 +316,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .toggle-sw input{opacity:0;width:0;height:0}
 .toggle-track{position:absolute;inset:0;background:var(--bg4);border-radius:22px;cursor:pointer;transition:background 0.25s;border:1px solid var(--border2)}
 .toggle-track::before{content:'';position:absolute;height:16px;width:16px;left:2px;bottom:2px;background:#888;border-radius:50%;transition:transform 0.25s,background 0.25s}
-.toggle-sw input:checked + .toggle-track{background:rgba(248,113,113,0.25);border-color:rgba(248,113,113,0.5)}
+.toggle-sw input:checked + .toggle-track{background:rgba(var(--ac-rgb),0.25);border-color:rgba(var(--ac-rgb),0.5)}
 .toggle-sw input:checked + .toggle-track::before{transform:translateX(16px);background:var(--red)}
 
 /* ── Download History ── */
@@ -332,8 +332,8 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .hist-info{flex:1;min-width:0}
 .hist-name{font-size:0.78rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text2)}
 .hist-meta{font-size:0.66rem;color:var(--dim);margin-top:1px}
-.hist-btn{font-size:0.68rem;padding:3px 8px;background:var(--red2);color:var(--red);border:1px solid rgba(248,113,113,0.3);border-radius:5px;cursor:pointer;flex-shrink:0;white-space:nowrap;transition:all 0.2s}
-.hist-btn:hover{background:rgba(248,113,113,0.25)}
+.hist-btn{font-size:0.68rem;padding:3px 8px;background:var(--red2);color:var(--red);border:1px solid rgba(var(--ac-rgb),0.3);border-radius:5px;cursor:pointer;flex-shrink:0;white-space:nowrap;transition:all 0.2s}
+.hist-btn:hover{background:rgba(var(--ac-rgb),0.25)}
 
 /* ── Reviews Section ── */
 .reviews-section{width:100%;max-width:620px;margin-top:1.5rem;position:relative;z-index:1}
@@ -357,7 +357,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .fmt-item{transition:all 0.18s cubic-bezier(0.4,0,0.2,1)}
 .fmt-item:active{transform:scale(0.98)}
 .dl-btn{transition:all 0.2s cubic-bezier(0.34,1.3,0.64,1)}
-.dl-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 28px rgba(248,113,113,0.45)}
+.dl-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 28px rgba(var(--ac-rgb),0.45)}
 .dl-btn:active:not(:disabled){transform:translateY(0) scale(0.97)}
 .s-btn{transition:all 0.2s cubic-bezier(0.34,1.3,0.64,1)}
 .s-btn:active{transform:scale(0.96)}
@@ -365,22 +365,22 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .tab-btn{transition:all 0.2s cubic-bezier(0.4,0,0.2,1)}
 
 /* Sticky bottom */
-#stickyBar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;padding:0.8rem 1rem;background:#060609;border-top:1px solid rgba(248,113,113,0.18)}
-#stickyBar button{width:100%;padding:0.85rem;background:var(--red);color:#fff;border:none;border-radius:var(--radius-sm);font-weight:800;font-size:0.9rem;font-family:var(--body);cursor:pointer;box-shadow:0 4px 14px rgba(248,113,113,0.35)}
+#stickyBar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;padding:0.8rem 1rem;background:#000;border-top:1px solid rgba(var(--ac-rgb),0.18)}
+#stickyBar button{width:100%;padding:0.85rem;background:var(--red);color:#fff;border:none;border-radius:var(--radius-sm);font-weight:800;font-size:0.9rem;font-family:var(--body);cursor:pointer;box-shadow:0 4px 14px rgba(var(--ac-rgb),0.35)}
 @media(max-width:640px){#stickyBar{display:block}body{padding-bottom:70px}}
 
 /* Toast */
 #toast-cont{position:fixed;top:74px;right:1rem;z-index:9998;display:flex;flex-direction:column;gap:0.5rem;pointer-events:none}
 .toast{display:flex;align-items:center;gap:0.6rem;background:var(--bg3);border:1px solid var(--border2);border-radius:9px;padding:0.7rem 0.9rem;font-size:0.83rem;font-weight:500;box-shadow:var(--shadow-sm);pointer-events:all;cursor:pointer;max-width:300px;animation:toastIn 0.3s cubic-bezier(0.34,1.4,0.64,1) both}
 .toast.out{animation:toastOut 0.22s ease forwards}
-.toast-success{border-color:rgba(34,197,94,0.4);color:#4ade80}
-.toast-error{border-color:rgba(248,113,113,0.4);color:var(--red)}
+.toast-success{border-color:rgba(var(--ac-rgb),0.4);color:var(--accent2)}
+.toast-error{border-color:rgba(var(--ac-rgb),0.4);color:var(--red)}
 .toast-info{border-color:rgba(96,165,250,0.4);color:#60a5fa}
 @keyframes toastIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
 @keyframes toastOut{to{opacity:0;transform:translateX(18px)}}
 
 /* ── Beta Tag ── */
-.beta-tag{display:inline-flex;align-items:center;background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.3);color:var(--red);padding:1px 7px;border-radius:100px;font-size:0.6rem;font-weight:800;margin-left:8px;letter-spacing:0.5px;vertical-align:middle;text-transform:uppercase}
+.beta-tag{display:inline-flex;align-items:center;background:rgba(var(--ac-rgb),0.15);border:1px solid rgba(var(--ac-rgb),0.3);color:var(--red);padding:1px 7px;border-radius:100px;font-size:0.6rem;font-weight:800;margin-left:8px;letter-spacing:0.5px;vertical-align:middle;text-transform:uppercase}
 
 /* ── Cloudflare Turnstile Wrapper ── */
 .cf-turnstile-wrap{
@@ -390,7 +390,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
   min-height:70px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.5rem;
 }
 .cf-turnstile-wrap.main-wrap{margin-bottom:0.75rem}
-.ts-verified{display:none;font-size:0.82rem;color:var(--accent);font-weight:600;padding:0.5rem 1rem;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:8px}
+.ts-verified{display:none;font-size:0.82rem;color:var(--accent);font-weight:600;padding:0.5rem 1rem;background:rgba(var(--ac-rgb),0.08);border:1px solid rgba(var(--ac-rgb),0.2);border-radius:8px}
 .ts-verified.show{display:block}
 
 /* ── Download limit warning ── */
@@ -400,7 +400,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 /* ── Preview Card ── */
 .preview-card{
   display:none;width:100%;max-width:620px;
-  background:var(--bg2);border:1px solid rgba(248,113,113,0.2);
+  background:var(--bg2);border:1px solid rgba(var(--ac-rgb),0.2);
   border-radius:var(--radius);padding:0.85rem 1rem;
   margin-top:0.8rem;align-items:center;gap:0.85rem;
   animation:fadeUp 0.3s ease both;position:relative;z-index:2;
@@ -411,7 +411,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .pc-info{flex:1;min-width:0}
 .pc-title{font-size:0.84rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text);margin-bottom:0.25rem}
 .pc-meta{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap}
-.pc-plat{font-size:0.7rem;color:var(--red);background:var(--red2);border:1px solid rgba(248,113,113,0.2);padding:1px 7px;border-radius:100px;font-weight:700}
+.pc-plat{font-size:0.7rem;color:var(--red);background:var(--red2);border:1px solid rgba(var(--ac-rgb),0.2);padding:1px 7px;border-radius:100px;font-weight:700}
 .pc-dur{font-size:0.7rem;color:var(--muted)}
 
 /* ── Animated Stats Strip ── */
@@ -432,7 +432,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 }
 .trust-badge{
   display:flex;align-items:center;gap:0.35rem;
-  background:var(--red2);border:1px solid rgba(248,113,113,0.18);
+  background:var(--red2);border:1px solid rgba(var(--ac-rgb),0.18);
   color:var(--red);padding:0.3rem 0.8rem;border-radius:100px;
   font-size:0.72rem;font-weight:700;
 }
@@ -457,7 +457,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
   border-radius:100px;font-size:0.72rem;font-weight:500;
   transition:all 0.15s;cursor:default;
 }
-.site-chip:hover{border-color:rgba(248,113,113,0.35);color:var(--red);background:var(--red2)}
+.site-chip:hover{border-color:rgba(var(--ac-rgb),0.35);color:var(--red);background:var(--red2)}
 
 /* ── HAMBURGER BUTTON ── */
 .ham-btn{
@@ -466,7 +466,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
   border-radius:9px;cursor:pointer;gap:5px;flex-shrink:0;
   transition:all var(--ease);position:relative;z-index:300;
 }
-.ham-btn:hover{border-color:rgba(248,113,113,0.4);background:var(--bg4)}
+.ham-btn:hover{border-color:rgba(var(--ac-rgb),0.4);background:var(--bg4)}
 .ham-line{
   width:18px;height:2px;background:var(--text2);border-radius:2px;
   transition:all 0.3s cubic-bezier(0.4,0,0.2,1);transform-origin:center;
@@ -493,7 +493,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
   position:fixed;top:0;right:0;z-index:450;
   width:min(300px,88vw);height:100%;
   background:#0e0e16;
-  border-left:1px solid rgba(248,113,113,0.15);
+  border-left:1px solid rgba(var(--ac-rgb),0.15);
   display:flex;flex-direction:column;
   transform:translateX(100%);
   transition:transform 0.32s cubic-bezier(0.4,0,0.2,1);
@@ -505,7 +505,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .sb-head{
   padding:1.2rem 1.4rem;
   display:flex;align-items:center;justify-content:space-between;
-  border-bottom:1px solid rgba(248,113,113,0.1);
+  border-bottom:1px solid rgba(var(--ac-rgb),0.1);
   background:#0a0a11;
 }
 .sb-logo{font-family:var(--font);font-size:1rem;font-weight:700;color:var(--red);letter-spacing:-0.5px}
@@ -515,7 +515,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
   border-radius:8px;cursor:pointer;color:var(--muted);font-size:0.85rem;
   display:flex;align-items:center;justify-content:center;transition:all var(--ease);
 }
-.sb-close:hover{color:var(--red);border-color:rgba(248,113,113,0.35)}
+.sb-close:hover{color:var(--red);border-color:rgba(var(--ac-rgb),0.35)}
 
 .sb-nav{flex:1;padding:1rem 0;overflow-y:auto}
 .sb-item{
@@ -528,8 +528,8 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
   position:relative;overflow:hidden;
 }
 .sb-item:hover{
-  color:var(--text);background:rgba(248,113,113,0.06);
-  border-left-color:rgba(248,113,113,0.4);
+  color:var(--text);background:rgba(var(--ac-rgb),0.06);
+  border-left-color:rgba(var(--ac-rgb),0.4);
 }
 .sb-item-icon{
   width:34px;height:34px;border-radius:9px;
@@ -537,7 +537,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
   transition:all 0.2s;
 }
-.sb-item:hover .sb-item-icon{background:var(--red2);border-color:rgba(248,113,113,0.3)}
+.sb-item:hover .sb-item-icon{background:var(--red2);border-color:rgba(var(--ac-rgb),0.3)}
 .sb-item-icon svg{width:16px;height:16px;stroke:var(--muted);transition:stroke 0.2s}
 .sb-item:hover .sb-item-icon svg{stroke:var(--red)}
 
@@ -557,12 +557,12 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 
 .sb-footer{
   padding:1.2rem 1.4rem;
-  border-top:1px solid rgba(248,113,113,0.1);
+  border-top:1px solid rgba(var(--ac-rgb),0.1);
   background:#0a0a11;
 }
 .sb-badge{
   display:inline-flex;align-items:center;gap:5px;
-  background:var(--red2);border:1px solid rgba(248,113,113,0.28);
+  background:var(--red2);border:1px solid rgba(var(--ac-rgb),0.28);
   color:var(--red);padding:4px 12px;border-radius:100px;
   font-size:0.68rem;font-weight:800;font-family:var(--font);
   margin-bottom:0.6rem;
@@ -571,8 +571,8 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 
 /* ── PAGE FOOTER ── */
 #pageFooter{
-  background:#060609;
-  border-top:1px solid rgba(248,113,113,0.1);
+  background:#000;
+  border-top:1px solid rgba(var(--ac-rgb),0.1);
   padding:1.4rem 1.5rem;
   text-align:center;
 }
@@ -591,11 +591,18 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 
 /* ── RIPPLE ── */
 .sb-ripple{
-  position:absolute;border-radius:50%;background:rgba(248,113,113,0.18);
+  position:absolute;border-radius:50%;background:rgba(var(--ac-rgb),0.18);
   transform:scale(0);animation:ripple 0.5s linear;pointer-events:none;
 }
 @keyframes ripple{to{transform:scale(4);opacity:0}}
 
+
+/* pro monochrome pass */
+body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
+.logo{color:var(--text)!important;letter-spacing:-.035em!important;font-weight:700}
+#header{background:var(--nav)!important;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)!important}
+:focus-visible{outline:2px solid var(--text);outline-offset:2px}
+::selection{background:var(--text);color:#000}
 </style>
 </head>
 <body>
@@ -605,7 +612,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 <!-- ═══ HEADER ═══ -->
 <header id="header">
   <a href="/" class="logo">Vid<span>Snap</span> <span style="font-size:0.65rem;color:var(--red);margin-left:4px">18+</span></a>
-  <div class="badge-18">🔞 Adult Zone</div>
+  <div class="badge-18">Adult Zone</div>
   <button class="ham-btn" id="hamBtn" onclick="toggleSidebar()" aria-label="Menu">
     <span class="ham-line"></span>
     <span class="ham-line"></span>
@@ -666,7 +673,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
   </nav>
 
   <div class="sb-footer">
-    <div class="sb-badge">🔞 Age-Verified Zone</div>
+    <div class="sb-badge">Age-Verified Zone</div>
     <div class="sb-footer-txt">For personal use only. No content is stored on our servers. 18+ only.</div>
   </div>
 </div>
@@ -686,20 +693,20 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 <div id="ageGate">
   <div class="age-card">
     <div class="age-card-head">
-      <span class="age-icon">🔞</span>
+      <span class="age-icon"></span>
       <div class="age-title">18+ Verification Required</div>
       <p class="age-sub">This area contains adult content for users 18 and older. Please verify you are human and of legal age to continue.</p>
     </div>
     <div class="age-card-body">
 
       <div class="gate-warn">
-        ⚠ By continuing you confirm you are <strong style="color:var(--red)">18 years or older</strong> and legally permitted to view adult content in your jurisdiction. You take full personal responsibility.
+        By continuing you confirm you are <strong style="color:var(--red)">18 years or older</strong> and legally permitted to view adult content in your jurisdiction. You take full personal responsibility.
       </div>
 
       <!-- Cloudflare Turnstile — Age Gate -->
       <div class="cf-turnstile-wrap" id="cfGateWrap">
         <div class="cf-turnstile" id="cfGateTurnstile"></div>
-        <div class="ts-verified" id="cfGateVerified">✅ Verified — you may enter</div>
+        <div class="ts-verified" id="cfGateVerified">Verified — you may enter</div>
       </div>
       <div class="rc-status" id="rcGateStatus" style="display:none"></div>
 
@@ -711,7 +718,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
       </div>
 
       <button class="btn-enter" id="btnEnter" onclick="enterAdultZone()" disabled>
-        🔒 Complete Verification to Enter
+        Complete Verification to Enter
       </button>
       <button class="btn-gate-exit" onclick="window.location.href='/'">← Exit — Return to Main Site</button>
 
@@ -726,23 +733,23 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
     <div class="hero-bg"></div>
     <div class="hero-grid"></div>
 
-    <div class="hero-badge-r">🔞 18+ Verified — Adult Content Downloader<span class="beta-tag">Beta</span></div>
+    <div class="hero-badge-r">18+ Verified — Adult Content Downloader<span class="beta-tag">Beta</span></div>
     <h1 class="hero-title">Download Adult<br><em>Content Safely.</em></h1>
     <p class="hero-sub">Paste a link from 150+ adult platforms. Age-verified. No logging. Personal use only.</p>
 
     <div class="search-wrap">
       <div class="s-box">
-        <span style="color:var(--muted);font-size:1rem;flex-shrink:0">🔗</span>
+        <span style="color:var(--muted);font-size:1rem;flex-shrink:0"></span>
         <input type="url" id="urlInput" placeholder="Paste adult video URL here…" autocomplete="off" oninput="onUrl(this.value)">
         <div style="display:flex;align-items:center;gap:0.25rem;flex-shrink:0">
           <button class="btn-ic" id="clearBtn" onclick="clearUrl()" style="display:none">✕</button>
-          <button class="btn-ic" onclick="doPaste()">📋 Paste</button>
+          <button class="btn-ic" onclick="doPaste()">Paste</button>
         </div>
         <button class="s-btn" onclick="handleDownload()"><span>⬇</span> Download</button>
       </div>
       <div class="s-meta">
         <div id="platDetect"></div>
-        <div id="urlErr">⚠ Please enter a valid URL</div>
+        <div id="urlErr">Please enter a valid URL</div>
       </div>
       <div id="progressWrap"><div id="progressBar"></div></div>
 
@@ -750,16 +757,16 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
       <div id="vidCapWrap">
         <div class="cf-turnstile-wrap main-wrap" id="cfVidWrap">
           <div class="cf-turnstile" id="cfVidTurnstile"></div>
-          <div class="ts-verified" id="cfVidVerified">✅ Verified — tap download</div>
+          <div class="ts-verified" id="cfVidVerified">Verified — tap download</div>
         </div>
-        <div class="dl-limit-warn" id="dlLimitWarn">⚠ Max 2 concurrent downloads — please wait for active downloads to finish.</div>
-        <button id="dlBtn" class="show" onclick="handleDownload()" disabled>🔒 Verify to Download</button>
+        <div class="dl-limit-warn" id="dlLimitWarn">Max 2 concurrent downloads — please wait for active downloads to finish.</div>
+        <button id="dlBtn" class="show" onclick="handleDownload()" disabled>Verify to Download</button>
       </div>
     </div>
 
     <!-- Preview Card -->
     <div class="preview-card" id="previewCard">
-      <div class="pc-thumb" id="pcThumb">🔞</div>
+      <div class="pc-thumb" id="pcThumb"></div>
       <div class="pc-info">
         <div class="pc-title" id="pcTitle">Fetching info…</div>
         <div class="pc-meta">
@@ -777,16 +784,16 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
     </div>
 
     <div class="trust-badges">
-      <div class="trust-badge"><span class="tb-icon">🚫</span> No Login Required</div>
-      <div class="trust-badge"><span class="tb-icon">📵</span> No Data Stored</div>
-      <div class="trust-badge"><span class="tb-icon">🔒</span> Encrypted Transfer</div>
-      <div class="trust-badge"><span class="tb-icon">⚡</span> 150+ Platforms</div>
-      <div class="trust-badge"><span class="tb-icon">🔞</span> Age Verified</div>
+      <div class="trust-badge"><span class="tb-icon"></span> No Login Required</div>
+      <div class="trust-badge"><span class="tb-icon"></span> No Data Stored</div>
+      <div class="trust-badge"><span class="tb-icon"></span> Encrypted Transfer</div>
+      <div class="trust-badge"><span class="tb-icon"></span> 150+ Platforms</div>
+      <div class="trust-badge"><span class="tb-icon"></span> Age Verified</div>
     </div>
 
     <!-- Quick Download Toggle -->
     <div class="quick-toggle-wrap">
-      <div class="quick-lbl">⚡ <b>Quick Mode</b> — Skip modal, direct download (best quality)</div>
+      <div class="quick-lbl"><b>Quick Mode</b> — Skip modal, direct download (best quality)</div>
       <label class="toggle-sw">
         <input type="checkbox" id="quickModeToggle" onchange="toggleQuickMode(this.checked)">
         <span class="toggle-track"></span>
@@ -796,7 +803,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
     <!-- Download History -->
     <div class="hist-section" id="histSection" style="display:none">
       <div class="hist-head">
-        <span class="hist-title">📥 Recent Downloads</span>
+        <span class="hist-title">Recent Downloads</span>
         <button class="hist-clear" onclick="clearHistory()">Clear all</button>
       </div>
       <div class="hist-list" id="histList"></div>
@@ -804,7 +811,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 
     <!-- Supported Sites -->
     <div class="supported-section">
-      <div class="supported-title">✅ Supported Adult Platforms</div>
+      <div class="supported-title">Supported Adult Platforms</div>
       <div class="sites-grid">
         <span class="site-chip">XVideos</span>
         <span class="site-chip">Pornhub</span>
@@ -836,13 +843,13 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
     <!-- Reviews -->
     <div class="reviews-section">
       <div class="reviews-head">
-        <span class="reviews-title">⭐ User Reviews</span>
+        <span class="reviews-title">User Reviews</span>
         <div class="reviews-avg"><span class="r-stars">★★★★★</span> 4.8 · 1.8K beta</div>
       </div>
       <div class="reviews-grid">
         <div class="review-card">
           <div class="review-top">
-            <div class="review-avatar">😶</div>
+            <div class="review-avatar"></div>
             <span class="review-name">user_raj_87</span>
             <span class="review-stars">★★★★★</span>
           </div>
@@ -851,7 +858,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
         </div>
         <div class="review-card">
           <div class="review-top">
-            <div class="review-avatar">🙂</div>
+            <div class="review-avatar"></div>
             <span class="review-name">d0wnl0ad_guy</span>
             <span class="review-stars">★★★★☆</span>
           </div>
@@ -860,7 +867,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
         </div>
         <div class="review-card">
           <div class="review-top">
-            <div class="review-avatar">😑</div>
+            <div class="review-avatar"></div>
             <span class="review-name">anon_usr_24</span>
             <span class="review-stars">★★★★☆</span>
           </div>
@@ -879,7 +886,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
         <div class="reviews-grid">
           <div class="review-card">
             <div class="review-top">
-              <div class="review-avatar">🙄</div>
+              <div class="review-avatar"></div>
               <span class="review-name">priv8_mode</span>
               <span class="review-stars">★★★★★</span>
             </div>
@@ -888,7 +895,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
           </div>
           <div class="review-card">
             <div class="review-top">
-              <div class="review-avatar">😐</div>
+              <div class="review-avatar"></div>
               <span class="review-name">ketan_xx</span>
               <span class="review-stars">★★★☆☆</span>
             </div>
@@ -900,7 +907,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 
       <!-- Comment Box — 1 per user -->
       <div style="margin-top:1.2rem;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:0.9rem 1rem">
-        <div style="font-size:0.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.7rem">💬 Leave a Review</div>
+        <div style="font-size:0.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.7rem">Leave a Review</div>
         <div id="commentForm">
           <div style="display:flex;gap:0.4rem;margin-bottom:0.5rem">
             <input id="commentName" maxlength="20" placeholder="Your name (optional)" style="flex:1;background:var(--bg0);border:1px solid var(--border2);border-radius:8px;padding:0.5rem 0.7rem;color:var(--text);font-size:0.8rem;font-family:var(--body);outline:none">
@@ -915,13 +922,13 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
           <textarea id="commentText" maxlength="200" rows="2" placeholder="Share your experience… (max 200 chars)" style="width:100%;background:var(--bg0);border:1px solid var(--border2);border-radius:8px;padding:0.5rem 0.7rem;color:var(--text);font-size:0.8rem;font-family:var(--body);outline:none;resize:none;line-height:1.5"></textarea>
           <button onclick="submitComment()" style="margin-top:0.5rem;width:100%;padding:0.6rem;background:var(--red);color:#fff;border:none;border-radius:8px;font-weight:700;font-size:0.82rem;font-family:var(--body);cursor:pointer;transition:all 0.2s">Post Review</button>
         </div>
-        <div id="commentDone" style="display:none;text-align:center;padding:0.7rem;color:var(--accent);font-size:0.8rem">✅ Review posted! Thanks for your feedback.</div>
+        <div id="commentDone" style="display:none;text-align:center;padding:0.7rem;color:var(--accent);font-size:0.8rem">Review posted! Thanks for your feedback.</div>
         <div id="userComments" style="margin-top:0.7rem;display:flex;flex-direction:column;gap:0.4rem"></div>
       </div>
     </div>
 
     <div class="disc">
-      ⚠ This tool is for <strong>personal use only</strong>. We do not host, store, or distribute any content. All downloads are streamed directly from the original platform. Users are solely responsible for compliance with local laws.
+      This tool is for <strong>personal use only</strong>. We do not host, store, or distribute any content. All downloads are streamed directly from the original platform. Users are solely responsible for compliance with local laws.
     </div>
   </div>
 
@@ -944,7 +951,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
   <div class="modal">
     <div class="m-handle"></div>
     <div class="m-head">
-      <div class="m-thumb" id="mThumb">🔞</div>
+      <div class="m-thumb" id="mThumb"></div>
       <div class="m-meta">
         <div class="m-title" id="mTitle">Loading…</div>
         <div class="m-dur" id="mDur">—</div>
@@ -959,14 +966,14 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
         <p class="load-text" id="mLoadTxt">Fetching video info…</p>
       </div>
       <div id="mErr" style="display:none">
-        <div class="err-wrap"><span style="font-size:1.1rem">⚠</span><p class="err-msg" id="mErrMsg">Error</p></div>
-        <button class="btn-retry" onclick="retryDl()">🔄 Retry</button>
+        <div class="err-wrap"><span style="font-size:1.1rem"></span><p class="err-msg" id="mErrMsg">Error</p></div>
+        <button class="btn-retry" onclick="retryDl()">Retry</button>
         <button class="btn-close2" onclick="closeModal()">✕ Close</button>
       </div>
       <div id="mContent" style="display:none">
         <div class="tab-row">
-          <button class="tab-btn active" id="tabV" onclick="switchTab('video')">🎬 Video</button>
-          <button class="tab-btn" id="tabA" onclick="switchTab('audio')">🎵 Audio Only</button>
+          <button class="tab-btn active" id="tabV" onclick="switchTab('video')">Video</button>
+          <button class="tab-btn" id="tabA" onclick="switchTab('audio')">Audio Only</button>
         </div>
         <div class="fmt-list" id="vFmts"></div>
         <div class="fmt-list" id="aFmts" style="display:none"></div>
@@ -975,7 +982,7 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
         <div id="mCapWrap">
           <div class="cf-turnstile-wrap main-wrap" id="cfModWrap">
             <div class="cf-turnstile" id="cfModTurnstile"></div>
-            <div class="ts-verified" id="cfModVerified">✅ Verified — tap download</div>
+            <div class="ts-verified" id="cfModVerified">Verified — tap download</div>
           </div>
         </div>
 
@@ -1065,7 +1072,7 @@ function checkRateLimit() {
   var now = Date.now();
   _reqTimestamps = _reqTimestamps.filter(function(t){ return now - t < 60000; });
   if (_reqTimestamps.length >= RATE_LIMIT) {
-    showToast('⚠ Too many requests — please wait a moment', 'error', 3500);
+    showToast('Too many requests — please wait a moment', 'error', 3500);
     return false;
   }
   _reqTimestamps.push(now);
@@ -1075,7 +1082,7 @@ function checkRateLimit() {
 function canStartDownload() {
   if (_activeDlCount >= DL_CONCURRENCY) {
     document.getElementById('dlLimitWarn').classList.add('show');
-    showToast('⚠ Max ' + DL_CONCURRENCY + ' downloads at once — please wait', 'error', 3000);
+    showToast('Max ' + DL_CONCURRENCY + ' downloads at once — please wait', 'error', 3000);
     return false;
   }
   return true;
@@ -1123,17 +1130,17 @@ function initGateTurnstile() {
       document.getElementById('cfGateVerified').classList.add('show');
       var btn = document.getElementById('btnEnter');
       btn.disabled = false;
-      btn.innerHTML = '🔞 Enter Adult Zone →';
+      btn.innerHTML = 'Enter Adult Zone →';
       fetchAdultToken();
     },
     'error-callback': function() {
-      showToast('⚠ Verification failed — please retry', 'error', 3000);
+      showToast('Verification failed — please retry', 'error', 3000);
     },
     'expired-callback': function() {
       _gateRcOk = false;
       document.getElementById('cfGateVerified').classList.remove('show');
       document.getElementById('btnEnter').disabled = true;
-      showToast('⚠ Verification expired — please re-verify', 'info', 3000);
+      showToast('Verification expired — please re-verify', 'info', 3000);
     }
   });
 }
@@ -1153,14 +1160,14 @@ function initVidTurnstile() {
       var dlBtn = document.getElementById('dlBtn');
       dlBtn.disabled = false;
       dlBtn.innerHTML = '⬇ Download Video';
-      showToast('✅ Verified! Tap Download.', 'success', 2000);
+      showToast('Verified! Tap Download.', 'success', 2000);
     },
     'expired-callback': function() {
       _vidCapOk = false;
       _vidTurnstileToken = '';
       document.getElementById('cfVidVerified').classList.remove('show');
       document.getElementById('dlBtn').disabled = true;
-      document.getElementById('dlBtn').innerHTML = '🔒 Verify to Download';
+      document.getElementById('dlBtn').innerHTML = 'Verify to Download';
     }
   });
 }
@@ -1177,7 +1184,7 @@ function initModTurnstile() {
       _modTurnstileToken = token;
       document.getElementById('cfModVerified').classList.add('show');
       document.getElementById('mDlBtn').disabled = false;
-      showToast('✅ Verified! Tap Download.', 'success', 2000);
+      showToast('Verified! Tap Download.', 'success', 2000);
     },
     'expired-callback': function() {
       _modCapOk = false;
@@ -1200,7 +1207,7 @@ function showMainContent(pendingUrl) {
 
 function enterAdultZone() {
   if (!_gateRcOk) {
-    showToast('⚠ Please complete the verification first', 'error', 2500);
+    showToast('Please complete the verification first', 'error', 2500);
     return;
   }
   // Verify token with backend before granting access
@@ -1214,7 +1221,7 @@ function enterAdultZone() {
     if (d.success) {
       _grantAccess();
     } else {
-      showToast('⚠ Verification rejected — please retry', 'error', 3000);
+      showToast('Verification rejected — please retry', 'error', 3000);
       _gateRcOk = false;
       document.getElementById('cfGateVerified').classList.remove('show');
       document.getElementById('btnEnter').disabled = true;
@@ -1233,7 +1240,7 @@ function _grantAccess() {
     localStorage.setItem(_ageKey, 'yes');
     localStorage.setItem(_ageExp, String(Date.now() + 24*3600*1000)); // 24h
   } catch(e) {}
-  showToast('✅ Verified! Welcome.', 'success', 2000);
+  showToast('Verified! Welcome.', 'success', 2000);
   setTimeout(function() {
     var pendingUrl = new URLSearchParams(window.location.search).get('url') || '';
     showMainContent(pendingUrl);
@@ -1275,7 +1282,7 @@ function showPreviewCard(data, platName) {
   var card = document.getElementById('previewCard');
   card.classList.add('show');
   document.getElementById('pcTitle').textContent = data.title || 'Fetching title…';
-  document.getElementById('pcPlat').textContent = platName || '🔞 Adult';
+  document.getElementById('pcPlat').textContent = platName || 'Adult';
   document.getElementById('pcDur').textContent = data.duration ? Math.floor(data.duration/60)+'m '+(data.duration%60)+'s' : '';
   if (data.thumbnail) {
     var img = new Image();
@@ -1317,15 +1324,15 @@ function onUrl(val) {
   ue.style.display='none';
 
   var plats = [
-    {r:/xvideos/,n:'🔞 XVideos'},{r:/pornhub/,n:'🔞 Pornhub'},{r:/xhamster/,n:'🔞 xHamster'},
-    {r:/xnxx/,n:'🔞 XNXX'},{r:/onlyfans/,n:'🔞 OnlyFans'},{r:/chaturbate/,n:'🔞 Chaturbate'},
-    {r:/spankbang/,n:'🔞 SpankBang'},{r:/redtube/,n:'🔞 RedTube'},{r:/tube8/,n:'🔞 Tube8'},
-    {r:/missav|javdb|javbus|javhd/,n:'🔞 JAV Platform'},{r:/txxx/,n:'🔞 TXXX'},
-    {r:/eporner/,n:'🔞 EPorner'},{r:/beeg/,n:'🔞 Beeg'},{r:/nuvid/,n:'🔞 Nuvid'},
-    {r:/cam4|bongacams|livejasmin/,n:'🔞 Cam Site'},{r:/fansly/,n:'🔞 Fansly'},
-    {r:/desixnxx|masahub|desi49/,n:'🔞 Desi Platform'}
+    {r:/xvideos/,n:'XVideos'},{r:/pornhub/,n:'Pornhub'},{r:/xhamster/,n:'xHamster'},
+    {r:/xnxx/,n:'XNXX'},{r:/onlyfans/,n:'OnlyFans'},{r:/chaturbate/,n:'Chaturbate'},
+    {r:/spankbang/,n:'SpankBang'},{r:/redtube/,n:'RedTube'},{r:/tube8/,n:'Tube8'},
+    {r:/missav|javdb|javbus|javhd/,n:'JAV Platform'},{r:/txxx/,n:'TXXX'},
+    {r:/eporner/,n:'EPorner'},{r:/beeg/,n:'Beeg'},{r:/nuvid/,n:'Nuvid'},
+    {r:/cam4|bongacams|livejasmin/,n:'Cam Site'},{r:/fansly/,n:'Fansly'},
+    {r:/desixnxx|masahub|desi49/,n:'Desi Platform'}
   ];
-  var detectedPlat = '🔞 Adult URL detected';
+  var detectedPlat = 'Adult URL detected';
   for (var i=0;i<plats.length;i++) { if(plats[i].r.test(val)){detectedPlat=plats[i].n+' detected';break;} }
   pe.textContent = detectedPlat;
 
@@ -1335,7 +1342,7 @@ function onUrl(val) {
   if (!_vidCapOk) {
     initVidTurnstile();
     dlBtn.disabled = true;
-    dlBtn.innerHTML = '🔒 Verify to Download';
+    dlBtn.innerHTML = 'Verify to Download';
     document.getElementById('cfVidVerified').classList.remove('show');
   } else {
     dlBtn.disabled = false;
@@ -1367,7 +1374,7 @@ function onUrl(val) {
           showPreviewCard(d, detectedPlat.split(' detected')[0]);
         } else {
           // Clear skeleton on error
-          document.getElementById('pcThumb').innerHTML = '🔞';
+          document.getElementById('pcThumb').innerHTML = '';
           document.getElementById('pcTitle').textContent = _friendlyError(d.error);
         }
       })
@@ -1379,13 +1386,13 @@ function onUrl(val) {
 function _friendlyError(err) {
   if (!err) return 'Could not fetch info — please retry';
   var e = String(err).toLowerCase();
-  if (e.includes('private')) return '🔒 This video is private or members-only';
-  if (e.includes('removed') || e.includes('deleted')) return '🗑 Video has been removed';
-  if (e.includes('copyright') || e.includes('unavailable')) return '⚠ Video unavailable in your region';
-  if (e.includes('age') || e.includes('restricted')) return '🔞 Age-restricted — try logging in';
-  if (e.includes('login') || e.includes('sign in')) return '🔑 Login required on platform';
-  if (e.includes('timeout') || e.includes('network')) return '🌐 Network timeout — retry';
-  return '⚠ ' + err;
+  if (e.includes('private')) return 'This video is private or members-only';
+  if (e.includes('removed') || e.includes('deleted')) return 'Video has been removed';
+  if (e.includes('copyright') || e.includes('unavailable')) return 'Video unavailable in your region';
+  if (e.includes('age') || e.includes('restricted')) return 'Age-restricted — try logging in';
+  if (e.includes('login') || e.includes('sign in')) return 'Login required on platform';
+  if (e.includes('timeout') || e.includes('network')) return 'Network timeout — retry';
+  return '' + err;
 }
 
 // handleVidCaptcha is now handled by Turnstile callback in initVidTurnstile()
@@ -1411,7 +1418,7 @@ async function doPaste() {
 }
 
 function handleDownload() {
-  if (!_vidCapOk) { showToast('⚠ Please complete Cloudflare verification first','error',2500); return; }
+  if (!_vidCapOk) { showToast('Please complete Cloudflare verification first','error',2500); return; }
   if (!checkRateLimit()) return;
   var url = document.getElementById('urlInput').value.trim();
   if (!url) { document.getElementById('urlInput').focus(); showToast('Paste a URL first','info'); return; }
@@ -1420,7 +1427,7 @@ function handleDownload() {
 
   // ── Quick Mode: skip modal, direct best quality download ──
   if (_quickMode) {
-    showToast('⚡ Quick Mode — fetching best quality…', 'info', 2500);
+    showToast('Quick Mode — fetching best quality…', 'info', 2500);
     startProg();
     getAdultToken().then(function(adultToken) {
       smartFetch(url, '/download', {
@@ -1435,17 +1442,17 @@ function handleDownload() {
           var proxyUrl = d.url.startsWith('http') ? d.url : (serverBase + d.url);
           var filename = 'VidSnap_Adult.mp4';
           saveToHistory(url, d.title || url, 'Video (Quick)');
-          showToast('✅ Starting download!', 'success', 2000);
+          showToast('Starting download!', 'success', 2000);
           startProgressDl(proxyUrl, filename);
         } else {
-          showToast('⚠ Quick Mode failed — opening modal', 'error', 2500);
+          showToast('Quick Mode failed — opening modal', 'error', 2500);
           _quickMode = false;
           openModal(); showLoad('Fetching video info…'); startProg();
           _fetchInfo(url);
         }
       }).catch(function() {
         endProg(false);
-        showToast('⚠ Server error — retry', 'error');
+        showToast('Server error — retry', 'error');
       });
     });
     return;
@@ -1471,7 +1478,7 @@ function _fetchInfo(url) {
       setCachedInfo(url, d);
       _processFetchedInfo(d);
     })
-    .catch(function() { showErr('🌐 Servers unavailable — please retry'); });
+    .catch(function() { showErr('Servers unavailable — please retry'); });
 }
 
 function _processFetchedInfo(d) {
@@ -1483,7 +1490,7 @@ function _processFetchedInfo(d) {
     var t = document.getElementById('mThumb');
     var img = new Image();
     img.onload = function() { t.innerHTML=''; img.style.cssText='width:100%;height:100%;object-fit:cover;border-radius:8px'; t.appendChild(img); };
-    img.onerror = function() { t.innerHTML='🔞'; };
+    img.onerror = function() { t.innerHTML=''; };
     img.src = d.thumbnail;
   }
   _vFmts = d.video_formats||[]; _aFmts = d.audio_formats||[];
@@ -1543,7 +1550,7 @@ function switchTab(t) {
 // _dlInProgress declared at top of script
 function startDownload() {
   if (!_sel||!_curUrl) return;
-  if (!_modCapOk) { showToast('⚠ Please complete Cloudflare verification first','error',2500); return; }
+  if (!_modCapOk) { showToast('Please complete Cloudflare verification first','error',2500); return; }
   if (!canStartDownload()) return;
   if (!checkRateLimit()) return;
   if (_dlInProgress) return;
@@ -1575,7 +1582,7 @@ function startDownload() {
           saveToHistory(_curUrl, _dlTitle, _sel.isAudio ? 'Audio MP3' : 'Video ' + _sel.id + 'p');
           btn.innerHTML = '⬇ Download Now';
           btn.disabled = false;
-          showToast('✅ Ready! Tap Download.','success',2500);
+          showToast('Ready! Tap Download.','success',2500);
           btn.onclick = function() {
             btn.innerHTML='⏳ Downloading…'; btn.disabled=true;
             startProgressDl(proxyUrl, filename);
@@ -1590,7 +1597,7 @@ function startDownload() {
               document.getElementById('mDlBtn').disabled=true;
               document.getElementById('dlBtn').disabled=true;
               closeModal();
-              showToast('✅ Done! Verify again for next video.','success',3500);
+              showToast('Done! Verify again for next video.','success',3500);
             }, 2200);
           };
         } else {
@@ -1601,7 +1608,7 @@ function startDownload() {
       .catch(function() {
         _dlInProgress=false;
         _activeDlCount = Math.max(0, _activeDlCount - 1);
-        showErr('⚠ Could not reach server — retry');
+        showErr('Could not reach server — retry');
         btn.disabled=false; btn.innerHTML='⬇ Download';
       });
   });
@@ -1621,7 +1628,7 @@ function retryDl() {
             showContent();
           } else { showErr(res.data.error||'Failed'); }
         })
-        .catch(function(){ showErr('🌐 Server error — please retry'); });
+        .catch(function(){ showErr('Server error — please retry'); });
     }, 300);
   }
 }
@@ -1637,14 +1644,14 @@ function startProgressDl(proxyUrl, filename) {
   document.getElementById('dpSpeed').textContent='—';
   document.getElementById('dpEta').textContent='—';
   document.getElementById('dpSize').textContent='—';
-  document.getElementById('dpPhase').textContent='🔄 Connecting to server…';
+  document.getElementById('dpPhase').textContent='Connecting to server…';
 
   // Phase messages
   var phases = [
-    {t:0,    m:'🔄 Connecting to server…'},
-    {t:1500, m:'🔍 Resolving stream URL…'},
+    {t:0,    m:'Connecting to server…'},
+    {t:1500, m:'Resolving stream URL…'},
     {t:3500, m:'⬇ Downloading content…'},
-    {t:8000, m:'⚡ Optimizing transfer…'},
+    {t:8000, m:'Optimizing transfer…'},
   ];
   var _phaseTimers = phases.map(function(p) {
     return setTimeout(function(){ document.getElementById('dpPhase').textContent = p.m; }, p.t);
@@ -1659,7 +1666,7 @@ function startProgressDl(proxyUrl, filename) {
         return reader.read().then(function(r) {
           if (r.done) {
             _phaseTimers && _phaseTimers.forEach(clearTimeout);
-            document.getElementById('dpPhase').textContent='✅ Finalizing…';
+            document.getElementById('dpPhase').textContent='Finalizing…';
             var blob = new Blob(chunks, {type: resp.headers.get('Content-Type')||'video/mp4'});
             var bUrl = URL.createObjectURL(blob);
             var a = document.createElement('a'); a.href=bUrl; a.download=filename; a.style.display='none';
@@ -1667,7 +1674,7 @@ function startProgressDl(proxyUrl, filename) {
             setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(bUrl);},1000);
             document.getElementById('dpBar').style.width='100%';
             document.getElementById('dpPct').textContent='100%';
-            document.getElementById('dpLabel').textContent='✅ Done!';
+            document.getElementById('dpLabel').textContent='Done!';
             return;
           }
           chunks.push(r.value); loaded+=r.value.length;
@@ -1715,9 +1722,9 @@ function renderUserComment(c) {
   var stars = '★'.repeat(c.stars) + '☆'.repeat(5 - c.stars);
   var div = document.createElement('div');
   div.className = 'review-card';
-  div.style.borderColor = 'rgba(248,113,113,0.3)';
+  div.style.borderColor = 'rgba(var(--ac-rgb),0.3)';
   div.innerHTML = '<div class="review-top">'
-    + '<div class="review-avatar">👤</div>'
+    + '<div class="review-avatar"></div>'
     + '<span class="review-name">' + esc(c.name || 'You') + '</span>'
     + '<span class="review-stars">' + stars + '</span>'
     + '</div>'
@@ -1729,7 +1736,7 @@ function renderUserComment(c) {
 
 function submitComment() {
   var text = (document.getElementById('commentText').value || '').trim();
-  if (!text) { showToast('⚠ Write something first', 'error', 2000); return; }
+  if (!text) { showToast('Write something first', 'error', 2000); return; }
   var name = (document.getElementById('commentName').value || '').trim() || 'Anonymous';
   var stars = parseInt(document.getElementById('commentStars').value || '5');
   var c = { name: name, text: text, stars: stars, ts: Date.now() };
@@ -1737,7 +1744,7 @@ function submitComment() {
   document.getElementById('commentForm').style.display = 'none';
   document.getElementById('commentDone').style.display = 'block';
   renderUserComment(c);
-  showToast('✅ Review posted!', 'success', 2000);
+  showToast('Review posted!', 'success', 2000);
 }
 
 // ══ QUICK MODE ══════════════════════════════════════
@@ -1745,7 +1752,7 @@ function submitComment() {
 function toggleQuickMode(on) {
   _quickMode = on;
   try { localStorage.setItem('vs-quick-mode', on ? '1' : '0'); } catch(e){}
-  showToast(on ? '⚡ Quick Mode ON — direct download!' : '⚡ Quick Mode OFF', 'info', 2000);
+  showToast(on ? 'Quick Mode ON — direct download!' : 'Quick Mode OFF', 'info', 2000);
 }
 (function initQuickMode() {
   try {
@@ -1828,7 +1835,7 @@ function renderHistory() {
     var agoStr = ago < 60 ? ago + 'm ago' : Math.round(ago/60) + 'h ago';
     var div = document.createElement('div');
     div.className = 'hist-item';
-    div.innerHTML = '<span class="hist-icon">🔞</span>'
+    div.innerHTML = '<span class="hist-icon"></span>'
       + '<div class="hist-info"><div class="hist-name">' + esc(h.title||h.url) + '</div>'
       + '<div class="hist-meta">' + esc(h.fmt||'video') + ' · ' + agoStr + '</div></div>'
       + '<button class="hist-btn" onclick="redownload(' + JSON.stringify(h.url) + ')">↩ Re-download</button>';
@@ -1920,7 +1927,7 @@ function smartFetch(url, endpoint, options) {
       }
       // Both servers failed — auto-retry once after 3 seconds
       if (err.bothFailed) {
-        showToast('⚠ Servers busy — retrying in 3s…', 'info', 3000);
+        showToast('Servers busy — retrying in 3s…', 'info', 3000);
         return new Promise(function(resolve) {
           setTimeout(function() {
             attempt()
@@ -1954,7 +1961,7 @@ function closeModal() {
   document.getElementById('dlProgressWrap').classList.remove('show');
   document.getElementById('mTitle').textContent='Loading…';
   document.getElementById('mDur').textContent='—';
-  document.getElementById('mThumb').innerHTML='🔞';
+  document.getElementById('mThumb').innerHTML='';
   showLoad('Fetching video info…');
 }
 function showLoad(msg) {
@@ -2000,7 +2007,7 @@ function endProg(ok) {
 // ══ TOAST ════════════════════════════════════════════
 function showToast(msg, type, dur) {
   type=type||'info'; dur=dur||3000;
-  var icons={success:'✅',error:'❌',info:'ℹ️'};
+  var icons={success:'',error:'',info:'ℹ'};
   var c=document.getElementById('toast-cont');
   var t=document.createElement('div');
   t.className='toast toast-'+type;
@@ -2049,29 +2056,29 @@ document.querySelectorAll('.sb-item').forEach(function(el){
 // ══ SIDEBAR INFO MODALS ══════════════════════════════
 var _sbContent = {
   howto: {
-    title: '📥 How to Download',
+    title: 'How to Download',
     body: '<p style="margin-bottom:1rem">Follow these simple steps to download adult content:</p>'
       +'<ol style="padding-left:1.2rem;display:flex;flex-direction:column;gap:0.7rem">'
       +'<li><strong style="color:var(--text)">Copy the URL</strong> — Go to the adult platform and copy the video link from your browser address bar.</li>'
-      +'<li><strong style="color:var(--text)">Paste it</strong> — Tap the input box on VidSnap 18+ and paste the link, or use the 📋 Paste button.</li>'
+      +'<li><strong style="color:var(--text)">Paste it</strong> — Tap the input box on VidSnap 18+ and paste the link, or use the Paste button.</li>'
       +'<li><strong style="color:var(--text)">Verify</strong> — Complete the Cloudflare verification widget to confirm you\'re human.</li>'
       +'<li><strong style="color:var(--text)">Choose quality</strong> — Pick your preferred video quality or audio-only format from the modal.</li>'
       +'<li><strong style="color:var(--text)">Download</strong> — Tap Download. The file will save directly to your device.</li>'
       +'</ol>'
-      +'<div style="margin-top:1.2rem;padding:0.75rem 1rem;background:var(--red2);border:1px solid rgba(248,113,113,0.2);border-radius:10px;font-size:0.8rem;color:var(--muted)">'
-      +'⚡ <strong style="color:var(--red)">Quick Mode</strong> — Enable Quick Mode to skip the modal and directly download the best available quality.'
+      +'<div style="margin-top:1.2rem;padding:0.75rem 1rem;background:var(--red2);border:1px solid rgba(var(--ac-rgb),0.2);border-radius:10px;font-size:0.8rem;color:var(--muted)">'
+      +'<strong style="color:var(--red)">Quick Mode</strong> — Enable Quick Mode to skip the modal and directly download the best available quality.'
       +'</div>'
   },
   report: {
-    title: '🚨 Report an Issue',
+    title: 'Report an Issue',
     body: '<p style="margin-bottom:1rem">Having trouble with a download or found a broken platform? Let us know.</p>'
       +'<div style="display:flex;flex-direction:column;gap:0.6rem">'
       +'<div style="padding:0.8rem 1rem;background:var(--bg3);border:1px solid var(--border2);border-radius:10px">'
-      +'<div style="font-weight:700;color:var(--text);margin-bottom:0.3rem;font-size:0.85rem">📧 Email Us</div>'
+      +'<div style="font-weight:700;color:var(--text);margin-bottom:0.3rem;font-size:0.85rem">Email Us</div>'
       +'<a href="mailto:support@vidsnap.app" style="color:var(--red);font-size:0.83rem;text-decoration:none">support@vidsnap.app</a>'
       +'</div>'
       +'<div style="padding:0.8rem 1rem;background:var(--bg3);border:1px solid var(--border2);border-radius:10px">'
-      +'<div style="font-weight:700;color:var(--text);margin-bottom:0.3rem;font-size:0.85rem">🐛 Common Issues</div>'
+      +'<div style="font-weight:700;color:var(--text);margin-bottom:0.3rem;font-size:0.85rem">Common Issues</div>'
       +'<ul style="padding-left:1.1rem;color:var(--muted);font-size:0.8rem;display:flex;flex-direction:column;gap:0.35rem">'
       +'<li>Private or members-only content cannot be downloaded</li>'
       +'<li>Some platforms update their protection frequently — retry after a few hours</li>'
@@ -2080,18 +2087,18 @@ var _sbContent = {
       +'</ul></div></div>'
   },
   privacy: {
-    title: '🔒 Privacy Policy',
+    title: 'Privacy Policy',
     body: '<p style="margin-bottom:0.8rem;color:var(--muted);font-size:0.8rem">Last updated: January 2025</p>'
       +'<div style="display:flex;flex-direction:column;gap:0.9rem">'
       +'<div><div style="font-weight:700;color:var(--text);margin-bottom:0.3rem">Data We Collect</div><p style="color:var(--muted);font-size:0.83rem">VidSnap does not collect, store, or sell any personal data. We do not require account registration. URLs you paste are processed in real-time and are never logged to our servers.</p></div>'
       +'<div><div style="font-weight:700;color:var(--text);margin-bottom:0.3rem">Cookies & Local Storage</div><p style="color:var(--muted);font-size:0.83rem">We use browser localStorage only to remember your age verification status (expires in 24 hours) and your download history (stored locally on your device only). We do not use tracking cookies.</p></div>'
       +'<div><div style="font-weight:700;color:var(--text);margin-bottom:0.3rem">Third-Party Services</div><p style="color:var(--muted);font-size:0.83rem">We use Cloudflare Turnstile for bot protection. Cloudflare may collect anonymous usage data per their own privacy policy.</p></div>'
       +'<div><div style="font-weight:700;color:var(--text);margin-bottom:0.3rem">Content</div><p style="color:var(--muted);font-size:0.83rem">We do not host, cache, or redistribute any video content. All media is streamed directly from the original platform servers.</p></div>'
-      +'<div style="padding:0.75rem 1rem;background:var(--red2);border:1px solid rgba(248,113,113,0.2);border-radius:10px;font-size:0.79rem;color:var(--muted)">Questions? Contact us at <a href="mailto:privacy@vidsnap.app" style="color:var(--red);text-decoration:none">privacy@vidsnap.app</a></div>'
+      +'<div style="padding:0.75rem 1rem;background:var(--red2);border:1px solid rgba(var(--ac-rgb),0.2);border-radius:10px;font-size:0.79rem;color:var(--muted)">Questions? Contact us at <a href="mailto:privacy@vidsnap.app" style="color:var(--red);text-decoration:none">privacy@vidsnap.app</a></div>'
       +'</div>'
   },
   dmca: {
-    title: '⚖️ DMCA Policy',
+    title: 'DMCA Policy',
     body: '<p style="margin-bottom:0.8rem;color:var(--muted);font-size:0.8rem">VidSnap respects intellectual property rights.</p>'
       +'<div style="display:flex;flex-direction:column;gap:0.9rem">'
       +'<div><div style="font-weight:700;color:var(--text);margin-bottom:0.3rem">Our Position</div><p style="color:var(--muted);font-size:0.83rem">VidSnap is a technical tool that helps users access publicly available content. We do not host, store, or distribute any copyrighted material on our servers.</p></div>'
@@ -2101,8 +2108,8 @@ var _sbContent = {
       +'</div>'
   },
   disclaimer: {
-    title: '🔞 18+ Disclaimer',
-    body: '<div style="padding:0.75rem 1rem;background:var(--red2);border:1px solid rgba(248,113,113,0.3);border-radius:10px;margin-bottom:1rem;font-size:0.85rem;color:var(--red);font-weight:700;text-align:center">⚠ ADULT CONTENT WARNING</div>'
+    title: '18+ Disclaimer',
+    body: '<div style="padding:0.75rem 1rem;background:var(--red2);border:1px solid rgba(var(--ac-rgb),0.3);border-radius:10px;margin-bottom:1rem;font-size:0.85rem;color:var(--red);font-weight:700;text-align:center">ADULT CONTENT WARNING</div>'
       +'<div style="display:flex;flex-direction:column;gap:0.9rem">'
       +'<div><div style="font-weight:700;color:var(--text);margin-bottom:0.3rem">Age Requirement</div><p style="color:var(--muted);font-size:0.83rem">This section of VidSnap is strictly intended for adults aged 18 years or older (or the legal age of majority in your jurisdiction, whichever is higher). By accessing this area, you have confirmed your age.</p></div>'
       +'<div><div style="font-weight:700;color:var(--text);margin-bottom:0.3rem">Legal Responsibility</div><p style="color:var(--muted);font-size:0.83rem">The legality of adult content varies by jurisdiction. You are solely responsible for ensuring that your use of this tool complies with all applicable local, national, and international laws.</p></div>'
@@ -2111,19 +2118,19 @@ var _sbContent = {
       +'</div>'
   },
   contact: {
-    title: '✉️ Contact Us',
+    title: '✉Contact Us',
     body: '<p style="margin-bottom:1rem;color:var(--muted);font-size:0.83rem">We\'re here to help. Reach out for any queries, issues, or feedback.</p>'
       +'<div style="display:flex;flex-direction:column;gap:0.6rem">'
-      +'<a href="mailto:support@vidsnap.app" style="display:flex;align-items:center;gap:0.8rem;padding:0.85rem 1rem;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor=\'rgba(248,113,113,0.4)\'" onmouseout="this.style.borderColor=\'var(--border2)\'">'
-      +'<span style="width:36px;height:36px;background:var(--red2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">📧</span>'
+      +'<a href="mailto:support@vidsnap.app" style="display:flex;align-items:center;gap:0.8rem;padding:0.85rem 1rem;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor=\'rgba(var(--ac-rgb),0.4)\'" onmouseout="this.style.borderColor=\'var(--border2)\'">'
+      +'<span style="width:36px;height:36px;background:var(--red2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0"></span>'
       +'<div><div style="font-weight:700;color:var(--text);font-size:0.85rem">General Support</div><div style="color:var(--red);font-size:0.8rem">support@vidsnap.app</div></div>'
       +'</a>'
-      +'<a href="mailto:dmca@vidsnap.app" style="display:flex;align-items:center;gap:0.8rem;padding:0.85rem 1rem;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor=\'rgba(248,113,113,0.4)\'" onmouseout="this.style.borderColor=\'var(--border2)\'">'
-      +'<span style="width:36px;height:36px;background:var(--red2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">⚖️</span>'
+      +'<a href="mailto:dmca@vidsnap.app" style="display:flex;align-items:center;gap:0.8rem;padding:0.85rem 1rem;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor=\'rgba(var(--ac-rgb),0.4)\'" onmouseout="this.style.borderColor=\'var(--border2)\'">'
+      +'<span style="width:36px;height:36px;background:var(--red2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0"></span>'
       +'<div><div style="font-weight:700;color:var(--text);font-size:0.85rem">DMCA / Legal</div><div style="color:var(--red);font-size:0.8rem">dmca@vidsnap.app</div></div>'
       +'</a>'
-      +'<a href="mailto:privacy@vidsnap.app" style="display:flex;align-items:center;gap:0.8rem;padding:0.85rem 1rem;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor=\'rgba(248,113,113,0.4)\'" onmouseout="this.style.borderColor=\'var(--border2)\'">'
-      +'<span style="width:36px;height:36px;background:var(--red2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">🔒</span>'
+      +'<a href="mailto:privacy@vidsnap.app" style="display:flex;align-items:center;gap:0.8rem;padding:0.85rem 1rem;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor=\'rgba(var(--ac-rgb),0.4)\'" onmouseout="this.style.borderColor=\'var(--border2)\'">'
+      +'<span style="width:36px;height:36px;background:var(--red2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0"></span>'
       +'<div><div style="font-weight:700;color:var(--text);font-size:0.85rem">Privacy Queries</div><div style="color:var(--red);font-size:0.8rem">privacy@vidsnap.app</div></div>'
       +'</a>'
       +'</div>'
