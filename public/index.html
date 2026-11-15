@@ -3121,7 +3121,7 @@ onclick="window.open('https://www.instagram.com/shivam_shrma.01','_blank')">
     <div class="plat-grid">
       <div class="plat-card" onclick="openPlatInfo('instagram')" style="--b:#e1306c">
         <div class="plat-logo">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><defs><radialGradient id="ig1" cx="30%" cy="107%" r="150%"><stop offset="0%" stop-color="#fdf497"/><stop offset="5%" stop-color="#fdf497"/><stop offset="45%" stop-color="#fd5949"/><stop offset="60%" stop-color="#d6249f"/><stop offset="90%" stop-color="#285AEB"/></radialGradient></defs><rect x="2" y="2" width="20" height="20" rx="5.5" fill="url(#ig1)"/><rect x="6.5" y="6.5" width="11" height="11" rx="3" stroke="white" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="3" stroke="white" stroke-width="1.5" fill="none"/><circle cx="17" cy="7" r="1" fill="white"/></svg>
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><defs><radialGradient id="ig2" cx="30%" cy="107%" r="150%"><stop offset="0%" stop-color="#fdf497"/><stop offset="5%" stop-color="#fdf497"/><stop offset="45%" stop-color="#fd5949"/><stop offset="60%" stop-color="#d6249f"/><stop offset="90%" stop-color="#285AEB"/></radialGradient></defs><rect x="2" y="2" width="20" height="20" rx="5.5" fill="url(#ig2)"/><rect x="6.5" y="6.5" width="11" height="11" rx="3" stroke="white" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="3" stroke="white" stroke-width="1.5" fill="none"/><circle cx="17" cy="7" r="1" fill="white"/></svg>
         </div>
         <div class="plat-name">Instagram</div>
       </div>
@@ -4713,8 +4713,10 @@ function showErr(msg) {
   document.getElementById('contentState').style.display = 'none';
   document.getElementById('errState').style.display = 'block';
   document.getElementById('errMsg').textContent = msg;
+  var _vt = document.getElementById('vidTitle'), _vd = document.getElementById('vidDuration');
+  if (_vt) _vt.textContent = 'Could not load video'; if (_vd) _vd.textContent = 'Please try again';
   endProgress(false);
-  showToast(msg, 'error', 4000);
+  var _ov = document.getElementById('overlay'); if (!(_ov && _ov.classList.contains('open'))) showToast(msg, 'error', 4000);
 }
 function showContent() {
   _finishStageLoader();
@@ -5797,6 +5799,14 @@ function sbSyncControls() {
   if (sub) sub.textContent = VS_SKIN_NAMES[pref] || 'Obsidian';
 }
 sbSyncControls();
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { var _o = document.getElementById('overlay'); if (_o && _o.classList.contains('open')) closeModal(); }
+});
+function switchServerAndRetry() {
+  var n = (typeof activeServer !== 'undefined' && activeServer === 1) ? 2 : 1;
+  if (typeof sbSetServer === 'function') sbSetServer(n); else setServer(n);
+  retryDownload();
+}
 function sbSetServer(n) {
   // Call existing setServer function
   if(typeof setServer === 'function') setServer(n);
