@@ -14,12 +14,11 @@ window.__vsLight=light;}catch(e){}})();
 <meta name="theme-color" content="#000000" id="vsThemeMeta">
 <script>try{if(window.__vsLight)document.getElementById('vsThemeMeta').setAttribute('content','#fafafa')}catch(e){}</script>
 
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ── TOKENS ── */
+
 :root{
   --bg0:#000;--bg1:#060606;--bg2:#0b0b0b;--bg3:#131313;--bg4:#1c1c1c;
   --card:rgba(255,255,255,0.035);--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.16);
@@ -49,7 +48,6 @@ html,body{height:100%;overflow-x:hidden}
 body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.6}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--dim);border-radius:4px}
 
-/* ── HEADER ── */
 #header{
   position:sticky;top:0;z-index:200;height:60px;
   background:var(--bg0);
@@ -63,7 +61,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .back-link{display:flex;align-items:center;gap:5px;color:var(--muted);text-decoration:none;font-size:0.8rem;font-weight:600;padding:5px 12px;border:1px solid var(--border2);border-radius:8px;transition:all var(--ease)}
 .back-link:hover{color:var(--text);border-color:var(--border)}
 
-/* ── AGE GATE OVERLAY ── */
 #ageGate{
   position:fixed;inset:0;z-index:9999;
   background:rgba(4,4,8,0.97);backdrop-filter:blur(18px);
@@ -88,7 +85,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .age-sub{font-size:0.82rem;color:var(--muted);line-height:1.6}
 .age-card-body{padding:1.8rem 1.8rem 1.6rem}
 
-/* reCAPTCHA gate widget — big, premium */
 .rc-gate-wrap{
   background:#f9f9f9;
   border:1px solid #d3d3d3;
@@ -106,7 +102,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 [data-theme="dark"] .rc-gate-wrap{background:#1a1a24;border-color:rgba(255,255,255,0.14);box-shadow:0 2px 8px rgba(0,0,0,0.4)}
 [data-theme="dark"] .rc-gate-wrap:hover{box-shadow:0 3px 14px rgba(0,0,0,0.55)}
 
-/* Checkbox square */
 .rc-gate-sq{
   width:28px;height:28px;flex-shrink:0;
   border:2px solid #c1c1c1;border-radius:2px;
@@ -125,7 +120,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 @keyframes rcSpin{to{transform:rotate(360deg)}}
 @keyframes rcPop{from{transform:scale(0.4)}to{transform:scale(1)}}
 
-/* Label area */
 .rc-gate-lbl{flex:1}
 .rc-gate-txt{font-size:15px;font-weight:400;color:#333;font-family:Roboto,Arial,sans-serif;letter-spacing:0.01em}
 .rc-gate-sub{font-size:9px;color:#a0a0a0;margin-top:3px;font-family:Roboto,Arial,sans-serif}
@@ -133,7 +127,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 [data-theme="dark"] .rc-gate-txt{color:#d4d4e8}
 [data-theme="dark"] .rc-gate-sub{color:#55556a}
 
-/* Brand side */
 .rc-gate-brand{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;min-width:54px}
 .rc-gate-logo{
   width:40px;height:40px;
@@ -142,15 +135,11 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .rc-gate-name{font-size:8.5px;font-weight:700;color:#4a90d9;font-family:Roboto,Arial,sans-serif;letter-spacing:0.4px;text-transform:uppercase}
 .rc-gate-fine{font-size:7px;color:#b0b0b0;text-align:center;line-height:1.3;font-family:Roboto,Arial,sans-serif}
 
-/* Verifying text below widget */
 .rc-status{font-size:0.78rem;color:var(--muted);text-align:center;min-height:1.2rem;margin-bottom:0.8rem;transition:color 0.3s}
 .rc-status.ok{color:var(--accent)}
 
-/* Rating row */
-.rc-rating{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:1.2rem;font-size:0.76rem;color:var(--muted)}
 .rc-stars{color:#f59e0b;letter-spacing:1px;font-size:0.82rem}
 
-/* Enter button */
 .btn-enter{
   width:100%;padding:0.95rem;border-radius:var(--radius-sm);border:none;
   background:var(--red);color:#fff;font-weight:800;font-size:0.92rem;
@@ -168,7 +157,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 }
 .btn-gate-exit:hover{color:var(--text)}
 
-/* Warning box in gate */
 .gate-warn{
   background:var(--red2);border:1px solid rgba(var(--ac-rgb),0.2);
   border-radius:var(--radius-sm);padding:0.75rem 1rem;
@@ -176,11 +164,9 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
   margin-bottom:1.2rem;
 }
 
-/* ── MAIN CONTENT ── */
 #mainContent{display:none;min-height:calc(100vh - 60px)}
 #mainContent.show{display:block}
 
-/* Hero */
 .hero{min-height:calc(100vh - 60px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 1.5rem 8rem;position:relative;overflow:hidden}
 .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% -10%,rgba(var(--ac-rgb),0.07) 0%,transparent 70%),radial-gradient(ellipse 40% 30% at 80% 80%,rgba(168,85,247,0.05) 0%,transparent 60%);pointer-events:none}
 .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(var(--ac-rgb),0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(var(--ac-rgb),0.015) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 70% 50% at 50% 50%,black 0%,transparent 100%);pointer-events:none}
@@ -191,7 +177,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .hero-title em{font-style:normal;color:var(--red);text-shadow:0 0 40px rgba(var(--ac-rgb),0.3)}
 .hero-sub{color:var(--muted);font-size:0.95rem;text-align:center;max-width:460px;margin-bottom:2rem;line-height:1.7;position:relative;z-index:1}
 
-/* Search box */
 .search-wrap{width:100%;max-width:620px;position:relative;z-index:2}
 .s-box{display:flex;align-items:center;background:var(--bg2);border:1.5px solid var(--border2);border-radius:var(--radius-lg);padding:6px 6px 6px 18px;gap:0.5rem;transition:all var(--ease);box-shadow:var(--shadow-sm)}
 .s-box:focus-within{border-color:var(--red);box-shadow:0 0 0 4px rgba(var(--ac-rgb),0.12)}
@@ -207,7 +192,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 #progressWrap{margin-top:0.6rem;height:3px;background:var(--bg3);border-radius:2px;display:none;overflow:hidden}
 #progressBar{height:100%;background:linear-gradient(90deg,var(--red),var(--text));width:0%;transition:width 0.4s ease}
 
-/* Per-video reCAPTCHA wrapper */
 #vidCapWrap{display:none;margin-top:0.8rem;animation:fadeUp 0.3s ease both}
 #vidCapWrap.show{display:block}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
@@ -216,7 +200,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 #dlBtn:disabled{opacity:0.45;cursor:not-allowed;box-shadow:none}
 #dlBtn:hover:not(:disabled){background:var(--text2);transform:translateY(-1px)}
 
-/* ── rc-main (per-video + modal captcha widget) ── */
 .rc-main{
   display:flex;align-items:center;
   background:#f9f9f9;
@@ -258,7 +241,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .trust-strip{display:flex;gap:0.6rem;margin-top:1.2rem;flex-wrap:wrap;justify-content:center;position:relative;z-index:1}
 .t-item{display:flex;align-items:center;gap:4px;background:var(--red2);border:1px solid rgba(var(--ac-rgb),0.18);color:var(--red);padding:4px 12px;border-radius:100px;font-size:0.7rem;font-weight:700}
 
-/* Download modal */
 .overlay{position:fixed;inset:0;z-index:500;background:rgba(4,4,8,0.82);display:none;align-items:flex-end;justify-content:center;will-change:opacity}
 .overlay.open{display:flex}
 @media(min-width:600px){.overlay{align-items:center;padding:1rem}}
@@ -275,7 +257,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .m-close:hover{color:var(--red);border-color:rgba(var(--ac-rgb),0.4)}
 .m-body{padding:1.1rem 1.4rem 1.4rem}
 
-/* Formats */
 .tab-row{display:flex;gap:0.4rem;margin-bottom:1rem;background:var(--bg0);border-radius:10px;padding:3px}
 .tab-btn{flex:1;padding:0.5rem;border-radius:8px;border:none;background:none;color:var(--muted);font-size:0.82rem;font-weight:600;font-family:var(--body);cursor:pointer;transition:all var(--ease)}
 .tab-btn.active{background:var(--bg4);color:var(--text);box-shadow:0 2px 6px rgba(0,0,0,0.3)}
@@ -307,7 +288,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .dl-btn:hover:not(:disabled){background:var(--text2);transform:translateY(-1px)}
 .dl-btn:disabled{opacity:0.45;cursor:not-allowed;transform:none}
 
-/* Progress */
 #dlProgressWrap{display:none;margin-top:0.75rem;background:var(--bg0);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:0.7rem 0.9rem}
 #dlProgressWrap.show{display:block}
 .dp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem}
@@ -319,15 +299,12 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .dp-meta span{font-size:0.68rem;color:var(--muted)}
 .dp-meta strong{color:var(--text2);font-weight:600}
 
-/* Modal captcha */
 #mCapWrap{margin-bottom:0.75rem}
 .skeleton{background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite linear;border-radius:6px}
 @keyframes shimmer{to{background-position:-200% 0}}
 
-/* Disclaimer */
 .disc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.2rem;margin-top:1.5rem;font-size:0.72rem;color:var(--dim);line-height:1.7;max-width:620px;text-align:center;position:relative;z-index:1}
 
-/* ── Quick Download Toggle ── */
 .quick-toggle-wrap{display:flex;align-items:center;justify-content:space-between;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:0.6rem 0.9rem;margin-top:0.6rem;max-width:620px;width:100%;position:relative;z-index:2}
 .quick-lbl{font-size:0.78rem;color:var(--text2);display:flex;align-items:center;gap:0.4rem}
 .quick-lbl b{color:var(--text)}
@@ -338,7 +315,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .toggle-sw input:checked + .toggle-track{background:rgba(var(--ac-rgb),0.25);border-color:rgba(var(--ac-rgb),0.5)}
 .toggle-sw input:checked + .toggle-track::before{transform:translateX(16px);background:var(--red)}
 
-/* ── Download History ── */
 .hist-section{width:100%;max-width:620px;margin-top:1.2rem;position:relative;z-index:2}
 .hist-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem}
 .hist-title{font-size:0.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
@@ -354,7 +330,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .hist-btn{font-size:0.68rem;padding:3px 8px;background:var(--red2);color:var(--red);border:1px solid rgba(var(--ac-rgb),0.3);border-radius:5px;cursor:pointer;flex-shrink:0;white-space:nowrap;transition:all 0.2s}
 .hist-btn:hover{background:rgba(var(--ac-rgb),0.25)}
 
-/* ── Reviews Section ── */
 .reviews-section{width:100%;max-width:620px;margin-top:1.5rem;position:relative;z-index:1}
 .reviews-head{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.75rem}
 .reviews-title{font-size:0.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
@@ -369,10 +344,8 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .review-text{font-size:0.74rem;color:var(--muted);line-height:1.55}
 .review-time{font-size:0.64rem;color:var(--dim);margin-top:0.25rem}
 
-/* ── Enhanced Progress Phases ── */
 .dp-phase{font-size:0.68rem;color:var(--blue);margin-top:0.25rem;min-height:0.9rem;transition:all 0.3s;font-style:italic}
 
-/* ── Micro animation improvements ── */
 .fmt-item{transition:all 0.18s cubic-bezier(0.4,0,0.2,1)}
 .fmt-item:active{transform:scale(0.98)}
 .dl-btn{transition:all 0.2s cubic-bezier(0.34,1.3,0.64,1)}
@@ -383,12 +356,10 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .modal{animation:sheetUp 0.35s cubic-bezier(0.34,1.15,0.64,1) both}
 .tab-btn{transition:all 0.2s cubic-bezier(0.4,0,0.2,1)}
 
-/* Sticky bottom */
 #stickyBar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;padding:0.8rem 1rem;background:#000;border-top:1px solid rgba(var(--ac-rgb),0.18)}
 #stickyBar button{width:100%;padding:0.85rem;background:var(--red);color:#fff;border:none;border-radius:var(--radius-sm);font-weight:800;font-size:0.9rem;font-family:var(--body);cursor:pointer;box-shadow:0 4px 14px rgba(var(--ac-rgb),0.35)}
 @media(max-width:640px){#stickyBar{display:block}body{padding-bottom:70px}}
 
-/* Toast */
 #toast-cont{position:fixed;top:74px;right:1rem;z-index:9998;display:flex;flex-direction:column;gap:0.5rem;pointer-events:none}
 .toast{display:flex;align-items:center;gap:0.6rem;background:var(--bg3);border:1px solid var(--border2);border-radius:9px;padding:0.7rem 0.9rem;font-size:0.83rem;font-weight:500;box-shadow:var(--shadow-sm);pointer-events:all;cursor:pointer;max-width:300px;animation:toastIn 0.3s cubic-bezier(0.34,1.4,0.64,1) both}
 .toast.out{animation:toastOut 0.22s ease forwards}
@@ -398,25 +369,19 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 @keyframes toastIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
 @keyframes toastOut{to{opacity:0;transform:translateX(18px)}}
 
-/* ── Beta Tag ── */
 .beta-tag{display:inline-flex;align-items:center;background:rgba(var(--ac-rgb),0.15);border:1px solid rgba(var(--ac-rgb),0.3);color:var(--red);padding:1px 7px;border-radius:100px;font-size:0.6rem;font-weight:800;margin-left:8px;letter-spacing:0.5px;vertical-align:middle;text-transform:uppercase}
 
-/* ── Cloudflare Turnstile Wrapper ── */
-.cf-turnstile-wrap{
-  background:var(--bg2);border:1px solid var(--border2);
-  border-radius:var(--radius-sm);padding:1rem;
-  margin-bottom:1rem;text-align:center;
-  min-height:70px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.5rem;
-}
-.cf-turnstile-wrap.main-wrap{margin-bottom:0.75rem}
-.ts-verified{display:none;font-size:0.82rem;color:var(--accent);font-weight:600;padding:0.5rem 1rem;background:rgba(var(--ac-rgb),0.08);border:1px solid rgba(var(--ac-rgb),0.2);border-radius:8px}
-.ts-verified.show{display:block}
+.gate-field{margin-bottom:1rem;text-align:left}
+.gate-lbl{display:block;font-size:0.78rem;color:var(--muted);margin-bottom:0.4rem;font-weight:600}
+.gate-lbl strong{color:var(--text);font-size:0.95rem;letter-spacing:0.3px}
+.gate-dob{display:grid;grid-template-columns:1fr 1.6fr 1.2fr;gap:0.5rem}
+.gate-dob select,#gateAns{width:100%;background:var(--input);color:var(--text);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:0.7rem 0.6rem;font:inherit;font-size:0.9rem;outline:none}
+.gate-dob select:focus,#gateAns:focus{border-color:var(--accent)}
+.gate-err{min-height:1.1rem;font-size:0.78rem;color:#f87171;text-align:center;margin-bottom:0.7rem}
 
-/* ── Download limit warning ── */
 .dl-limit-warn{display:none;font-size:0.75rem;color:var(--yellow);background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:8px;padding:0.5rem 0.75rem;margin-bottom:0.5rem;text-align:center}
 .dl-limit-warn.show{display:block}
 
-/* ── Preview Card ── */
 .preview-card{
   display:none;width:100%;max-width:620px;
   background:var(--bg2);border:1px solid rgba(var(--ac-rgb),0.2);
@@ -433,7 +398,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .pc-plat{font-size:0.7rem;color:var(--red);background:var(--red2);border:1px solid rgba(var(--ac-rgb),0.2);padding:1px 7px;border-radius:100px;font-weight:700}
 .pc-dur{font-size:0.7rem;color:var(--muted)}
 
-/* ── Animated Stats Strip ── */
 .stats-strip{
   display:flex;gap:2rem;margin-top:1.8rem;
   justify-content:center;flex-wrap:wrap;
@@ -443,7 +407,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .stat-num{font-family:var(--font);font-size:1.7rem;font-weight:700;color:var(--red);display:block;letter-spacing:-1px}
 .stat-lbl{font-size:0.7rem;color:var(--muted);margin-top:2px}
 
-/* ── Trust Badges ── */
 .trust-badges{
   display:flex;gap:0.6rem;margin-top:1.2rem;
   flex-wrap:wrap;justify-content:center;
@@ -457,7 +420,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 }
 .tb-icon{font-size:0.85rem}
 
-/* ── Supported Platforms Section ── */
 .supported-section{
   width:100%;max-width:620px;
   margin-top:1.5rem;position:relative;z-index:1;
@@ -478,7 +440,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 }
 .site-chip:hover{border-color:rgba(var(--ac-rgb),0.35);color:var(--red);background:var(--red2)}
 
-/* ── HAMBURGER BUTTON ── */
 .ham-btn{
   display:flex;flex-direction:column;justify-content:center;align-items:center;
   width:38px;height:38px;background:var(--bg3);border:1px solid var(--border2);
@@ -494,7 +455,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .ham-btn.open .ham-line:nth-child(2){opacity:0;transform:scaleX(0)}
 .ham-btn.open .ham-line:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 
-/* ── SIDEBAR OVERLAY ── */
 #sideOverlay{
   position:fixed;inset:0;z-index:400;
   background:rgba(0,0,0,0);
@@ -507,7 +467,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
   backdrop-filter:blur(2px);
 }
 
-/* ── SIDEBAR PANEL ── */
 #sidebar{
   position:fixed;top:0;right:0;z-index:450;
   width:min(300px,88vw);height:100%;
@@ -560,7 +519,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .sb-item-icon svg{width:16px;height:16px;stroke:var(--muted);transition:stroke 0.2s}
 .sb-item:hover .sb-item-icon svg{stroke:var(--red)}
 
-/* Stagger animation */
 #sidebar.open .sb-item{
   animation:sbItemIn 0.3s cubic-bezier(0.4,0,0.2,1) both;
 }
@@ -588,7 +546,6 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 }
 .sb-footer-txt{font-size:0.72rem;color:var(--muted);line-height:1.5}
 
-/* ── PAGE FOOTER ── */
 #pageFooter{
   background:#000;
   border-top:1px solid rgba(var(--ac-rgb),0.1);
@@ -608,15 +565,12 @@ body{background:var(--bg0);color:var(--text);font-family:var(--body);font-size:1
 .footer-sep{color:var(--dim);font-size:0.65rem}
 .footer-copy{font-size:0.7rem;color:var(--dim);line-height:1.6}
 
-/* ── RIPPLE ── */
 .sb-ripple{
   position:absolute;border-radius:50%;background:rgba(var(--ac-rgb),0.18);
   transform:scale(0);animation:ripple 0.5s linear;pointer-events:none;
 }
 @keyframes ripple{to{transform:scale(4);opacity:0}}
 
-
-/* pro monochrome pass */
 body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
 .logo{color:var(--text)!important;letter-spacing:-.035em!important;font-weight:700}
 #header{background:var(--nav)!important;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)!important}
@@ -628,7 +582,6 @@ body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
 
 <div id="toast-cont"></div>
 
-<!-- ═══ HEADER ═══ -->
 <header id="header">
   <a href="/" class="logo">Vid<span>Snap</span> <span style="font-size:0.65rem;color:var(--red);margin-left:4px">18+</span></a>
   <div class="badge-18">Adult Zone</div>
@@ -639,10 +592,8 @@ body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
   </button>
 </header>
 
-<!-- ═══ SIDEBAR OVERLAY ═══ -->
 <div id="sideOverlay" onclick="closeSidebar()"></div>
 
-<!-- ═══ SIDEBAR ═══ -->
 <div id="sidebar">
   <div class="sb-head">
     <div class="sb-logo">Vid<span>Snap</span> <span style="font-size:0.62rem;color:var(--red);margin-left:3px">18+</span></div>
@@ -697,7 +648,6 @@ body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
   </div>
 </div>
 
-<!-- ═══ SIDEBAR INFO MODALS ═══ -->
 <div class="overlay" id="sbModalOverlay" onclick="if(event.target===this)closeSbModal()" style="z-index:500;display:none;align-items:center;justify-content:center;padding:1rem">
   <div class="modal" style="border-radius:20px;max-height:85vh;overflow-y:auto" id="sbModalBox">
     <div class="m-head">
@@ -708,7 +658,6 @@ body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
   </div>
 </div>
 
-<!-- ═══ AGE GATE ═══ -->
 <div id="ageGate">
   <div class="age-card">
     <div class="age-card-head">
@@ -722,22 +671,23 @@ body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
         By continuing you confirm you are <strong style="color:var(--red)">18 years or older</strong> and legally permitted to view adult content in your jurisdiction. You take full personal responsibility.
       </div>
 
-      <!-- Cloudflare Turnstile — Age Gate -->
-      <div class="cf-turnstile-wrap" id="cfGateWrap">
-        <div class="cf-turnstile" id="cfGateTurnstile"></div>
-        <div class="ts-verified" id="cfGateVerified">Verified — you may enter</div>
-      </div>
-      <div class="rc-status" id="rcGateStatus" style="display:none"></div>
-
-      <!-- Rating -->
-      <div class="rc-rating">
-        <span class="rc-stars">★★★★</span><span style="color:#f59e0b;font-size:0.7rem">½</span>
-        <span style="font-weight:700;color:var(--text2)">4.8 / 5</span>
-        <span>· 1.4K ratings</span>
+      <div class="gate-field">
+        <label class="gate-lbl" for="dobDay">Date of birth</label>
+        <div class="gate-dob">
+          <select id="dobDay" aria-label="Day"></select>
+          <select id="dobMonth" aria-label="Month"></select>
+          <select id="dobYear" aria-label="Year"></select>
+        </div>
       </div>
 
-      <button class="btn-enter" id="btnEnter" onclick="enterAdultZone()" disabled>
-        Complete Verification to Enter
+      <div class="gate-field">
+        <label class="gate-lbl" for="gateAns">Solve to continue: <strong id="gateQ"></strong></label>
+        <input type="text" id="gateAns" inputmode="numeric" autocomplete="off" placeholder="Your answer" onkeydown="if(event.key==='Enter')enterAdultZone()">
+      </div>
+      <div class="gate-err" id="gateErr"></div>
+
+      <button class="btn-enter" id="btnEnter" onclick="enterAdultZone()">
+        Enter
       </button>
       <button class="btn-gate-exit" onclick="window.location.href='/'">← Exit — Return to Main Site</button>
 
@@ -745,7 +695,6 @@ body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
   </div>
 </div>
 
-<!-- ═══ MAIN CONTENT ═══ -->
 <div id="mainContent">
 
   <div class="hero">
@@ -772,18 +721,12 @@ body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
       </div>
       <div id="progressWrap"><div id="progressBar"></div></div>
 
-      <!-- Per-video Turnstile — shows after URL entered -->
       <div id="vidCapWrap">
-        <div class="cf-turnstile-wrap main-wrap" id="cfVidWrap">
-          <div class="cf-turnstile" id="cfVidTurnstile"></div>
-          <div class="ts-verified" id="cfVidVerified">Verified — tap download</div>
-        </div>
         <div class="dl-limit-warn" id="dlLimitWarn">Max 2 concurrent downloads — please wait for active downloads to finish.</div>
-        <button id="dlBtn" class="show" onclick="handleDownload()" disabled>Verify to Download</button>
+        <button id="dlBtn" class="show" onclick="handleDownload()">⬇ Download Video</button>
       </div>
     </div>
 
-    <!-- Preview Card -->
     <div class="preview-card" id="previewCard">
       <div class="pc-thumb" id="pcThumb"></div>
       <div class="pc-info">
@@ -795,7 +738,6 @@ body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
       </div>
     </div>
 
-    <!-- Animated Stats -->
     <div class="stats-strip" id="statsStrip">
       <div class="stat-item"><div class="stat-num" id="statDl">0</div><div class="stat-lbl">Downloads Today</div></div>
       <div class="stat-item"><div class="stat-num" id="statUsers">0</div><div class="stat-lbl">Beta Users</div></div>
@@ -810,7 +752,6 @@ body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
       <div class="trust-badge"><span class="tb-icon"></span> Age Verified</div>
     </div>
 
-    <!-- Quick Download Toggle -->
     <div class="quick-toggle-wrap">
       <div class="quick-lbl"><b>Quick Mode</b> — Skip modal, direct download (best quality)</div>
       <label class="toggle-sw">
@@ -819,7 +760,6 @@ body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
       </label>
     </div>
 
-    <!-- Download History -->
     <div class="hist-section" id="histSection" style="display:none">
       <div class="hist-head">
         <span class="hist-title">Recent Downloads</span>
@@ -828,7 +768,6 @@ body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
       <div class="hist-list" id="histList"></div>
     </div>
 
-    <!-- Supported Sites -->
     <div class="supported-section">
       <div class="supported-title">Supported Adult Platforms</div>
       <div class="sites-grid">
@@ -859,7 +798,6 @@ body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
       </div>
     </div>
 
-    <!-- Reviews -->
     <div class="reviews-section">
       <div class="reviews-head">
         <span class="reviews-title">User Reviews</span>
@@ -895,12 +833,10 @@ body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
         </div>
       </div>
 
-      <!-- See More -->
       <div style="text-align:center;margin-top:0.6rem">
         <button onclick="toggleMoreReviews()" id="seeMoreBtn" style="background:none;border:1px solid var(--border2);color:var(--muted);padding:5px 18px;border-radius:20px;font-size:0.74rem;cursor:pointer;transition:all 0.2s">See more reviews ↓</button>
       </div>
 
-      <!-- Extra hidden reviews -->
       <div id="moreReviews" style="display:none;margin-top:0.45rem">
         <div class="reviews-grid">
           <div class="review-card">
@@ -924,7 +860,6 @@ body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
         </div>
       </div>
 
-      <!-- Comment Box — 1 per user -->
       <div style="margin-top:1.2rem;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:0.9rem 1rem">
         <div style="font-size:0.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.7rem">Leave a Review</div>
         <div id="commentForm">
@@ -953,7 +888,6 @@ body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
 
 </div>
 
-<!-- ═══ PAGE FOOTER ═══ -->
 <footer id="pageFooter">
   <div class="footer-links">
     <a class="footer-link" href="#" onclick="showSbModal('privacy');return false">Privacy Policy</a>
@@ -965,7 +899,6 @@ body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
   <div class="footer-copy">© 2025 VidSnap 18+ · For personal use only · All content belongs to respective owners</div>
 </footer>
 
-<!-- ═══ DOWNLOAD MODAL ═══ -->
 <div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="m-handle"></div>
@@ -997,15 +930,7 @@ body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
         <div class="fmt-list" id="vFmts"></div>
         <div class="fmt-list" id="aFmts" style="display:none"></div>
 
-        <!-- Per-video Turnstile inside modal -->
-        <div id="mCapWrap">
-          <div class="cf-turnstile-wrap main-wrap" id="cfModWrap">
-            <div class="cf-turnstile" id="cfModTurnstile"></div>
-            <div class="ts-verified" id="cfModVerified">Verified — tap download</div>
-          </div>
-        </div>
-
-        <button class="dl-btn" id="mDlBtn" onclick="startDownload()" disabled>⬇ Download</button>
+        <button class="dl-btn" id="mDlBtn" onclick="startDownload()">⬇ Download</button>
 
         <div id="dlProgressWrap">
           <div class="dp-top">
@@ -1025,67 +950,54 @@ body{-webkit-font-smoothing:antialiased;letter-spacing:-.003em}
   </div>
 </div>
 
-<!-- ═══ STICKY BAR ═══ -->
 <div id="stickyBar">
   <button onclick="document.getElementById('urlInput').focus()">⬇ Paste URL to Download</button>
 </div>
 
 <script>
 'use strict';
-// ══ CONFIG ══════════════════════════════════════════
+
 var SERVER1 = '';
 var SERVER2 = '';
 
-// ── Cloudflare Turnstile site key (replace with your key) ──
-var CF_SITE_KEY = '1x00000000000000000000AA'; // TEST key — replace with real key from dash.cloudflare.com
-
-// ── Allowed domains (frontend guard) ──
 var ALLOWED_DOMAINS = [
   'web-production-ad4a65.up.railway.app',
   'videodownloader-iicl.onrender.com'
 ];
 
-// ══ AGE GATE STATE ══════════════════════════════════
 var _ageKey  = 'vs-adult-ok-v2';
 var _ageExp  = 'vs-adult-exp-v2';
-var _gateRcOk = false;    // set true when Turnstile gate verifies
-var _vidCapOk = false;    // set true when Turnstile vid verifies
-var _modCapOk = false;    // set true when Turnstile modal verifies
+var _gateRcOk = false;
+var _reqTimestamps = [];
+var RATE_LIMIT = 8;
 
-// Turnstile tokens
-var _gateTurnstileToken = '';
-var _vidTurnstileToken  = '';
-var _modTurnstileToken  = '';
-
-// ── Rate limiting state (client-side soft limit) ──
-var _reqTimestamps = [];  // tracks per-session request times
-var RATE_LIMIT = 8;       // max requests per 60s
-
-// ── Concurrency limit (max 2 simultaneous downloads) ──
 var _activeDlCount = 0;
 var DL_CONCURRENCY = 2;
 
-// ── Token expiry (7 min) ──
 var _tokenExpiry = 7 * 60 * 1000;
 
-// ── Quick Mode ──
 var _quickMode = false;
 
-// ── Info cache (7 min) ──
 var _infoCache = {};
 var INFO_CACHE_TTL = 7 * 60 * 1000;
 
-// ── Formats & download state ──
 var _vFmts=[], _aFmts=[], _curTab='video', _sel=null, _dlTitle='Video';
 var _curUrl   = '';
 var _dlInProgress = false;
 var _dlAbort = null;
 var _previewTimer = null;
 
-// ── Adult token ──
 var _adultToken = (function(){ try { return sessionStorage.getItem('adult_token') || ''; } catch(e){ return ''; } })();
 var _tokenFetching = false;
 var _tokenFetchPromise = null;
+
+function fetchTimeout(url, opts, ms) {
+  var ctrl = new AbortController();
+  var timer = setTimeout(function(){ ctrl.abort(); }, ms);
+  opts = opts || {};
+  opts.signal = ctrl.signal;
+  return fetch(url, opts).finally(function(){ clearTimeout(timer); });
+}
 
 function checkRateLimit() {
   var now = Date.now();
@@ -1121,7 +1033,6 @@ function isDomainAllowed(url) {
   } catch(e){ return false; }
 }
 
-// Initialize
 (function init() {
   var urlParams = new URLSearchParams(window.location.search);
   var pendingUrl = urlParams.get('url') || '';
@@ -1129,89 +1040,47 @@ function isDomainAllowed(url) {
     showMainContent(pendingUrl);
   } else {
     document.getElementById('ageGate').style.display = 'flex';
-    initGateTurnstile();
+    buildGate();
   }
 })();
 
-// ── Init Cloudflare Turnstile widgets ──────────────────
-function initGateTurnstile() {
-  if (typeof turnstile === 'undefined') {
-    // Turnstile not loaded yet — retry
-    setTimeout(initGateTurnstile, 500);
-    return;
-  }
-  turnstile.render('#cfGateTurnstile', {
-    sitekey: CF_SITE_KEY,
-    theme: 'dark',
-    callback: function(token) {
-      _gateRcOk = true;
-      _gateTurnstileToken = token;
-      document.getElementById('cfGateVerified').classList.add('show');
-      var btn = document.getElementById('btnEnter');
-      btn.disabled = false;
-      btn.innerHTML = 'Enter Adult Zone →';
-      fetchAdultToken();
-    },
-    'error-callback': function() {
-      showToast('Verification failed — please retry', 'error', 3000);
-    },
-    'expired-callback': function() {
-      _gateRcOk = false;
-      document.getElementById('cfGateVerified').classList.remove('show');
-      document.getElementById('btnEnter').disabled = true;
-      showToast('Verification expired — please re-verify', 'info', 3000);
-    }
-  });
+var _gateAnswer = 0;
+
+function buildGate() {
+  var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var day = document.getElementById('dobDay');
+  var month = document.getElementById('dobMonth');
+  var year = document.getElementById('dobYear');
+  day.innerHTML = '<option value="">Day</option>';
+  month.innerHTML = '<option value="">Month</option>';
+  year.innerHTML = '<option value="">Year</option>';
+  for (var d = 1; d <= 31; d++) day.innerHTML += '<option value="' + d + '">' + d + '</option>';
+  months.forEach(function(m, i) { month.innerHTML += '<option value="' + (i + 1) + '">' + m + '</option>'; });
+  var thisYear = new Date().getFullYear();
+  for (var y = thisYear; y >= thisYear - 100; y--) year.innerHTML += '<option value="' + y + '">' + y + '</option>';
+  newQuestion();
 }
 
-function initVidTurnstile() {
-  if (typeof turnstile === 'undefined') { setTimeout(initVidTurnstile, 500); return; }
-  // Reset existing widget if any
-  var el = document.getElementById('cfVidTurnstile');
-  if (el._tsId) { try { turnstile.remove(el._tsId); } catch(e){} }
-  el._tsId = turnstile.render('#cfVidTurnstile', {
-    sitekey: CF_SITE_KEY,
-    theme: 'dark',
-    callback: function(token) {
-      _vidCapOk = true;
-      _vidTurnstileToken = token;
-      document.getElementById('cfVidVerified').classList.add('show');
-      var dlBtn = document.getElementById('dlBtn');
-      dlBtn.disabled = false;
-      dlBtn.innerHTML = '⬇ Download Video';
-      showToast('Verified! Tap Download.', 'success', 2000);
-    },
-    'expired-callback': function() {
-      _vidCapOk = false;
-      _vidTurnstileToken = '';
-      document.getElementById('cfVidVerified').classList.remove('show');
-      document.getElementById('dlBtn').disabled = true;
-      document.getElementById('dlBtn').innerHTML = 'Verify to Download';
-    }
-  });
+function newQuestion() {
+  var a = 11 + Math.floor(Math.random() * 8);
+  var b = 3 + Math.floor(Math.random() * 6);
+  var c = 5 + Math.floor(Math.random() * 25);
+  _gateAnswer = a * b - c;
+  document.getElementById('gateQ').textContent = a + ' \u00d7 ' + b + ' \u2212 ' + c + ' = ?';
+  document.getElementById('gateAns').value = '';
 }
 
-function initModTurnstile() {
-  if (typeof turnstile === 'undefined') { setTimeout(initModTurnstile, 500); return; }
-  var el = document.getElementById('cfModTurnstile');
-  if (el._tsId) { try { turnstile.remove(el._tsId); } catch(e){} }
-  el._tsId = turnstile.render('#cfModTurnstile', {
-    sitekey: CF_SITE_KEY,
-    theme: 'dark',
-    callback: function(token) {
-      _modCapOk = true;
-      _modTurnstileToken = token;
-      document.getElementById('cfModVerified').classList.add('show');
-      document.getElementById('mDlBtn').disabled = false;
-      showToast('Verified! Tap Download.', 'success', 2000);
-    },
-    'expired-callback': function() {
-      _modCapOk = false;
-      _modTurnstileToken = '';
-      document.getElementById('cfModVerified').classList.remove('show');
-      document.getElementById('mDlBtn').disabled = true;
-    }
-  });
+function gateError(msg) {
+  document.getElementById('gateErr').textContent = msg;
+}
+
+function isAdult(day, month, year) {
+  var dob = new Date(year, month - 1, day);
+  if (dob.getFullYear() !== year || dob.getMonth() !== month - 1 || dob.getDate() !== day) return null;
+  var now = new Date();
+  var age = now.getFullYear() - year;
+  if (now.getMonth() < month - 1 || (now.getMonth() === month - 1 && now.getDate() < day)) age--;
+  return age >= 18;
 }
 
 function showMainContent(pendingUrl) {
@@ -1225,39 +1094,31 @@ function showMainContent(pendingUrl) {
 }
 
 function enterAdultZone() {
-  if (!_gateRcOk) {
-    showToast('Please complete the verification first', 'error', 2500);
+  var day = parseInt(document.getElementById('dobDay').value, 10);
+  var month = parseInt(document.getElementById('dobMonth').value, 10);
+  var year = parseInt(document.getElementById('dobYear').value, 10);
+  if (!day || !month || !year) { gateError('Please select your date of birth.'); return; }
+
+  var adult = isAdult(day, month, year);
+  if (adult === null) { gateError('That date does not exist. Please check it.'); return; }
+  if (!adult) { gateError('You must be 18 or older to enter this section.'); return; }
+
+  var ans = parseInt(document.getElementById('gateAns').value.trim(), 10);
+  if (ans !== _gateAnswer) {
+    gateError('Wrong answer, try this one.');
+    newQuestion();
     return;
   }
-  // Verify token with backend before granting access
-  fetch(SERVER1 + '/verify-captcha', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ token: _gateTurnstileToken, action: 'age_gate' })
-  })
-  .then(function(r){ return r.json(); })
-  .then(function(d) {
-    if (d.success) {
-      _grantAccess();
-    } else {
-      showToast('Verification rejected — please retry', 'error', 3000);
-      _gateRcOk = false;
-      document.getElementById('cfGateVerified').classList.remove('show');
-      document.getElementById('btnEnter').disabled = true;
-      if (typeof turnstile !== 'undefined') turnstile.reset();
-    }
-  })
-  .catch(function() {
-    // Backend unavailable — still grant (fallback) but log
-    console.warn('[VidSnap] captcha verify backend down — fallback grant');
-    _grantAccess();
-  });
+
+  gateError('');
+  fetchAdultToken();
+  _grantAccess();
 }
 
 function _grantAccess() {
   try {
     localStorage.setItem(_ageKey, 'yes');
-    localStorage.setItem(_ageExp, String(Date.now() + 24*3600*1000)); // 24h
+    localStorage.setItem(_ageExp, String(Date.now() + 24*3600*1000));
   } catch(e) {}
   showToast('Verified! Welcome.', 'success', 2000);
   setTimeout(function() {
@@ -1266,7 +1127,6 @@ function _grantAccess() {
   }, 500);
 }
 
-// ── Animated Stats Counter ──────────────────────────
 function initStatsCounter() {
   var targets = { statDl: 1247, statUsers: 1893, statSites: 153 };
   var duration = 1800;
@@ -1284,9 +1144,6 @@ function initStatsCounter() {
   }
   setTimeout(function(){ requestAnimationFrame(animate); }, 600);
 }
-
-// ══ MAIN PAGE LOGIC ══════════════════════════════════
-// (all vars declared at top of script)
 
 function getCachedInfo(url) {
   var entry = _infoCache[url];
@@ -1324,13 +1181,11 @@ function onUrl(val) {
   var pe = document.getElementById('platDetect');
   var ue = document.getElementById('urlErr');
   var capWrap = document.getElementById('vidCapWrap');
-  var dlBtn = document.getElementById('dlBtn');
 
   if (!val) {
     pe.textContent=''; ue.style.display='none';
     capWrap.classList.remove('show');
     hidePreviewCard();
-    _vidCapOk = false;
     clearTimeout(_previewTimer);
     return;
   }
@@ -1357,18 +1212,6 @@ function onUrl(val) {
 
   capWrap.classList.add('show');
 
-  // Reset Turnstile widget for new URL
-  if (!_vidCapOk) {
-    initVidTurnstile();
-    dlBtn.disabled = true;
-    dlBtn.innerHTML = 'Verify to Download';
-    document.getElementById('cfVidVerified').classList.remove('show');
-  } else {
-    dlBtn.disabled = false;
-    dlBtn.innerHTML = '⬇ Download Video';
-  }
-
-  // Prefetch video info for preview card (debounced, cached)
   clearTimeout(_previewTimer);
   _previewTimer = setTimeout(function() {
     if (!val || !val.startsWith('http')) return;
@@ -1377,7 +1220,7 @@ function onUrl(val) {
       showPreviewCard(cached, detectedPlat.split(' detected')[0]);
       return;
     }
-    // Show loading skeleton
+
     var card = document.getElementById('previewCard');
     card.classList.add('show');
     document.getElementById('pcTitle').textContent = 'Fetching info…';
@@ -1392,7 +1235,6 @@ function onUrl(val) {
           setCachedInfo(val, d);
           showPreviewCard(d, detectedPlat.split(' detected')[0]);
         } else {
-          // Clear skeleton on error
           document.getElementById('pcThumb').innerHTML = '';
           document.getElementById('pcTitle').textContent = _friendlyError(d.error);
         }
@@ -1401,7 +1243,6 @@ function onUrl(val) {
   }, 800);
 }
 
-// ── Human-readable error messages ──────────────────
 function _friendlyError(err) {
   if (!err) return 'Could not fetch info — please retry';
   var e = String(err).toLowerCase();
@@ -1414,18 +1255,9 @@ function _friendlyError(err) {
   return '' + err;
 }
 
-// handleVidCaptcha is now handled by Turnstile callback in initVidTurnstile()
-
 function clearUrl() {
   document.getElementById('urlInput').value = '';
   onUrl('');
-  _vidCapOk = false;
-  _vidTurnstileToken = '';
-  document.getElementById('cfVidVerified').classList.remove('show');
-  if (typeof turnstile !== 'undefined') {
-    var el = document.getElementById('cfVidTurnstile');
-    if (el && el._tsId) { try { turnstile.reset(el._tsId); } catch(e){} }
-  }
 }
 
 async function doPaste() {
@@ -1437,21 +1269,19 @@ async function doPaste() {
 }
 
 function handleDownload() {
-  if (!_vidCapOk) { showToast('Please complete Cloudflare verification first','error',2500); return; }
   if (!checkRateLimit()) return;
   var url = document.getElementById('urlInput').value.trim();
   if (!url) { document.getElementById('urlInput').focus(); showToast('Paste a URL first','info'); return; }
   if (!url.startsWith('http')) { document.getElementById('urlErr').style.display='block'; return; }
   _curUrl = url;
 
-  // ── Quick Mode: skip modal, direct best quality download ──
   if (_quickMode) {
     showToast('Quick Mode — fetching best quality…', 'info', 2500);
     startProg();
     getAdultToken().then(function(adultToken) {
       smartFetch(url, '/download', {
         method:'POST',
-        headers:{'Content-Type':'application/json','X-Adult-Token':adultToken,'X-CF-Token':_vidTurnstileToken},
+        headers:{'Content-Type':'application/json','X-Adult-Token':adultToken},
         body: JSON.stringify({url:url, quality:'1080', format:'video'})
       }).then(function(res) {
         endProg(true);
@@ -1484,7 +1314,6 @@ function handleDownload() {
 }
 
 function _fetchInfo(url) {
-  // Check cache first (7 min TTL)
   var cached = getCachedInfo(url);
   if (cached && cached.success) {
     _processFetchedInfo(cached);
@@ -1514,20 +1343,12 @@ function _processFetchedInfo(d) {
   }
   _vFmts = d.video_formats||[]; _aFmts = d.audio_formats||[];
   buildFmts('video',_vFmts); buildFmts('audio',_aFmts);
-  // Smart auto-select: pick best quality automatically
+
   if (_vFmts.length) {
     _sel = {id: _vFmts[0].id, isAudio: false, url: _vFmts[0].url||null};
   }
   showContent();
 }
-
-// ══ MODAL CAPTCHA — now Cloudflare Turnstile ════════
-// _modCapOk declared at top of script
-// handleModCaptcha is handled by Turnstile callback in initModTurnstile()
-// Modal init is called when showContent() is triggered
-
-// ══ FORMATS ═════════════════════════════════════════
-// _vFmts, _aFmts, _curTab, _sel, _dlTitle declared at top of script
 
 function buildFmts(type, fmts) {
   var c = document.getElementById(type==='video'?'vFmts':'aFmts');
@@ -1565,11 +1386,8 @@ function switchTab(t) {
   }
 }
 
-// ══ DOWNLOAD ════════════════════════════════════════
-// _dlInProgress declared at top of script
 function startDownload() {
   if (!_sel||!_curUrl) return;
-  if (!_modCapOk) { showToast('Please complete Cloudflare verification first','error',2500); return; }
   if (!canStartDownload()) return;
   if (!checkRateLimit()) return;
   if (_dlInProgress) return;
@@ -1581,7 +1399,7 @@ function startDownload() {
   var body = { url:_curUrl, quality:String(_sel.id), format:_sel.isAudio?'audio':'video' };
 
   getAdultToken().then(function(adultToken) {
-    smartFetch(_curUrl, '/download', { method:'POST', headers:{'Content-Type':'application/json', 'X-Adult-Token': adultToken, 'X-CF-Token': _modTurnstileToken || _vidTurnstileToken}, body:JSON.stringify(body) })
+    smartFetch(_curUrl, '/download', { method:'POST', headers:{'Content-Type':'application/json', 'X-Adult-Token': adultToken}, body:JSON.stringify(body) })
       .then(function(res) {
         _dlInProgress = false;
         _activeDlCount = Math.max(0, _activeDlCount - 1);
@@ -1607,16 +1425,8 @@ function startDownload() {
             startProgressDl(proxyUrl, filename);
             showToast('⬇ Download started!','success');
             setTimeout(function() {
-              _modCapOk = false;
-              _vidCapOk = false;
-              _modTurnstileToken = '';
-              _vidTurnstileToken = '';
-              document.getElementById('cfModVerified').classList.remove('show');
-              document.getElementById('cfVidVerified').classList.remove('show');
-              document.getElementById('mDlBtn').disabled=true;
-              document.getElementById('dlBtn').disabled=true;
               closeModal();
-              showToast('Done! Verify again for next video.','success',3500);
+              showToast('Done! Paste another link for the next video.','success',3500);
             }, 2200);
           };
         } else {
@@ -1652,8 +1462,6 @@ function retryDl() {
   }
 }
 
-// ══ PROGRESS DOWNLOAD ═══════════════════════════════
-// _dlAbort declared at top of script
 function startProgressDl(proxyUrl, filename) {
   _dlAbort = new AbortController();
   var startTime = Date.now(); var loaded=0, total=0;
@@ -1665,7 +1473,6 @@ function startProgressDl(proxyUrl, filename) {
   document.getElementById('dpSize').textContent='—';
   document.getElementById('dpPhase').textContent='Connecting to server…';
 
-  // Phase messages
   var phases = [
     {t:0,    m:'Connecting to server…'},
     {t:1500, m:'Resolving stream URL…'},
@@ -1715,7 +1522,6 @@ function startProgressDl(proxyUrl, filename) {
     });
 }
 
-// ══ REVIEWS — See More + Comment Box ════════════════
 var _showingMore = false;
 function toggleMoreReviews() {
   _showingMore = !_showingMore;
@@ -1729,7 +1535,7 @@ var _COMMENT_KEY = 'vs-adult-comment-v1';
     var saved = localStorage.getItem(_COMMENT_KEY);
     if (saved) {
       var c = JSON.parse(saved);
-      // Already commented — hide form, show done + their comment
+
       document.getElementById('commentForm').style.display = 'none';
       document.getElementById('commentDone').style.display = 'block';
       renderUserComment(c);
@@ -1766,8 +1572,6 @@ function submitComment() {
   showToast('Review posted!', 'success', 2000);
 }
 
-// ══ QUICK MODE ══════════════════════════════════════
-// _quickMode declared at top of script
 function toggleQuickMode(on) {
   _quickMode = on;
   try { localStorage.setItem('vs-quick-mode', on ? '1' : '0'); } catch(e){}
@@ -1784,18 +1588,14 @@ function toggleQuickMode(on) {
   } catch(e) {}
 })();
 
-// ══ ADULT TOKEN — fetched from backend after captcha ═
-// _adultToken, _tokenFetching, _tokenFetchPromise declared at top of script
-
 function fetchAdultToken() {
-  // If a fetch is already in flight, reuse that same promise (avoids double-fetch)
   if (_tokenFetching && _tokenFetchPromise) return _tokenFetchPromise;
   _tokenFetching = true;
-  _tokenFetchPromise = fetch(SERVER1 + '/adult-token', {
+  _tokenFetchPromise = fetchTimeout(SERVER1 + '/adult-token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ captcha_response: 'manual_verify_' + Date.now() })
-  })
+  }, 8000)
   .then(function(r) { return r.json(); })
   .then(function(d) {
     _tokenFetching = false;
@@ -1805,7 +1605,7 @@ function fetchAdultToken() {
       try { sessionStorage.setItem('adult_token', _adultToken); } catch(e){}
       return _adultToken;
     }
-    // Fallback token
+
     _adultToken = 'tok_' + Date.now() + '_' + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
     try { sessionStorage.setItem('adult_token', _adultToken); } catch(e){}
     return _adultToken;
@@ -1813,7 +1613,7 @@ function fetchAdultToken() {
   .catch(function() {
     _tokenFetching = false;
     _tokenFetchPromise = null;
-    // Fallback token on network error
+
     _adultToken = 'tok_' + Date.now() + '_' + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
     try { sessionStorage.setItem('adult_token', _adultToken); } catch(e){}
     return _adultToken;
@@ -1826,7 +1626,6 @@ function getAdultToken() {
   return fetchAdultToken();
 }
 
-// ══ DOWNLOAD HISTORY ════════════════════════════════
 var _HIST_KEY = 'vs-adult-hist-v1';
 function getHistory() {
   try { return JSON.parse(localStorage.getItem(_HIST_KEY) || '[]'); } catch(e){ return []; }
@@ -1834,7 +1633,7 @@ function getHistory() {
 function saveToHistory(url, title, fmt) {
   try {
     var hist = getHistory();
-    // Remove duplicate
+
     hist = hist.filter(function(h){ return h.url !== url; });
     hist.unshift({ url: url, title: title, fmt: fmt, ts: Date.now() });
     hist = hist.slice(0, 5);
@@ -1872,14 +1671,11 @@ function redownload(url) {
   showToast('URL loaded — verify & download!', 'info', 2000);
   window.scrollTo({top:0, behavior:'smooth'});
 }
-// Render on load
+
 (function(){ renderHistory(); })();
 
-// ══ DUAL SERVER (sequential with retry) ══════════════
 var _cache2 = {};
 
-// Try servers sequentially: S1 first, then S2 on failure.
-// On both fail, auto-retry once after 3s before giving up.
 function smartFetch(url, endpoint, options) {
   var ck = endpoint + '|' + (options.body ? (JSON.parse(options.body).url || url) : url);
   if (_cache2[ck] && Date.now() - _cache2[ck].ts < 300000) {
@@ -1896,7 +1692,6 @@ function smartFetch(url, endpoint, options) {
           return r.json();
         })
         .then(function(d) {
-          // Content errors (private, removed etc.) — don't retry, bubble up
           if (!d.success && /private|unavailable|copyright|removed/i.test(d.error || '')) {
             reject(Object.assign(new Error(d.error), { isContentError: true, fromServer: sn }));
             return;
@@ -1915,15 +1710,12 @@ function smartFetch(url, endpoint, options) {
   }
 
   function attempt() {
-    // Try SERVER1 first
     return tryOne(SERVER1, 1)
       .catch(function(e1) {
-        // Content error — no point trying S2
         if (e1.isContentError) throw e1;
-        // S1 failed — try SERVER2
+
         return tryOne(SERVER2, 2)
           .catch(function(e2) {
-            // Both failed — throw combined error
             throw Object.assign(new Error(e1.message || e2.message || 'Both servers unavailable'), {
               bothFailed: true
             });
@@ -1933,7 +1725,6 @@ function smartFetch(url, endpoint, options) {
 
   return attempt()
     .then(function(res) {
-      // Cache only successful results for /info
       if (endpoint === '/info') {
         _cache2[ck] = { data: res, ts: Date.now() };
       }
@@ -1941,10 +1732,9 @@ function smartFetch(url, endpoint, options) {
     })
     .catch(function(err) {
       if (err.isContentError) {
-        // Return as data so UI shows the specific error
         return { data: { success: false, error: err.message }, usedServer: 0 };
       }
-      // Both servers failed — auto-retry once after 3 seconds
+
       if (err.bothFailed) {
         showToast('Servers busy — retrying in 3s…', 'info', 3000);
         return new Promise(function(resolve) {
@@ -1961,7 +1751,6 @@ function smartFetch(url, endpoint, options) {
     });
 }
 
-// ══ MODAL HELPERS ════════════════════════════════════
 function openModal() {
   document.getElementById('overlay').classList.add('open');
   document.body.style.overflow='hidden';
@@ -1970,11 +1759,8 @@ function closeModal() {
   document.getElementById('overlay').classList.remove('open');
   document.body.style.overflow='';
   _dlInProgress=false;
-  // Reset modal Turnstile
-  _modCapOk=false;
-  _modTurnstileToken='';
-  document.getElementById('cfModVerified').classList.remove('show');
-  document.getElementById('mDlBtn').disabled=true;
+
+  document.getElementById('mDlBtn').disabled=false;
   document.getElementById('mDlBtn').onclick=startDownload;
   document.getElementById('mDlBtn').innerHTML='⬇ Download';
   document.getElementById('dlProgressWrap').classList.remove('show');
@@ -2001,15 +1787,10 @@ function showContent() {
   document.getElementById('mErr').style.display='none';
   document.getElementById('mContent').style.display='block';
   endProg(true);
-  // Reset modal Turnstile for new video
-  _modCapOk=false;
-  _modTurnstileToken='';
-  document.getElementById('cfModVerified').classList.remove('show');
-  document.getElementById('mDlBtn').disabled=true;
-  initModTurnstile();
+
+  document.getElementById('mDlBtn').disabled=false;
 }
 
-// ══ PROGRESS BAR ════════════════════════════════════
 var _progT=null;
 function startProg() {
   clearInterval(_progT); var p=0;
@@ -2023,7 +1804,6 @@ function endProg(ok) {
   setTimeout(function(){document.getElementById('progressWrap').style.display='none';},500);
 }
 
-// ══ TOAST ════════════════════════════════════════════
 function showToast(msg, type, dur) {
   type=type||'info'; dur=dur||3000;
   var icons={success:'',error:'',info:'ℹ'};
@@ -2036,10 +1816,8 @@ function showToast(msg, type, dur) {
   setTimeout(function(){t.classList.add('out');setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},250);},dur);
 }
 
-// ══ UTILS ════════════════════════════════════════════
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-// ══ SIDEBAR ══════════════════════════════════════════
 function toggleSidebar(){
   var open = document.getElementById('sidebar').classList.contains('open');
   open ? closeSidebar() : openSidebar();
@@ -2056,10 +1834,9 @@ function closeSidebar(){
   document.getElementById('hamBtn').classList.remove('open');
   document.body.style.overflow='';
 }
-// Close on Escape
+
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeSidebar();closeSbModal();}});
 
-// Ripple on sidebar items
 document.querySelectorAll('.sb-item').forEach(function(el){
   el.addEventListener('click',function(e){
     var r=document.createElement('span');
@@ -2072,7 +1849,6 @@ document.querySelectorAll('.sb-item').forEach(function(el){
   });
 });
 
-// ══ SIDEBAR INFO MODALS ══════════════════════════════
 var _sbContent = {
   howto: {
     title: 'How to Download',
@@ -2080,7 +1856,6 @@ var _sbContent = {
       +'<ol style="padding-left:1.2rem;display:flex;flex-direction:column;gap:0.7rem">'
       +'<li><strong style="color:var(--text)">Copy the URL</strong> — Go to the adult platform and copy the video link from your browser address bar.</li>'
       +'<li><strong style="color:var(--text)">Paste it</strong> — Tap the input box on VidSnap 18+ and paste the link, or use the Paste button.</li>'
-      +'<li><strong style="color:var(--text)">Verify</strong> — Complete the Cloudflare verification widget to confirm you\'re human.</li>'
       +'<li><strong style="color:var(--text)">Choose quality</strong> — Pick your preferred video quality or audio-only format from the modal.</li>'
       +'<li><strong style="color:var(--text)">Download</strong> — Tap Download. The file will save directly to your device.</li>'
       +'</ol>'
@@ -2111,7 +1886,7 @@ var _sbContent = {
       +'<div style="display:flex;flex-direction:column;gap:0.9rem">'
       +'<div><div style="font-weight:700;color:var(--text);margin-bottom:0.3rem">Data We Collect</div><p style="color:var(--muted);font-size:0.83rem">VidSnap does not collect, store, or sell any personal data. We do not require account registration. URLs you paste are processed in real-time and are never logged to our servers.</p></div>'
       +'<div><div style="font-weight:700;color:var(--text);margin-bottom:0.3rem">Cookies & Local Storage</div><p style="color:var(--muted);font-size:0.83rem">We use browser localStorage only to remember your age verification status (expires in 24 hours) and your download history (stored locally on your device only). We do not use tracking cookies.</p></div>'
-      +'<div><div style="font-weight:700;color:var(--text);margin-bottom:0.3rem">Third-Party Services</div><p style="color:var(--muted);font-size:0.83rem">We use Cloudflare Turnstile for bot protection. Cloudflare may collect anonymous usage data per their own privacy policy.</p></div>'
+      +'<div><div style="font-weight:700;color:var(--text);margin-bottom:0.3rem">Third-Party Services</div><p style="color:var(--muted);font-size:0.83rem">We load fonts from Google Fonts. Google may collect anonymous usage data per its own privacy policy.</p></div>'
       +'<div><div style="font-weight:700;color:var(--text);margin-bottom:0.3rem">Content</div><p style="color:var(--muted);font-size:0.83rem">We do not host, cache, or redistribute any video content. All media is streamed directly from the original platform servers.</p></div>'
       +'<div style="padding:0.75rem 1rem;background:var(--red2);border:1px solid rgba(var(--ac-rgb),0.2);border-radius:10px;font-size:0.79rem;color:var(--muted)">Questions? Contact us at <a href="mailto:privacy@vidsnap.app" style="color:var(--red);text-decoration:none">privacy@vidsnap.app</a></div>'
       +'</div>'

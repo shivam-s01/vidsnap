@@ -32,7 +32,6 @@ function build(html, { hd, sd }) {
   };
 }
 
-// Layer 1: desktop page ke andar browser_native_hd_url / sd_url
 async function viaPage(url) {
   const html = await getPage(url, UA.CHROME);
   if (!html) return null;
@@ -40,7 +39,6 @@ async function viaPage(url) {
   return build(html, { hd: hd && jsonStr(hd), sd: sd && jsonStr(sd) });
 }
 
-// Layer 2: crawler UA ko og:video tags milte hain (aksar SD mp4)
 async function viaOg(url) {
   const html = await getPage(url, UA.FB);
   if (!html) return null;
@@ -51,7 +49,7 @@ async function viaOg(url) {
 
 export async function extractFacebook(url, env, opts = {}) {
   for (const layer of [() => viaPage(url), () => viaOg(url)]) {
-    try { const r = await layer(); if (r) return r; } catch { /* next */ }
+    try { const r = await layer(); if (r) return r; } catch {}
   }
   return fallbackResult(env, "facebook", url, { ...opts, defaultTitle: "Facebook Video" });
 }

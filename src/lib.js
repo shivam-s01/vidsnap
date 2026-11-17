@@ -1,5 +1,3 @@
-// Shared helpers — no platform logic here.
-
 export const UA = {
   CHROME: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
   MOBILE: "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36",
@@ -8,7 +6,7 @@ export const UA = {
 };
 
 export const MAX_URL_LEN = 2048;
-export const PROXY_SIG_TTL = 3600; // seconds
+export const PROXY_SIG_TTL = 3600;
 export const NATIVE_PLATFORMS = new Set(["tiktok", "instagram", "facebook", "terabox", "youtube", "twitter", "pinterest"]);
 
 const TB_TOKENS = ["terabox.com", "terabox.app", "teraboxapp.com", "1024terabox", "4funbox", "nephobox",
@@ -38,7 +36,6 @@ export function validateUrl(url) {
   return "";
 }
 
-// ── responses ────────────────────────────────────────────────────────────────
 export function json(data, status = 200, extra = {}) {
   return new Response(JSON.stringify(data), {
     status,
@@ -57,7 +54,7 @@ export function corsHeaders(request, env) {
     ok = o.origin === self.origin || o.hostname.endsWith(".railway.app") ||
       o.hostname.endsWith(".onrender.com") || extra.includes(o.origin) ||
       ["localhost", "127.0.0.1"].includes(o.hostname);
-  } catch { /* bad origin */ }
+  } catch {}
   if (!ok) return {};
   return {
     "Access-Control-Allow-Origin": origin,
@@ -75,7 +72,6 @@ export function withHeaders(resp, headers) {
   return r;
 }
 
-// ── fetch with timeout ───────────────────────────────────────────────────────
 export async function fetchT(url, opts = {}, ms = 15000) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), ms);
@@ -83,8 +79,6 @@ export async function fetchT(url, opts = {}, ms = 15000) {
   finally { clearTimeout(t); }
 }
 
-// ── text decoding ────────────────────────────────────────────────────────────
-// URL ke andar JSON-escaped sequences (\/ \u0026, double-escaped bhi) hatao.
 export function unescapeUrl(s) {
   let out = s;
   for (let i = 0; i < 3; i++) {
@@ -112,7 +106,6 @@ export function cookiesFrom(resp) {
   return list.map((c) => c.split(";")[0]).filter(Boolean).join("; ");
 }
 
-// ── crypto / signing ─────────────────────────────────────────────────────────
 const enc = new TextEncoder();
 
 async function hmacHex(secret, msg) {
@@ -145,7 +138,7 @@ export async function signProxy(env, { url, filename, headers }) {
   const clean = {};
   for (const k of SIGNED_HEADERS) if (headers && headers[k]) clean[k] = headers[k];
   const h = Object.keys(clean).length ? b64uEncode(JSON.stringify(clean)) : "";
-  const sig = await hmacHex(env.PROXY_SECRET, `${url}|${h}|${exp}`); // filename sign nahi hota — frontend usse rename karta hai
+  const sig = await hmacHex(env.PROXY_SECRET, `${url}|${h}|${exp}`);
   const q = new URLSearchParams({ url, filename, h, exp: String(exp), v: "2", sig });
   return `/proxy-download?${q.toString()}`;
 }
@@ -161,13 +154,12 @@ export async function verifyProxy(env, params) {
   return { url, filename, headers };
 }
 
-// ── SSRF guard for proxy ─────────────────────────────────────────────────────
 export function isBlockedHost(urlStr) {
   let u; try { u = new URL(urlStr); } catch { return true; }
   if (!/^https?:$/.test(u.protocol)) return true;
   const h = u.hostname.toLowerCase();
   if (h === "localhost" || h.endsWith(".local") || h.endsWith(".internal") || h === "0.0.0.0") return true;
-  if (h.startsWith("[") || h.includes(":")) return true; // IPv6 literals
+  if (h.startsWith("[") || h.includes(":")) return true;
   const m = h.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
   if (m) {
     const [a, b] = [+m[1], +m[2]];
@@ -176,7 +168,6 @@ export function isBlockedHost(urlStr) {
   return false;
 }
 
-// ── per-isolate cache + rate limit (best effort) ─────────────────────────────
 const _cache = new Map();
 const CACHE_TTL = 300_000;
 export function cacheGet(k) {
@@ -202,7 +193,6 @@ export function rateOk(ip, path) {
   return true;
 }
 
-// ── format helpers ───────────────────────────────────────────────────────────
 export function labelFor(h) {
   if (h >= 2160) return "4K Ultra HD (2160p)";
   if (h >= 1440) return "2K QHD (1440p)";

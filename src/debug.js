@@ -1,4 +1,3 @@
-// /debug?url=... — har layer kya dekh raha hai, ye batata hai (koi secret/cookie output mein nahi aata).
 import { UA, fetchT, platformOf } from "./lib.js";
 import { _internals as ig } from "./extractors/instagram.js";
 import { rapidProbe } from "./extractors/fallbacks.js";
@@ -25,7 +24,7 @@ async function cobalt(url) {
   const out = {};
   await Promise.all(insts.map(async (i) => {
     const r = await look(`${i}/`, { method: "POST", headers: { Accept: "application/json", "Content-Type": "application/json" }, body: JSON.stringify({ url }) });
-    let d = {}; try { d = JSON.parse(r.text); } catch { /* not json */ }
+    let d = {}; try { d = JSON.parse(r.text); } catch {}
     out[i.replace("https://", "")] = { status: r.status, error: r.error, result: d.status, code: d.error && d.error.code };
   }));
   return out;
@@ -49,7 +48,7 @@ export async function debugProbe(url, env) {
       }
       if (env.IG_COOKIE) {
         const m = await look(`https://i.instagram.com/api/v1/media/${ig.mediaIdOf(code)}/info/`, { headers: { "User-Agent": "Instagram 275.0.0.27.98 Android (33/13; 420dpi; 1080x2400; Google; Pixel 7; panther; panther; en_US; 458229237)", "X-IG-App-ID": "567067343352427", Cookie: env.IG_COOKIE } });
-        let mj = null; try { mj = JSON.parse(m.text); } catch { /* html */ }
+        let mj = null; try { mj = JSON.parse(m.text); } catch {}
         rep.session = strip(m, { json: Boolean(mj), hasItems: Boolean(mj && mj.items && mj.items.length), apiMessage: mj && mj.message, apiStatus: mj && mj.status });
       } else rep.session = "IG_COOKIE not set";
       const body = new URLSearchParams({ doc_id: env.IG_DOC_ID || "8845758582119845", variables: JSON.stringify({ shortcode: code }) });
@@ -57,7 +56,7 @@ export async function debugProbe(url, env) {
         method: "POST", body,
         headers: { ...hdr, "Content-Type": "application/x-www-form-urlencoded", "X-IG-App-ID": "936619743392459", Origin: "https://www.instagram.com", Referer: `https://www.instagram.com/p/${code}/` },
       });
-      let j = null; try { j = JSON.parse(g.text); } catch { /* html */ }
+      let j = null; try { j = JSON.parse(g.text); } catch {}
       rep.graphql = strip(g, { json: Boolean(j), hasMedia: Boolean(j && j.data && j.data.xdt_shortcode_media), apiStatus: j && j.status, apiMessage: j && j.message });
     }
   } else if (plat === "facebook") {
@@ -72,10 +71,10 @@ export async function debugProbe(url, env) {
   } else if (plat === "tiktok") {
     const p = await look(url, { headers: hdr });
     const m = p.text.match(/id="__UNIVERSAL_DATA_FOR_REHYDRATION__"[^>]*>([\s\S]*?)<\/script>/);
-    let sc = null; try { sc = JSON.parse(m[1]).__DEFAULT_SCOPE__["webapp.video-detail"]; } catch { /* none */ }
+    let sc = null; try { sc = JSON.parse(m[1]).__DEFAULT_SCOPE__["webapp.video-detail"]; } catch {}
     rep.page = strip(p, { hasRehydration: Boolean(m), detailStatus: sc && sc.statusCode, detailMsg: sc && sc.statusMsg, captcha: /captcha|verify/i.test(p.text.slice(0, 5000)) });
     const w = await look(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}&hd=1`, { headers: { "User-Agent": UA.CHROME } });
-    let wj = null; try { wj = JSON.parse(w.text); } catch { /* not json */ }
+    let wj = null; try { wj = JSON.parse(w.text); } catch {}
     rep.tikwm = strip(w, { code: wj && wj.code, msg: wj && wj.msg });
   }
   rep.rapid = await rapidProbe(env, plat, url);

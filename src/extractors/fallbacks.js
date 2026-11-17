@@ -10,14 +10,6 @@ const COBALT_INSTANCES = [
 
 const isUrl = (u) => typeof u === "string" && /^https?:\/\//.test(u) && u.length > 10;
 
-// ── RapidAPI "Download by Link" (coder2077) ──────────────────────────────────
-// Config (wrangler.toml [vars] + secret):
-//   RAPIDAPI_KEY   secret
-//   RAPID_HOST     jaise "xxxx.p.rapidapi.com" (Code snippet ka x-rapidapi-host)
-//   RAPID_PATH     GET endpoint, ?url=<link>  (Instagram/TikTok/Facebook/X/Pinterest)
-//   RAPID_YT_PATH  POST endpoint, body {url, format}  (YouTube)
-//   RAPID_YT_HOST  optional, agar YouTube ka host alag ho
-
 const PAGE_HOSTS = new Set([
   "instagram.com", "www.instagram.com", "youtube.com", "www.youtube.com", "m.youtube.com", "youtu.be",
   "facebook.com", "www.facebook.com", "fb.watch", "x.com", "twitter.com", "www.tiktok.com", "vm.tiktok.com",
@@ -39,7 +31,7 @@ function firstUrl(o) {
 
 function heightOf(o) {
   const w = num(o.width), h = num(o.height);
-  if (w && h) return Math.min(w, h); // vertical 720x1280 = 720p
+  if (w && h) return Math.min(w, h);
   if (h) return h;
   const s = String(o.quality || o.label || o.resolution || o.format_note || "");
   const m = s.match(/(\d{3,4})\s*p\b/i) || s.match(/^(\d{3,4})$/);
@@ -55,7 +47,6 @@ function kindOf(o) {
 
 const GENERIC_TITLES = new Set(["", "instagram", "tiktok", "facebook", "youtube", "twitter", "x", "pinterest", "video"]);
 
-// API ka JSON (alag platforms pe shape thoda alag) -> standard result. Jo samajh na aaye -> null.
 export function parseRapid(d, { defaultTitle = "Video" } = {}) {
   if (!d || typeof d !== "object" || d.ok === false || d.success === false) return null;
   const root = d.data && typeof d.data === "object" && !Array.isArray(d.data) ? { ...d, ...d.data } : d;
@@ -121,7 +112,6 @@ async function rapidJson(env, platform, url, format) {
   return { status: r.status, json: r.ok ? await r.json().catch(() => null) : null };
 }
 
-// /info aur /download dono extractor chalate hain — 2 min cache se 1 hi credit lagta hai
 const _rc = new Map();
 const RC_TTL = 120_000;
 
@@ -147,7 +137,7 @@ export async function rapidResult(env, platform, url, { quality = 720, isAudio =
       }
       return null;
     }
-    if (isAudio) return null; // GET API video deti hai; audio -> cobalt / legacy ffmpeg
+    if (isAudio) return null;
     const key = `g|${url}`;
     const hit = _rc.get(key);
     if (hit && Date.now() - hit.ts < RC_TTL) return hit.p;
@@ -160,7 +150,6 @@ export async function rapidResult(env, platform, url, { quality = 720, isAudio =
   } catch { return null; }
 }
 
-// /debug ke liye: koi key/secret output mein nahi aata
 export async function rapidProbe(env, platform, url) {
   const out = { key_set: Boolean(env.RAPIDAPI_KEY), host_set: Boolean(env.RAPID_HOST), path_set: Boolean(env.RAPID_PATH), yt_path_set: Boolean(env.RAPID_YT_PATH) };
   try {
@@ -174,13 +163,12 @@ export async function rapidProbe(env, platform, url) {
   } catch (e) { return { ...out, error: String((e && e.message) || e) }; }
 }
 
-// ── Cobalt (free instances; aksar down/auth-wale) ────────────────────────────
 export async function cobaltGet(url, quality = 720, isAudio = false) {
   const payload = {
     url, downloadMode: isAudio ? "audio" : "auto", filenameStyle: "basic",
     videoQuality: String(quality || 720), audioFormat: isAudio ? "mp3" : "best",
   };
-  // Saare instances ek saath — pehla jo jawab de woh jeetega
+
   const attempts = COBALT_INSTANCES.map(async (inst) => {
     const r = await fetchT(`${inst}/`, {
       method: "POST", body: JSON.stringify(payload),
@@ -207,7 +195,6 @@ export async function cobaltResult(url, { quality = 720, isAudio = false, defaul
   };
 }
 
-// RapidAPI pehle, phir Cobalt
 export async function fallbackResult(env, platform, url, { quality = 720, isAudio = false, defaultTitle = "Video" } = {}) {
   const rapid = await rapidResult(env, platform, url, { quality, isAudio, defaultTitle });
   if (rapid) return rapid;

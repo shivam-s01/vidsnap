@@ -1,7 +1,6 @@
 import { UA, fetchT, cookiesFrom, labelFor } from "../lib.js";
 import { fallbackResult } from "./fallbacks.js";
 
-// Layer 1: video page ke andar __UNIVERSAL_DATA_FOR_REHYDRATION__ JSON (yt-dlp wala tareeka)
 async function viaPage(url) {
   const r = await fetchT(url, {
     headers: { "User-Agent": UA.CHROME, "Accept-Language": "en-US,en;q=0.9", Accept: "text/html,*/*;q=0.8" },
@@ -19,7 +18,6 @@ async function viaPage(url) {
   const video = item?.video;
   if (!video) return null;
 
-  // bitrateInfo mein har quality; h264 ko prefer karo (har phone pe chalta hai)
   const infos = Array.isArray(video.bitrateInfo) ? video.bitrateInfo : [];
   const h264 = infos.filter((b) => !/bytevc1|h265|hevc/i.test(b.CodecType || ""));
   const pool = h264.length ? h264 : infos;
@@ -54,7 +52,6 @@ async function viaPage(url) {
   };
 }
 
-// Layer 2: tikwm public API (third-party)
 async function viaTikwm(url) {
   const r = await fetchT(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}&hd=1`, {
     headers: { "User-Agent": UA.CHROME },
@@ -78,7 +75,7 @@ async function viaTikwm(url) {
 
 export async function extractTikTok(url, env, opts = {}) {
   for (const layer of [() => viaPage(url), () => viaTikwm(url)]) {
-    try { const r = await layer(); if (r) return r; } catch { /* next layer */ }
+    try { const r = await layer(); if (r) return r; } catch {}
   }
   return fallbackResult(env, "tiktok", url, { ...opts, defaultTitle: "TikTok Video" });
 }

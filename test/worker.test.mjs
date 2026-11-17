@@ -1,5 +1,4 @@
-// Offline tests — fetch mock hai, koi real site hit nahi hoti.
-// Ye parsing/signing/proxy ka logic verify karte hain, platforms ki live availability nahi.
+
 import { test, beforeEach } from "node:test";
 import assert from "node:assert/strict";
 import worker from "../src/index.js";
@@ -12,8 +11,8 @@ const ENV = {
 const CTX = { waitUntil() {} };
 const ORIGIN = "https://vidsnap.test";
 
-let routes = [];       // [matcher, handler]
-let calls = [];        // {url, init}
+let routes = [];
+let calls = [];
 const realFetch = globalThis.fetch;
 
 function mock(matcher, handler) { routes.push([matcher, handler]); }
@@ -35,7 +34,6 @@ const post = (path, body, extra = {}) => new Request(ORIGIN + path, {
 });
 const call = (req, env = ENV) => worker.fetch(req, env, CTX);
 
-// ── fixtures ────────────────────────────────────────────────────────────────
 const TIKTOK_HTML = `<html><script id="__UNIVERSAL_DATA_FOR_REHYDRATION__" type="application/json">${JSON.stringify({
   __DEFAULT_SCOPE__: { "webapp.video-detail": { statusCode: 0, itemInfo: { itemStruct: {
     id: "123", desc: "Funny cat video",
@@ -54,7 +52,6 @@ const IG_EMBED_DOUBLE = String.raw`<script>"contextJSON":"{\"video_url\":\"https
 const FB_HTML = String.raw`<html><head><meta property="og:title" content="My &amp; Reel"><meta property="og:image" content="https://fb.cdn/t.jpg"></head>
 <script>{"browser_native_hd_url":"https:\/\/video.fb\/hd.mp4?oh=1\u0026oe=2","browser_native_sd_url":"https:\/\/video.fb\/sd.mp4?oh=1\u0026oe=2","playable_duration_in_ms":42000}</script></html>`;
 
-// ── lib ─────────────────────────────────────────────────────────────────────
 test("platformOf by hostname, not substring", () => {
   assert.equal(platformOf("https://vm.tiktok.com/abc"), "tiktok");
   assert.equal(platformOf("https://www.instagram.com/reel/x"), "instagram");
@@ -77,9 +74,9 @@ test("sign/verify roundtrip, tamper and expiry rejected", async () => {
   const p = new URL(ORIGIN + path).searchParams;
   const ok = await verifyProxy(ENV, p);
   assert.equal(ok.url, "https://cdn.test/v.mp4");
-  assert.deepEqual(ok.headers, { Cookie: "a=b" }); // sirf whitelisted headers
+  assert.deepEqual(ok.headers, { Cookie: "a=b" });
 
-  const renamed = new URLSearchParams(p); renamed.set("filename", "other.mp4"); // frontend rename karta hai
+  const renamed = new URLSearchParams(p); renamed.set("filename", "other.mp4");
   assert.ok(await verifyProxy(ENV, renamed));
 
   const t1 = new URLSearchParams(p); t1.set("url", "https://evil.test/x.mp4");
@@ -96,7 +93,6 @@ test("SSRF guard", () => {
   assert.equal(isBlockedHost("https://v.tt/a.mp4"), false);
 });
 
-// ── TikTok ──────────────────────────────────────────────────────────────────
 test("TikTok /info parses qualities, prefers h264, includes size", async () => {
   mock(/tiktok\.com\/@u\/video\/123/, () => new Response(TIKTOK_HTML, { headers: [["set-cookie", "ttwid=abc; Path=/"], ["set-cookie", "tt_chain=def; Path=/"]] }));
   const r = await call(post("/info", { url: "https://www.tiktok.com/@u/video/123" }));
@@ -119,7 +115,6 @@ test("TikTok /download -> signed proxy -> streams with cookie + Range", async ()
   assert.match(dl.url, /^\/proxy-download\?/);
   assert.equal(dl.preview_url, dl.url);
 
-  // frontend filename rewrite
   const rewritten = dl.url.replace(/filename=[^&]*/, "filename=My%20Clip.mp4");
   const res = await call(new Request(ORIGIN + rewritten, { headers: { Range: "bytes=0-9", "CF-Connecting-IP": "2.2.2.2" } }));
   assert.equal(res.status, 206);
@@ -147,7 +142,6 @@ test("TikTok falls back to tikwm when page has no data", async () => {
   assert.deepEqual(d.video_formats.map((f) => f.label), ["HD", "SD"]);
 });
 
-// ── Instagram ───────────────────────────────────────────────────────────────
 test("Instagram embed parse (plain + double-escaped)", async () => {
   mock(/instagram\.com\/p\/ABC123\/embed/, () => new Response(IG_EMBED));
   let d = await (await call(post("/download", { url: "https://www.instagram.com/reel/ABC123/", quality: "720" }))).json();
@@ -197,11 +191,10 @@ test("Instagram session layer uses IG_COOKIE and picks highest quality", async (
 
 test("mediaIdOf converts shortcode like Instagram", async () => {
   const { mediaIdOf } = await import("../src/extractors/instagram.js");
-  assert.equal(mediaIdOf("B"), "1"); // A=0, B=1
+  assert.equal(mediaIdOf("B"), "1");
   assert.equal(mediaIdOf("BA"), "64");
 });
 
-// ── Facebook ────────────────────────────────────────────────────────────────
 test("Facebook page parse HD+SD, decodes escapes", async () => {
   mock(/facebook\.com\/reel\/1/, () => new Response(FB_HTML));
   const d = await (await call(post("/info", { url: "https://www.facebook.com/reel/1" }))).json();
@@ -213,7 +206,6 @@ test("Facebook page parse HD+SD, decodes escapes", async () => {
   assert.equal(new URL(ORIGIN + dl.url).searchParams.get("url"), "https://video.fb/hd.mp4?oh=1&oe=2");
 });
 
-// ── Terabox ─────────────────────────────────────────────────────────────────
 test("Terabox token + share/list flow, cookie goes into signed headers", async () => {
   const page = `<html>window.jsToken = fn%28%22TOK123%22%29; dp-logid=LOG9&x=1 "bdstoken":"BDS"</html>`;
   mock(/terabox\.com\/s\/1AbCd/, (u) => withUrl(new Response(page), "https://www.terabox.com/s/1AbCd"));
@@ -234,7 +226,6 @@ test("Terabox token + share/list flow, cookie goes into signed headers", async (
   assert.equal(v.headers.Referer, "https://www.terabox.com/");
 });
 
-// ── debug ───────────────────────────────────────────────────────────────────
 test("/debug reports per-layer results for instagram, rejects other platforms", async () => {
   mock(/embed\/captioned/, () => new Response("<html>Log in to continue accounts/login</html>"));
   mock(/graphql\/query/, () => Response.json({ status: "fail", message: "login_required" }));
@@ -250,7 +241,6 @@ test("/debug reports per-layer results for instagram, rejects other platforms", 
   assert.equal(bad.status, 400);
 });
 
-// ── legacy forwarding / errors ──────────────────────────────────────────────
 test("non-native platforms forward to legacy with real client IP", async () => {
   mock(/legacy\.test\/info/, (u, init, h) => Response.json({ success: true, title: "legacy yt", seen_ip: h.get("x-forwarded-for") }));
   const d = await (await call(post("/info", { url: "https://www.youtube.com/watch?v=abc" }))).json();
@@ -300,7 +290,6 @@ test("validation, rate limit, CORS, static fallthrough, ping", async () => {
   assert.equal(last.status, 429);
 });
 
-// ── RapidAPI (Download by Link) ─────────────────────────────────────────────
 const RAPID_ENV = { ...ENV, RAPIDAPI_KEY: "k", RAPID_HOST: "dl.p.rapidapi.com", RAPID_PATH: "/get", RAPID_YT_PATH: "/yt" };
 const IG_API = { ok: true, id: "ABC", source: "instagram.com", type: "video", download_url: "https://instagram.fbcdn.test/v/a.mp4?x=1&y=2",
   width: 720, height: 1280, thumbnail_url: "https://instagram.fbcdn.test/t.jpg", duration: null, caption: "Instagram" };
@@ -316,10 +305,10 @@ test("Instagram: RapidAPI layer when embed/og fail (vertical 720x1280 => 720p)",
   const d = await (await call(post("/info", { url: "https://www.instagram.com/reel/RAP1/" }), RAPID_ENV)).json();
   assert.equal(d.success, true);
   assert.deepEqual(d.video_formats.map((f) => f.id), [720]);
-  assert.equal(d.title, "Instagram Video - VidSnap"); // caption "Instagram" generic hai
+  assert.equal(d.title, "Instagram Video - VidSnap");
   const dl = await (await call(post("/download", { url: "https://www.instagram.com/reel/RAP1/" }), RAPID_ENV)).json();
   assert.equal(new URL(ORIGIN + dl.url).searchParams.get("url"), IG_API.download_url);
-  assert.equal(calls.filter((c) => /rapidapi/.test(c.url)).length, 1); // /info + /download = 1 credit
+  assert.equal(calls.filter((c) => /rapidapi/.test(c.url)).length, 1);
 });
 
 test("Instagram: no RapidAPI config -> old behaviour (legacy), no API call", async () => {

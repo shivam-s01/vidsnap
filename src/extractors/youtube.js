@@ -14,20 +14,18 @@ export function videoIdOf(url) {
 
 const LADDER = [1080, 720, 480, 360];
 
-// /info mein API credit kharch nahi hota: oEmbed se title + ytimg thumbnail, quality ladder fixed.
-// Asli link /download pe API se aata hai (quality ke hisaab se). Config na ho ya fail ho to legacy.
 export async function extractYouTube(url, env, opts = {}) {
   const id = videoIdOf(url);
   if (!id) return null;
   const configured = Boolean(env.RAPIDAPI_KEY && (env.RAPID_YT_HOST || env.RAPID_HOST) && env.RAPID_YT_PATH);
 
-  if (opts.quality === undefined && opts.isAudio === undefined) { // info mode
+  if (opts.quality === undefined && opts.isAudio === undefined) {
     if (!configured) return null;
     let title = "", thumb = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
     try {
       const r = await fetchT(`https://www.youtube.com/oembed?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${id}`)}&format=json`, {}, 6000);
       if (r.ok) { const d = await r.json(); title = d.title || ""; thumb = d.thumbnail_url || thumb; }
-    } catch { /* ladder phir bhi dikhao */ }
+    } catch {}
     return {
       title: title || "YouTube Video", thumbnail: thumb, duration: 0,
       formats: LADDER.map((h) => ({ id: h, label: labelFor(h), url: null })),

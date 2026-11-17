@@ -20,12 +20,10 @@ const PLATFORM_TITLE = {
 };
 const LARGE_FILE_WARN_MB = 200;
 
-// Jo endpoints abhi purane Flask backend pe hain
 const LEGACY_PATHS = new Set(["/local-download", "/yt-batch-download", "/verify-captcha", "/adult-token"]);
 
 const getIp = (request) => request.headers.get("CF-Connecting-IP") || "0.0.0.0";
 
-// ── legacy forwarding ────────────────────────────────────────────────────────
 async function forward(request, env) {
   if (!env.LEGACY_BACKEND) {
     return json({ success: false, error: "Could not fetch this video — it may be private, or the platform blocked the request." }, 502);
@@ -34,11 +32,10 @@ async function forward(request, env) {
   const target = new URL(u.pathname + u.search, env.LEGACY_BACKEND);
   const headers = new Headers(request.headers);
   headers.set("X-Forwarded-For", getIp(request));
-  headers.delete("Origin"); // server-to-server call
+  headers.delete("Origin");
   return fetch(new Request(target, { method: request.method, headers, body: request.body, redirect: "manual", duplex: "half" }));
 }
 
-// ── /info ────────────────────────────────────────────────────────────────────
 function sizeInfo(f) {
   if (!f.size_bytes) return { size: "Auto", mb: null };
   const mb = Math.round((f.size_bytes / 1048576) * 10) / 10;
@@ -60,7 +57,7 @@ async function handleInfo(request, env) {
   if (cached) return json(cached);
 
   let res = null;
-  try { res = await EXTRACTORS[plat](url, env, {}); } catch { /* fall through to legacy */ }
+  try { res = await EXTRACTORS[plat](url, env, {}); } catch {}
   if (!res || (!res.formats.length && !res.audio)) return forward(request, env);
 
   const video_formats = [...res.formats].sort((a, b) => b.id - a.id).map((f) => {
@@ -71,14 +68,12 @@ async function handleInfo(request, env) {
   const data = {
     success: true, title: `${res.title || PLATFORM_TITLE[plat]} - VidSnap`, thumbnail: res.thumbnail || null,
     duration: res.duration || 0, video_formats,
-    // Native audio nahi mila to bhi option dikhao — /download legacy (ffmpeg) pe jayega
     audio_formats: audio_formats.length ? audio_formats : [{ id: 128, label: "🎵 Audio (MP3)", size: "Auto", url: "worker" }],
   };
   cacheSet(ck, data);
   return json(data);
 }
 
-// ── /download ────────────────────────────────────────────────────────────────
 function notifyOneSignal(env, title) {
   if (!env.ONESIGNAL_APP_ID || !env.ONESIGNAL_API_KEY) return Promise.resolve();
   return fetchT("https://onesignal.com/api/v1/notifications", {
@@ -106,14 +101,14 @@ async function handleDownload(request, env, ctx) {
   if (!env.PROXY_SECRET) return json({ success: false, error: "Server misconfigured (PROXY_SECRET missing)" }, 500);
 
   let res = null;
-  try { res = await EXTRACTORS[plat](url, env, { quality, isAudio }); } catch { /* legacy */ }
+  try { res = await EXTRACTORS[plat](url, env, { quality, isAudio }); } catch {}
 
   let link = null, headers = res ? res.headers : {};
   if (res) {
     if (isAudio) link = res.audio ? res.audio.url : null;
     else if (res.formats.length) link = pickFormat(res.formats, quality).url;
   }
-  // Native se nahi bana (jaise IG/FB/Terabox ka audio) -> purana backend (yt-dlp + ffmpeg)
+
   if (!link) return forward(request, env);
 
   const title = res.title || PLATFORM_TITLE[plat];
@@ -129,7 +124,6 @@ async function handleDownload(request, env, ctx) {
   });
 }
 
-// ── /proxy-download (streaming) ──────────────────────────────────────────────
 function defaultHeaders(remote) {
   const host = new URL(remote).hostname;
   if (/terabox|4funbox|nephobox|1024tera|baidupcs|baiduyun/.test(host)) {
@@ -140,7 +134,7 @@ function defaultHeaders(remote) {
 
 async function handleProxy(request, env) {
   const params = new URL(request.url).searchParams;
-  if (params.get("v") !== "2") return forward(request, env); // purane backend ke signed links
+  if (params.get("v") !== "2") return forward(request, env);
 
   const v = await verifyProxy(env, params);
   if (!v) return json({ error: "Unauthorized / Link expired" }, 403);
@@ -156,7 +150,6 @@ async function handleProxy(request, env) {
   try { r = await fetchT(v.url, { method: request.method === "HEAD" ? "HEAD" : "GET", headers: hdrs }, 30000); }
   catch { return json({ error: "Proxy error" }, 502); }
   if ([401, 403, 404, 410].includes(r.status)) {
-    // Kuch CDN links client-IP se bandhe hote hain (worker ko deny, user ko allow): browser download ho to seedha bhej do
     if (request.headers.get("Sec-Fetch-Mode") === "navigate") return Response.redirect(v.url, 302);
     return json({ error: `Source denied access (${r.status})` }, 502);
   }
@@ -177,7 +170,6 @@ async function handleProxy(request, env) {
   return new Response(request.method === "HEAD" ? null : r.body, { status: r.status, headers: out });
 }
 
-// ── /debug ───────────────────────────────────────────────────────────────────
 async function handleDebug(request, env) {
   const url = (new URL(request.url).searchParams.get("url") || "").trim();
   const err = validateUrl(url);
@@ -187,7 +179,6 @@ async function handleDebug(request, env) {
   return json(await debugProbe(url, env));
 }
 
-// ── entry ────────────────────────────────────────────────────────────────────
 export default {
   async fetch(request, env, ctx) {
     const { pathname: path } = new URL(request.url);
@@ -202,7 +193,7 @@ export default {
       else if (path === "/proxy-download" && ["GET", "HEAD"].includes(request.method)) resp = await handleProxy(request, env);
       else if (path === "/debug" && request.method === "GET") resp = await handleDebug(request, env);
       else if (LEGACY_PATHS.has(path)) resp = await forward(request, env);
-      else return env.ASSETS.fetch(request); // index.html, adult.html, static files
+      else return env.ASSETS.fetch(request);
 
       return withHeaders(resp, cors);
     } catch (e) {

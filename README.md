@@ -1,33 +1,73 @@
-# VidSnap on Cloudflare Workers
+# VidSnap
 
-Frontend + TikTok / Instagram / Facebook / TeraBox extractors ek hi Worker mein.
-YouTube, generic sites, audio-extract aur jab native extractor fail ho, woh purane Flask backend
-(`LEGACY_BACKEND` in wrangler.toml) pe forward hota hai. YouTube ko JS mein shift karne ke baad us var ko hata do.
+A video downloader that runs entirely on a Cloudflare Worker. The Worker serves the frontend and handles the API, so there is nothing else to host for the supported platforms.
 
-## Deploy (Cloudflare Git connect)
-Worker Settings > Variables and Secrets mein daalo:
-- `PROXY_SECRET`: koi bhi 32+ random chars (required)
-- `TERABOX_COOKIE`: `ndus=...` (apna fresh cookie)
-- `RAPIDAPI_KEY`: optional fallback
+Native extractors: TikTok, Instagram, Facebook and TeraBox. YouTube, X and Pinterest go through RapidAPI. Anything the Worker can't handle (other sites, audio conversion, failed extractions) is forwarded to the old Flask backend set in `LEGACY_BACKEND`.
 
-`main` pe push karte hi Cloudflare khud deploy karta hai.
+## Setup
 
-## RapidAPI (Download by Link)
-Instagram, YouTube, X, Pinterest ke liye aur TikTok/Facebook ke fallback ke liye.
-- Secret: `RAPIDAPI_KEY`
-- `wrangler.toml` vars: `RAPID_HOST`, `RAPID_PATH` (GET ?url=), `RAPID_YT_PATH` (POST {url, format})
-- Free plan 1000 requests/month. `/info` + `/download` ek hi credit lagate hain (2 min cache). YouTube `/info` mein credit nahi lagta.
-- Check: `/debug?url=<link>` mein `rapid` section, aur `/ping` mein `rapid_host` / `rapid_path` true hone chahiye.
+```bash
+npm install
+npm run dev      # local dev server
+npm test         # offline tests
+npm run deploy   # deploy with wrangler
+```
 
-## Debug
-`/debug?url=<link>` har extractor layer ka status dikhata hai (kaun sa layer kyun fail hua).
+If the repo is connected to Cloudflare, every push to `main` deploys automatically.
 
-## Layout
-- `src/index.js` router: /info, /download, /proxy-download (streaming), legacy forward
-- `src/extractors/*` har platform ka scraper + `fallbacks.js` (cobalt, RapidAPI)
-- `public/` index.html, adult.html (same-origin Worker use karte hain)
-- `test/` offline tests (mock fetch): `npm test`
+## Configuration
 
-## Dhyan rakho
-- Scrapers sites ke internal HTML/JSON pe tike hain; format badalne pe tootenge. Pehle `wrangler tail` se logs dekho.
-- Rate-limit/cache per-isolate best effort hai. Pakka limit chahiye to Cloudflare WAF rate-limit rule lagao.
+Secrets (Worker settings, or `wrangler secret put <NAME>`):
+
+| Name | Required | What it is |
+| --- | --- | --- |
+| `PROXY_SECRET` | yes | Random string, 32+ characters. Used to sign download links. |
+| `TERABOX_COOKIE` | recommended | Your TeraBox cookie, like `ndus=...`. |
+| `RAPIDAPI_KEY` | for YouTube, X, Pinterest | RapidAPI key. Also used as a fallback for the other platforms. |
+| `IG_COOKIE` | no | Instagram session cookie, enables one extra extraction layer. |
+| `IG_DOC_ID` | no | Overrides the Instagram GraphQL doc id when it rotates. |
+| `ONESIGNAL_APP_ID`, `ONESIGNAL_API_KEY` | no | Push notification when a download is ready. |
+
+Variables in `wrangler.toml`:
+
+| Name | What it is |
+| --- | --- |
+| `LEGACY_BACKEND` | URL of the old Flask backend. Remove it once everything runs natively. |
+| `ALLOWED_ORIGINS` | Extra origins allowed to call the API, comma separated. |
+| `RAPID_HOST` | RapidAPI host, taken from the code snippet tab of the API. |
+| `RAPID_PATH` | GET endpoint, called as `?url=<link>`. |
+| `RAPID_YT_PATH` | POST endpoint for YouTube, body is `{ url, format }`. |
+| `RAPID_YT_HOST` | Only needed if the YouTube API uses a different host. |
+
+The free RapidAPI plan allows 1000 requests a month. `/info` and `/download` share one credit because results are cached for two minutes, and YouTube `/info` doesn't use a credit at all.
+
+## Endpoints
+
+| Route | Purpose |
+| --- | --- |
+| `POST /info` | Title, thumbnail and available qualities for a link |
+| `POST /download` | Returns a signed link for the chosen quality |
+| `GET /proxy-download` | Streams the file through the Worker, supports Range requests |
+| `GET /debug?url=<link>` | Shows what each extraction layer returned and why it failed |
+| `GET /ping` | Health check and a quick view of which settings are present |
+
+`/debug` never prints secrets or cookies.
+
+## Project layout
+
+```
+src/index.js          router and request handlers
+src/lib.js            helpers: signing, CORS, caching, rate limiting
+src/debug.js          debug probe
+src/extractors/       one file per platform, plus fallbacks.js (RapidAPI, Cobalt)
+public/               index.html and adult.html
+test/                 offline tests with a mocked fetch
+```
+
+`public/adult.html` is a separate age-gated page that uses the same API. It opens with a date of birth and arithmetic check before showing the downloader.
+
+## Things to know
+
+- The scrapers depend on each site's internal HTML and JSON, so they break when a site changes. Run `wrangler tail` first when something stops working, then check `/debug`.
+- Caching and rate limiting live in memory per isolate, so they are best effort. For a hard limit, add a rate limiting rule in the Cloudflare dashboard.
+- The tests use a mocked `fetch`. They check parsing, signing and proxy behaviour, not whether the real sites are up.

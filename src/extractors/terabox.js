@@ -20,7 +20,6 @@ function baseHeaders(cookie) {
   return h;
 }
 
-// Step 1+2: share page se surl, jsToken, logid, bdstoken nikalo
 async function getTokens(url, cookie) {
   const r = await fetchT(url, { headers: { ...baseHeaders(cookie), Accept: "text/html,*/*" } }, 15000);
   if (!r.ok) return null;
@@ -28,8 +27,6 @@ async function getTokens(url, cookie) {
   const u = new URL(finalUrl);
   const html = await r.text();
 
-  // ?surl=XXXX seedha; /s/1XXXX mein leading "1" API ke liye hata dete hain.
-  // Dono variants try honge (share/list loop mein).
   const candidates = [];
   const q = u.searchParams.get("surl");
   if (q) candidates.push(q);
@@ -45,7 +42,6 @@ async function getTokens(url, cookie) {
   return { surls, jsToken, logid, bdstoken, finalUrl, host: u.host, cookie };
 }
 
-// Step 3: share/list API
 async function shareList(t) {
   const bases = [...new Set([`https://${t.host}`, "https://www.1024terabox.com", "https://www.terabox.com", "https://www.terabox.app"])];
   for (const surl of t.surls) {
@@ -59,7 +55,7 @@ async function shareList(t) {
         const r = await fetchT(`${base}/share/list?${params}`, { headers: baseHeaders(t.cookie) }, 15000);
         const d = await r.json();
         if (d.errno === 0 && Array.isArray(d.list) && d.list.length) return d.list;
-      } catch { /* next base */ }
+      } catch {}
     }
   }
   return [];
@@ -82,7 +78,6 @@ export async function extractTerabox(url, env) {
     duration: 0,
     formats: [{ id: 1080, label: "Original Quality", url: dlink, size_bytes: Number(chosen.size) || null }],
     audio: null,
-    // proxy yeh headers khud lagayega — alag se third-party proxy ki zaroorat nahi
     headers: { Cookie: cookie, Referer: "https://www.terabox.com/", Origin: "https://www.terabox.com", "User-Agent": UA.EDGE },
   };
 }

@@ -17,14 +17,13 @@ function result({ videoUrl, thumb, title, duration, height }) {
   };
 }
 
-// Layer 1: /embed/captioned/ page — public reels/posts pe login nahi chahiye
 async function viaEmbed(code) {
   const r = await fetchT(`https://www.instagram.com/p/${code}/embed/captioned/`, {
     headers: { "User-Agent": UA.CHROME, "Accept-Language": "en-US,en;q=0.9" },
   }, 15000);
   if (!r.ok) return null;
   const html = await r.text();
-  // JSON kabhi seedha aata hai ("video_url":"..."), kabhi string ke andar escaped (\"video_url\":\"...\")
+
   const m = html.match(/"video_url":"([^"]+)"/) || html.match(/\\"video_url\\":\\"(.+?)\\"/);
   const src = m ? m[1] : (html.match(/<video[^>]+src="([^"]+)"/) || [])[1];
   if (!src) return null;
@@ -40,7 +39,6 @@ async function viaEmbed(code) {
   });
 }
 
-// Layer 2: crawler UA ko Instagram og:video tags deta hai (login nahi chahiye)
 async function viaOg(code) {
   for (const ua of [UA.FB, "Twitterbot/1.0"]) {
     const r = await fetchT(`https://www.instagram.com/p/${code}/`, {
@@ -58,7 +56,6 @@ async function viaOg(code) {
   return null;
 }
 
-// Layer 3 (optional): IG_COOKIE secret (burner account ka sessionid) ke saath mobile API
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 export function mediaIdOf(code) {
   let id = 0n;
@@ -93,7 +90,6 @@ async function viaSession(code, env) {
   };
 }
 
-// Layer 4: graphql doc_id (rotate hota rehta hai — IG_DOC_ID env se badal sakte ho)
 async function viaGraphql(code, env) {
   const docId = env.IG_DOC_ID || "8845758582119845";
   const body = new URLSearchParams({
@@ -112,7 +108,7 @@ async function viaGraphql(code, env) {
   const d = await r.json();
   const media = d?.data?.xdt_shortcode_media;
   if (!media) return null;
-  // carousel ho to pehla video node
+
   const node = media.is_video ? media
     : (media.edge_sidecar_to_children?.edges || []).map((e) => e.node).find((n) => n.is_video);
   if (!node?.video_url) return null;
@@ -127,10 +123,9 @@ async function viaGraphql(code, env) {
 export async function extractInstagram(url, env, opts = {}) {
   const code = shortcodeOf(url);
   if (code) {
-    // Cheap layers pehle, phir RapidAPI (sabse bharosemand), phir login-wali layers
     for (const layer of [() => viaEmbed(code), () => viaOg(code), () => rapidResult(env, "instagram", url, { ...opts, defaultTitle: "Instagram Video" }),
       () => viaSession(code, env), () => viaGraphql(code, env)]) {
-      try { const r = await layer(); if (r) return r; } catch { /* next */ }
+      try { const r = await layer(); if (r) return r; } catch {}
     }
   } else {
     const r = await rapidResult(env, "instagram", url, { ...opts, defaultTitle: "Instagram Video" });
