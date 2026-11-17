@@ -2460,7 +2460,7 @@ html:has(body[style*="overflow: hidden"]),html.sb-lock{overflow:hidden}
     </a>
 
     <div class="sb-section-gap"></div>
-    <a class="sb-item sb-adult" href="#" onclick="goToAdultView();closeSidebar();return false" data-sb-idx="11">
+    <a class="sb-item sb-adult" href="#" onclick="goToAdultView();return false" data-sb-idx="11">
       <span class="sb-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></span>
       <span class="sb-label">18+ Zone</span>
       <span class="sb-adult-badge"><span class="sb-adult-dot"></span>18+</span>
@@ -4890,15 +4890,29 @@ var _adultPendingUrl = '';
 
 function goToAdultView() {
   try {
+    sessionStorage.removeItem('vs-adult-ok-v3');
     localStorage.removeItem('vs-adult-ok-v2');
     localStorage.removeItem('vs-adult-exp-v2');
   } catch(e) {}
   var pendingUrl = _adultPendingUrl ||
     (document.getElementById('urlInput') ? document.getElementById('urlInput').value.trim() : '');
-  if (pendingUrl && isAdultUrl(pendingUrl)) {
-    window.location.href = 'adult.html?url=' + encodeURIComponent(pendingUrl);
+  var target = (pendingUrl && isAdultUrl(pendingUrl)) ? 'adult.html?url=' + encodeURIComponent(pendingUrl) : 'adult.html';
+  var go = function() { window.location.href = target; };
+  var sidebarEntry = false;
+  try { sidebarEntry = !!(history.state && history.state.sidebar); } catch(e) {}
+  if (sidebarEntry && typeof closeSidebar === 'function') {
+    var done = false;
+    var once = function() {
+      if (done) return;
+      done = true;
+      window.removeEventListener('popstate', once);
+      go();
+    };
+    window.addEventListener('popstate', once);
+    setTimeout(once, 350);
+    closeSidebar();
   } else {
-    window.location.href = 'adult.html';
+    go();
   }
 }
 
